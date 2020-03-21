@@ -21,8 +21,8 @@ public class RegistrarUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_registrar_usuario);
         botonregistrar = findViewById(R.id.btregistrar);
         textonombre = findViewById(R.id.reg_nombre);
-        textocontraseña = findViewById(R.id.input_password);
-        textoemail = findViewById(R.id.input_email);
+        textocontraseña = findViewById(R.id.reg_contraseña);
+        textoemail = findViewById(R.id.reg_email);
         botonregistrar.setOnClickListener(new View.OnClickListener() {
 
             @Override

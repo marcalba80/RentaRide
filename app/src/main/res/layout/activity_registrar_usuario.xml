@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Crerar Cuenta"
+            android:text="Crear Cuenta"
             android:textSize="29dp"
             android:textColor="@color/Black"
             android:gravity="center"/>
@@ -45,7 +45,7 @@
             android:layout_marginTop="20dp"
             app:mtf_cardCollapsedHeight="4dp"
             app:mtf_hasFocus="false"
-            app:mtf_image="@drawable/ic_email_24px"
+            app:mtf_image="@drawable/ic_thumb_up"
             app:mtf_openKeyboardOnFocus="true">
             <EditText
                 android:id="@+id/reg_nombre"
@@ -92,7 +92,7 @@
             android:layout_marginTop="20dp"
             app:mtf_cardCollapsedHeight="4dp"
             app:mtf_hasFocus="false"
-            app:mtf_image="@drawable/ic_email_24px"
+            app:mtf_image="@drawable/ic_vpn_key_24px"
             app:mtf_openKeyboardOnFocus="true">
             <EditText
                 android:id="@+id/reg_contraseña"
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/con"
                 android:maxLines="1"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/holo_blue_dark"
                 android:textSize="15sp" />
