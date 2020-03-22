@@ -6,37 +6,34 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/background"
     android:layout_height="match_parent"
     tools:context=".Login">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="2">
-        <TextView
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:text="RentaRide"
-            android:textSize="60dp"
-            android:textColor="@color/Black"
-            android:gravity="center"/>
+            android:layout_marginTop="50dp"
+            android:layout_height="150dp"
+            android:background="@drawable/logo"
+            android:id="@+id/logoImageView"
+            android:scaleType="fitXY"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_weight="4"
             android:layout_height="wrap_content"
             android:text="Bienvenido!"
             android:textSize="35dp"
-            android:textColor="@color/Black"
+            android:textColor="@color/White"
             android:gravity="center"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical"
-        android:layout_weight="2">
+        android:orientation="vertical">
         <com.github.florent37.materialtextfield.MaterialTextField
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -67,7 +64,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             app:mtf_cardCollapsedHeight="4dp"
             app:mtf_hasFocus="false"
             app:mtf_image="@drawable/ic_vpn_key_24px"
@@ -84,28 +82,26 @@
                 android:textSize="15sp" />
 
         </com.github.florent37.materialtextfield.MaterialTextField>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_marginTop="40dp"
-            android:layout_height="wrap_content"
-            android:onClick="olvidado"
-            android:layout_weight="1"
-            android:text="Ha olvidado su contraseña?"
-            android:textSize="15dp"
-            android:textColor="@color/Black"
-            android:gravity="center"/>
+
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:onClick="olvidado"
+        android:text="¿Ha olvidado su contraseña?"
+        android:textSize="15dp"
+        android:textColor="@color/White"
+        android:gravity="center"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:layout_marginBottom="20dp"
-        android:layout_weight="1">
+        android:layout_marginTop="16dp"
+        android:layout_height="68dp"
+        android:gravity="center">
         <com.nihaskalam.progressbuttonlibrary.CircularProgressButton
             android:id="@+id/login"
             android:layout_width="196dp"
             android:layout_height="64dp"
-            android:layout_marginTop="16dp"
             android:textColor="@color/White"
             android:textSize="22sp"
             app:pb_colorIndicator="@color/pb_green_dark"
@@ -116,12 +112,23 @@
             app:pb_selectorCancel="@color/pb_cancel_state_selector"
             app:pb_selectorComplete="@color/pb_green_dark"
             app:pb_selectorError="@color/pb_red"
-            app:pb_selectorIdle="@color/colorPrimary"
+            app:pb_selectorIdle="@color/button"
             app:pb_textColorAfterClick="@color/White"
             app:pb_textIdle="@string/log"
             app:pb_colorCancelText="@color/pb_orange"
             app:pb_colorErrorText="@color/pb_blue"
             app:pb_colorCompleteText="@color/pb_orange"/>
-
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"
+        android:onClick="registro"
+        android:layout_gravity="center"
+        android:text="¿Aún no tiene cuenta? Regístrese"
+        android:textSize="15dp"
+        android:textColor="@color/White"
+        android:gravity="center"/>
+
 </LinearLayout>

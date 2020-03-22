@@ -6,12 +6,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login" />
+        <activity android:name=".RecuperarContrasena" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".RegistrarUsuario" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Calendar" />
         <activity
-            android:name=".RegistrarUsuario"
+            android:name=".Login"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

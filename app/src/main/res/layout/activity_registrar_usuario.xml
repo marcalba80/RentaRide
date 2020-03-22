@@ -6,28 +6,32 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/background"
     android:layout_height="match_parent"
     tools:context=".RegistrarUsuario">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingTop="30dp"
         android:orientation="vertical"
-        android:layout_weight="1">
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_weight="2.3">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/logo"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/logoImageView"
+            android:scaleType="fitXY"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="RentaRide"
-            android:textSize="60dp"
-            android:textColor="@color/Black"
-            android:gravity="center"/>
-        <TextView
-            android:layout_width="match_parent"
+            android:layout_weight="6"
             android:layout_height="wrap_content"
             android:text="Crear Cuenta"
             android:textSize="29dp"
-            android:textColor="@color/Black"
+            android:textColor="@color/White"
             android:gravity="center"/>
     </LinearLayout>
     <LinearLayout
@@ -35,7 +39,7 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_weight="2">
+        android:layout_weight="3">
         <com.github.florent37.materialtextfield.MaterialTextField
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -45,7 +49,7 @@
             android:layout_marginTop="20dp"
             app:mtf_cardCollapsedHeight="4dp"
             app:mtf_hasFocus="false"
-            app:mtf_image="@drawable/ic_thumb_up"
+            app:mtf_image="@drawable/ic_user"
             app:mtf_openKeyboardOnFocus="true">
             <EditText
                 android:id="@+id/reg_nombre"
@@ -128,6 +132,6 @@
             app:fb_shape="rectangle"
             app:fb_text="Crear Cuenta"
             app:fb_textSize="15dp"
-            app:fb_textColor="@color/Black" />
+            app:fb_textColor="@color/White" />
     </LinearLayout>
 </LinearLayout>

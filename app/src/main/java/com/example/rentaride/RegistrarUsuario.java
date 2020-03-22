@@ -51,22 +51,16 @@ public class RegistrarUsuario extends AppCompatActivity {
         if (nombre.isEmpty()){
             textonombre.setError(getString(R.string.errornombre));
             valid = false;
-        }else{
-            textonombre.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             textoemail.setError(getString(R.string.email));
             valid = false;
-        } else {
-            textoemail.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 6 ) {
             textocontraseña.setError(getString(R.string.errorcontraseña));
             valid = false;
-        } else {
-            textocontraseña.setError(null);
         }
 
         return valid;

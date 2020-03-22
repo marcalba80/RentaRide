@@ -61,15 +61,11 @@ public class Login extends AppCompatActivity {
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             textoemail.setError(getString(R.string.email));
             valid = false;
-        } else {
-            textoemail.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 6 ) {
             textocontraseña.setError(getString(R.string.errorcontraseña));
             valid = false;
-        } else {
-            textocontraseña.setError(null);
         }
 
         return valid;
@@ -77,5 +73,9 @@ public class Login extends AppCompatActivity {
 
     public void olvidado(View view) {
         startActivity(new Intent(Login.this, RecuperarContrasena.class));
+    }
+
+    public void registro(View view) {
+        startActivity(new Intent(Login.this, RegistrarUsuario.class));
     }
 }

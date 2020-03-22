@@ -37,7 +37,7 @@ public class Calendar extends AppCompatActivity {
         setContentView(R.layout.calendar);
         cv = findViewById(R.id.calendar);
         tv = findViewById(R.id.tv);
-        //recuperar();
+        recuperar();
         mostrar(new Date());
         cv.setListener(new CompactCalendarView.CompactCalendarViewListener() {
 
@@ -68,10 +68,7 @@ public class Calendar extends AppCompatActivity {
     }
 
 
-   // private void recuperar() {
-     // Reserva reserva = new Reserva(int color, long timeInMillis, String IDCoche){
-        //  super(color,timeInMillis, IdCoche)
-             ////}
-   // }
+    private void recuperar() {
+    }
 
 }

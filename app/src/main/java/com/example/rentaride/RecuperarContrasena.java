@@ -1,12 +1,12 @@
 package com.example.rentaride;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
 
 public class RecuperarContrasena extends AppCompatActivity {
     @Override
@@ -17,8 +17,12 @@ public class RecuperarContrasena extends AppCompatActivity {
 
     public void recuperar(View view) {
         EditText e = findViewById(R.id.rec_email);
-        FirebaseAuth.getInstance().sendPasswordResetEmail(e.getText().toString());
-        Toast.makeText(getApplicationContext(), "Se ha enviado el correo de recuperación! Revise su buzón.", Toast.LENGTH_LONG).show();
-        finish();
+        String email = e.getText().toString();
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            e.setError(getString(R.string.email));
+        } else {
+            Toast.makeText(getApplicationContext(), "Se ha enviado el correo de recuperación! Revise su buzón.", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(RecuperarContrasena.this, Login.class));
+        }
     }
 }
