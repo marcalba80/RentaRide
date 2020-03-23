@@ -47,7 +47,7 @@ public class Login extends AppCompatActivity {
             botonlogin.setIndeterminateProgressMode(true);
             botonlogin.showComplete();
             Toast.makeText(getApplicationContext(), R.string.correctologin, Toast.LENGTH_LONG).show();
-            startActivity(new Intent(Login.this, RecuperarContrasena.class));
+            startActivity(new Intent(Login.this, Calendar.class));
         }else
             Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();
     }
@@ -67,7 +67,6 @@ public class Login extends AppCompatActivity {
             textocontraseña.setError(getString(R.string.errorcontraseña));
             valid = false;
         }
-
         return valid;
     }
 

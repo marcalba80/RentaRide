@@ -47,20 +47,21 @@ public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Reserva evento =  mDataset.get(position);
-        Long a = evento.getTimeInMillis();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-        Date d = new Date(a);
-        String hour = dateFormat.format(d);
-        holder.hora.setText(hour);
-        holder.desc.setText(evento.getData().toString());
-        if(evento.getColor() == Color.parseColor("#FBB44E")){
-            holder.tipo.setText("Medicación");
-            holder.cv.getBackground().setTint(Color.parseColor("#FBB44E"));
-        }else{
-            holder.tipo.setText("Cita");
-            holder.cv.getBackground().setTint(Color.parseColor("#4EA5FB"));
+        holder.desc.setText(evento.IDCoche);
+        if(evento.tipo == 0){
+            holder.tipo.setText("Coche");
+            holder.cv.getBackground().setTint(evento.getColor());
+        }else if(evento.tipo == 1){
 
+            holder.tipo.setText("Moto");
+            holder.cv.getBackground().setTint(evento.getColor());
+
+        }else{
+            holder.tipo.setText("Bicicleta");
+            holder.cv.getBackground().setTint(evento.getColor());
         }
+        SimpleDateFormat s = new SimpleDateFormat("HH:MM");
+        holder.hora.setText(s.format(evento.getTimeInMillis()));
     }
 
     @Override
