@@ -23,7 +23,7 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        getSupportActionBar().setTitle("Chat");
+        getSupportActionBar().setTitle("Chat con Lucy");
         list.add(new Message("Buenas!", new User("Lucy", "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"), new Date().getTime(), 2));
         list.add(new Message("¿Está el vehiculo disponible?", new User("Lucy", "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"), new Date().getTime(), 2));
         mMessageRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
