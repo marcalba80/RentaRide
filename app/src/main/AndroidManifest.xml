@@ -12,8 +12,7 @@
             android:name=".DetallesReserva"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Chat"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".Chat"/>
         <activity
             android:name=".RecuperarContrasena"
             android:theme="@style/AppTheme.NoActionBar" />
