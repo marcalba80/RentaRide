@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.github.florent37:materialtextfield:1.0.7'
     implementation 'com.kaopiz:kprogresshud:1.2.0'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation "com.github.nikartm:fit-button:1.2.1"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

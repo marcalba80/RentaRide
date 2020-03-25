@@ -1,10 +1,12 @@
 package com.example.rentaride;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
+import android.view.View;
 import android.widget.TextView;
 
 
@@ -77,6 +79,9 @@ public class Calendar extends AppCompatActivity {
         list.add(new Reserva(getColor(R.color.C2), new Date().getTime()+day*2, "KTM", 1));
         list.add(new Reserva(getColor(R.color.C3), new Date().getTime()+day*3,"Bicicleta de ciudad", 2));
         cv.addEvents(list);
+    }
+    public void detalle(View view) {
+        startActivity(new Intent(Calendar.this, DetallesReserva.class));
     }
 
 }
