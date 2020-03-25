@@ -24,8 +24,8 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         getSupportActionBar().setTitle("Chat con Lucy");
-        list.add(new Message("Buenas!", new User("Lucy", "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"), new Date().getTime(), 2));
-        list.add(new Message("¿Está el vehiculo disponible?", new User("Lucy", "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"), new Date().getTime(), 2));
+        list.add(new Message("Buenas!", "Lucy", new Date().getTime(), 2));
+        list.add(new Message("¿Está el vehiculo disponible?", "Lucy", new Date().getTime(), 2));
         mMessageRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
         mMessageAdapter = new MessageAdapter(getApplicationContext(), list);
         mMessageRecycler.setHasFixedSize(true);
@@ -37,7 +37,7 @@ public class Chat extends AppCompatActivity {
         EditText e = findViewById(R.id.edittext_chatbox);
         String s = e.getText().toString();
         if(!s.isEmpty()){
-            list.add(new Message(s, new User("John", "https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-4.png"), new Date().getTime(), 1));
+            list.add(new Message(s, "John", new Date().getTime(), 1));
             mMessageAdapter.notifyDataSetChanged();
             e.setText("");
         }else{

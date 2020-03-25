@@ -2,13 +2,13 @@ package com.example.rentaride;
 
 public class Message {
     String message;
-    User sender;
+    String name;
     long createdAt;
     int type;
 
-    public Message(String message, User sender, long createdAt, int type) {
+    public Message(String message, String name, long createdAt, int type) {
         this.message = message;
-        this.sender = sender;
+        this.name = name;
         this.createdAt = createdAt;
         this.type = type;
     }
@@ -21,12 +21,12 @@ public class Message {
         this.message = message;
     }
 
-    public User getSender() {
-        return sender;
+    public String getName() {
+        return name;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public long getCreatedAt() {

@@ -92,21 +92,19 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText, nameText;
-        ImageView profileImage;
 
         ReceivedMessageHolder(View itemView) {
             super(itemView);
             messageText = (TextView) itemView.findViewById(R.id.text_message_body);
             timeText = (TextView) itemView.findViewById(R.id.text_message_time);
             nameText = (TextView) itemView.findViewById(R.id.text_message_name);
-            profileImage = (ImageView) itemView.findViewById(R.id.image_message_profile);
         }
 
         void bind(Message message) {
             messageText.setText(message.getMessage());
             SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             timeText.setText(dateFormat.format(message.createdAt));
-            nameText.setText(message.getSender().getNickname());
+            nameText.setText(message.getName());
         }
     }
 }
