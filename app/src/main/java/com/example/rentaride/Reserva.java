@@ -7,34 +7,23 @@ import com.github.sundeepk.compactcalendarview.domain.Event;
 
 
 class Reserva extends Event {
-    String IDCoche = "Toyota";
-    int tipo = 0;
+    Vehiculo v;
 
-    public Reserva(int color, long timeInMillis, String IDCoche, int tipo) {
+    public Reserva(int color, long timeInMillis, Vehiculo v) {
         super(color, timeInMillis);
-        this.IDCoche = IDCoche;
-        this.tipo = tipo;
+        this.v = v;
     }
 
-    public Reserva(int color, long timeInMillis, Object data, String IDCoche, int tipo) {
+    public Reserva(int color, long timeInMillis, Object data, Vehiculo v) {
         super(color, timeInMillis, data);
-        this.IDCoche = IDCoche;
-        this.tipo = tipo;
+        this.v = v;
     }
 
-    public String getIDCoche() {
-        return IDCoche;
+    public Vehiculo getV() {
+        return v;
     }
 
-    public void setIDCoche(String IDCoche) {
-        this.IDCoche = IDCoche;
-    }
-
-    public int getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
+    public void setV(Vehiculo v) {
+        this.v = v;
     }
 }

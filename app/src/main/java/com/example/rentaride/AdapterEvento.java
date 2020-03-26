@@ -47,11 +47,11 @@ public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Reserva evento =  mDataset.get(position);
-        holder.desc.setText(evento.IDCoche);
-        if(evento.tipo == 0){
+        holder.desc.setText(evento.v.modelo);
+        if(evento.v.type == 0){
             holder.tipo.setText("Coche");
             holder.cv.getBackground().setTint(evento.getColor());
-        }else if(evento.tipo == 1){
+        }else if(evento.v.type == 1){
 
             holder.tipo.setText("Moto");
             holder.cv.getBackground().setTint(evento.getColor());

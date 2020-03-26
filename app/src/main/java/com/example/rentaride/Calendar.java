@@ -24,6 +24,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.example.rentaride.Utils.BICICLETA;
+import static com.example.rentaride.Utils.COCHE;
+import static com.example.rentaride.Utils.MOTOCICLETA;
+import static com.example.rentaride.Utils.biciprueba;
+import static com.example.rentaride.Utils.cocheprueba;
+import static com.example.rentaride.Utils.motoprueba;
+
 public class Calendar extends AppCompatActivity {
     List<Event> list = new ArrayList<>();
     CompactCalendarView cv;
@@ -72,12 +79,12 @@ public class Calendar extends AppCompatActivity {
 
     private void recuperar() {
         long day = 86400000;
-        list.add(new Reserva(getColor(R.color.C1), new Date().getTime(),"Toyota", 0));
-        list.add(new Reserva(getColor(R.color.C2), new Date().getTime(), "Kawasaki", 1));
-        list.add(new Reserva(getColor(R.color.C3), new Date().getTime(),"Bicicleta de carretera", 2));
-        list.add(new Reserva(getColor(R.color.C1), new Date().getTime()+day,"Nissan", 0));
-        list.add(new Reserva(getColor(R.color.C2), new Date().getTime()+day*2, "KTM", 1));
-        list.add(new Reserva(getColor(R.color.C3), new Date().getTime()+day*3,"Bicicleta de ciudad", 2));
+        list.add(new Reserva(getColor(R.color.C1), new Date().getTime(),cocheprueba));
+        list.add(new Reserva(getColor(R.color.C2), new Date().getTime(), motoprueba));
+        list.add(new Reserva(getColor(R.color.C3), new Date().getTime(),biciprueba));
+        list.add(new Reserva(getColor(R.color.C1), new Date().getTime()+day,cocheprueba));
+        list.add(new Reserva(getColor(R.color.C2), new Date().getTime()+day*2,motoprueba));
+        list.add(new Reserva(getColor(R.color.C3), new Date().getTime()+day*3,biciprueba));
         cv.addEvents(list);
     }
     public void detalle(View view) {

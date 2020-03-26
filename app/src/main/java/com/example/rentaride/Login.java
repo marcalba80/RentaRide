@@ -71,7 +71,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void olvidado(View view) {
-        startActivity(new Intent(Login.this, Chat.class));
+        startActivity(new Intent(Login.this, RecuperarContrasena.class));
     }
 
     public void registro(View view) {

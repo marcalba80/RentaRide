@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.rentaride.Utils.VIEW_TYPE_MESSAGE_RECEIVED;
+import static com.example.rentaride.Utils.VIEW_TYPE_MESSAGE_SENT;
+
 public class Chat extends AppCompatActivity {
 
     private RecyclerView mMessageRecycler;
@@ -24,8 +27,8 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         getSupportActionBar().setTitle("Chat con Lucy");
-        list.add(new Message("Buenas!", "Lucy", new Date().getTime(), 2));
-        list.add(new Message("¿Está el vehiculo disponible?", "Lucy", new Date().getTime(), 2));
+        list.add(new Message("Buenas!", "Lucy", new Date().getTime(), VIEW_TYPE_MESSAGE_RECEIVED));
+        list.add(new Message("¿Está el vehiculo disponible?", "Lucy", new Date().getTime(), VIEW_TYPE_MESSAGE_RECEIVED));
         mMessageRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
         mMessageAdapter = new MessageAdapter(getApplicationContext(), list);
         mMessageRecycler.setHasFixedSize(true);
@@ -37,7 +40,7 @@ public class Chat extends AppCompatActivity {
         EditText e = findViewById(R.id.edittext_chatbox);
         String s = e.getText().toString();
         if(!s.isEmpty()){
-            list.add(new Message(s, "John", new Date().getTime(), 1));
+            list.add(new Message(s, "John", new Date().getTime(), VIEW_TYPE_MESSAGE_SENT));
             mMessageAdapter.notifyDataSetChanged();
             e.setText("");
         }else{
