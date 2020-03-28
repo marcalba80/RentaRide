@@ -1,16 +1,20 @@
 package com.example.rentaride;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.ceylonlabs.imageviewpopup.ImagePopup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +27,16 @@ import static com.example.rentaride.Utils.cocheprueba;
 import static com.example.rentaride.Utils.motoprueba;
 
 public class DetallesReserva extends AppCompatActivity {
-    List<Vehiculo> l = new ArrayList<>();
+    Vehiculo v;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_reserva);
-        //switch(tipus intent)
-        addInfo(cocheprueba);
+        v = (Vehiculo) getIntent().getSerializableExtra("ve");
+        v.setReservado(true);
+        addInfo(v);
     }
 
     public void addInfo(Vehiculo v){
@@ -60,6 +66,7 @@ public class DetallesReserva extends AppCompatActivity {
                 .into(imagen);
         switch(v.type){
             case COCHE:
+                imagen.setBackgroundColor(getColor(R.color.C1));
                 c.getBackground().setTint(getColor(R.color.C1));
                 b1.setText(v.modelo);
                 b2.setText(v.potencia);
@@ -78,6 +85,7 @@ public class DetallesReserva extends AppCompatActivity {
                 break;
 
             case MOTOCICLETA:
+                imagen.setBackgroundColor(getColor(R.color.C2));
                 c.getBackground().setTint(getColor(R.color.C2));
                 b1.setText(v.modelo);
                 b2.setText(v.potencia);
@@ -95,6 +103,7 @@ public class DetallesReserva extends AppCompatActivity {
                 break;
 
             case BICICLETA:
+                imagen.setBackgroundColor(getColor(R.color.C3));
                 c.getBackground().setTint(getColor(R.color.C3));
                 b1.setText(v.modelo);
                 b5.setText(v.año);
@@ -115,5 +124,27 @@ public class DetallesReserva extends AppCompatActivity {
 
     public void chat(View view) {
         startActivity(new Intent(DetallesReserva.this, Chat.class));
+    }
+
+    public void eliminar(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle("Eliminar reserva")
+                .setMessage("¿Seguro que quiere eliminar esta reserva?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(getString(R.string.si), new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Intent intent = getIntent();
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+    }
+
+    public void ampliar(View view) {
+        ImagePopup imagePopup = new ImagePopup(this);
+        imagePopup.initiatePopupWithGlide(v.imagen);
+        imagePopup.setFullScreen(true);
+        imagePopup.viewPopup();
     }
 }

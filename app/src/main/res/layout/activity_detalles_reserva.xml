@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
-    android:paddingBottom="50dp"
+    android:paddingBottom="20dp"
     android:paddingTop="20dp"
     android:orientation="vertical"
     android:layout_height="match_parent"
@@ -30,6 +30,7 @@
              android:layout_width="match_parent"
              android:layout_height="0dp"
              android:id="@+id/imagen"
+             android:onClick="ampliar"
              android:layout_weight="4"
              android:layout_marginBottom="20dp"
              android:background="@color/colorPrimaryDark"/>
@@ -233,22 +234,46 @@
 
       </LinearLayout>
    </androidx.cardview.widget.CardView>
-   <com.github.nikartm.button.FitButton
-       android:id="@+id/boton"
-       android:padding="15dp"
-       android:layout_width="wrap_content"
-       android:onClick="chat"
-       android:layout_height="50dp"
-       android:enabled="true"
-       android:gravity="center"
-       app:fb_backgroundColor="@color/button"
-       app:fb_cornerRadius="50dp"
-       app:fb_divColor="@color/button"
-       android:paddingEnd="60dp"
-       android:paddingStart="60dp"
-       android:layout_marginBottom="10dp"
-       app:fb_shape="rectangle"
-       app:fb_text="Chat"
-       app:fb_textSize="15dp"
-       app:fb_textColor="@color/White" />
+   <LinearLayout
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:orientation="vertical">
+      <com.github.nikartm.button.FitButton
+          android:id="@+id/boton"
+          android:padding="15dp"
+          android:layout_width="match_parent"
+          android:onClick="chat"
+          android:layout_height="50dp"
+          android:enabled="true"
+          android:gravity="center"
+          app:fb_backgroundColor="@color/button"
+          app:fb_cornerRadius="50dp"
+          app:fb_divColor="@color/button"
+          android:paddingEnd="60dp"
+          android:paddingStart="60dp"
+          android:layout_marginBottom="10dp"
+          app:fb_shape="rectangle"
+          app:fb_text="Chat"
+          app:fb_textSize="15dp"
+          app:fb_textColor="@color/White" />
+      <com.github.nikartm.button.FitButton
+          android:id="@+id/eliminar"
+          android:padding="15dp"
+          android:layout_width="wrap_content"
+          android:onClick="eliminar"
+          android:layout_height="50dp"
+          android:enabled="true"
+          android:gravity="center"
+          app:fb_backgroundColor="@color/red"
+          app:fb_cornerRadius="50dp"
+          app:fb_divColor="@color/red"
+          android:paddingEnd="60dp"
+          android:paddingStart="60dp"
+          android:layout_marginBottom="10dp"
+          app:fb_shape="rectangle"
+          app:fb_text="Eliminar Reserva"
+          app:fb_textSize="15dp"
+          app:fb_textColor="@color/White" />
+   </LinearLayout>
+
 </LinearLayout>

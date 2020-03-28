@@ -16,6 +16,8 @@
     <string name="correctologin">Se ha realizado el inicio de sesión correctamente!</string>
     <string name="correctoregistro">Se ha creado la cuenta correctamente!</string>
     <string name="mail">Email</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
     <string name="nombre">Nombre y Apellidos</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>

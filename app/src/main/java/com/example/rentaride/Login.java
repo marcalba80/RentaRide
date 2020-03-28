@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.kaopiz.kprogresshud.KProgressHUD;
 import com.nihaskalam.progressbuttonlibrary.CircularProgressButton;
 
 
@@ -14,23 +13,14 @@ public class Login extends AppCompatActivity {
     EditText textoemail, textocontraseña;
     CircularProgressButton botonlogin;
     String email, password;
-    KProgressHUD k;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        k = KProgressHUD.create(Login.this)
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("Espere...")
-                .setCancellable(true)
-                .setAnimationSpeed(2)
-                .setDimAmount(0.5f);
-        k.show();
         botonlogin = findViewById(R.id.login);
         textocontraseña = findViewById(R.id.input_password);
         textoemail = findViewById(R.id.input_email);
-        k.dismiss();
         botonlogin.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -42,14 +32,18 @@ public class Login extends AppCompatActivity {
     }
 
     public void login() {
-        if(validate()){
+      /*  if(validate()){
             botonlogin.showProgress();
             botonlogin.setIndeterminateProgressMode(true);
             botonlogin.showComplete();
             Toast.makeText(getApplicationContext(), R.string.correctologin, Toast.LENGTH_LONG).show();
             startActivity(new Intent(Login.this, Calendar.class));
+            finish();
         }else
-            Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();*/
+
+        startActivity(new Intent(Login.this, Calendar.class));
+        finish();
     }
 
     public boolean validate() {

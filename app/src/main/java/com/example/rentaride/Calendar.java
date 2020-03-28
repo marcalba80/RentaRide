@@ -7,7 +7,9 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +36,10 @@ import static com.example.rentaride.Utils.motoprueba;
 public class Calendar extends AppCompatActivity {
     List<Event> list = new ArrayList<>();
     CompactCalendarView cv;
+    int actual;
+    Date last;
     TextView tv;
+    List<Reserva> le = new ArrayList<>();
     AdapterEvento arrayAdapter;
     RecyclerView lv;
     SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
@@ -46,7 +51,7 @@ public class Calendar extends AppCompatActivity {
         cv = findViewById(R.id.calendar);
         lv = findViewById(R.id.list);
         tv = findViewById(R.id.tv);
-        recuperar();
+        if(list != null && list.isEmpty())recuperar();
         mostrar(new Date());
         cv.setListener(new CompactCalendarView.CompactCalendarViewListener() {
 
@@ -63,14 +68,24 @@ public class Calendar extends AppCompatActivity {
     }
 
     private void mostrar(Date fecha) {
+        last = fecha;
         SimpleDateFormat dateFormat = new SimpleDateFormat("d LLLL y", Locale.getDefault());
         tv.setText(dateFormat.format(fecha));
-        List<Reserva> le = new ArrayList<>();
+        le.clear();
         for (Event e: cv.getEvents(fecha)
         ) {
             le.add((Reserva) e);
         }
         arrayAdapter = new AdapterEvento(new ArrayList<>(le));
+        arrayAdapter.setOnItemClickListener(new AdapterEvento.ClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                Intent i = new Intent(Calendar.this, DetallesReserva.class);
+                actual = list.indexOf(le.get(position));
+                i.putExtra("ve", le.get(position).v);
+                startActivityForResult(i, 2);
+            }
+        });
         lv.setHasFixedSize(true);
         lv.setLayoutManager(new LinearLayoutManager(this));
         lv.setAdapter(arrayAdapter);
@@ -87,8 +102,18 @@ public class Calendar extends AppCompatActivity {
         list.add(new Reserva(getColor(R.color.C3), new Date().getTime()+day*3,biciprueba));
         cv.addEvents(list);
     }
-    public void detalle(View view) {
-        startActivity(new Intent(Calendar.this, DetallesReserva.class));
-    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                list.remove(actual);
+                cv.removeAllEvents();
+                cv.addEvents(list);
+                Toast.makeText(Calendar.this, "Se ha eliminado la reserva correctamente", Toast.LENGTH_SHORT).show();
+                mostrar(last);
+            }
+        }
+    }
 }

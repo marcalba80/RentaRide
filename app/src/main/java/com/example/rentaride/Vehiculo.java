@@ -1,6 +1,10 @@
 package com.example.rentaride;
 
-public class Vehiculo {
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Vehiculo implements Serializable {
     int type;
     String modelo, año, info, telefono, matricula, potencia, combustible, imagen;
     boolean adaptado, reservado;
@@ -117,6 +121,14 @@ public class Vehiculo {
 
     public boolean isReservado() {
         return reservado;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public void setReservado(boolean reservado) {
