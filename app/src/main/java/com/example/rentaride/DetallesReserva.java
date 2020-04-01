@@ -6,6 +6,7 @@ import androidx.cardview.widget.CardView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -144,6 +145,7 @@ public class DetallesReserva extends AppCompatActivity {
     public void ampliar(View view) {
         ImagePopup imagePopup = new ImagePopup(this);
         imagePopup.initiatePopupWithGlide(v.imagen);
+        if ( getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) imagePopup.setHideCloseIcon(true);
         imagePopup.setFullScreen(true);
         imagePopup.viewPopup();
     }
