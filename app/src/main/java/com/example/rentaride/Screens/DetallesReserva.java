@@ -19,26 +19,34 @@ import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.example.rentaride.R;
 import com.example.rentaride.Logica.Vehiculo;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static com.example.rentaride.Utils.Utils.BICICLETA;
 import static com.example.rentaride.Utils.Utils.COCHE;
 import static com.example.rentaride.Utils.Utils.MOTOCICLETA;
 
 public class DetallesReserva extends AppCompatActivity {
     Vehiculo v;
-    Button reserva;
+    String f;
+    double p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_reserva);
         v = (Vehiculo) getIntent().getSerializableExtra("ve");
+        p = getIntent().getDoubleExtra("pr", 0);
+        long d = getIntent().getLongExtra("da",0);
+        SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
+        f = s.format(new Date(d));
         v.setReservado(true);
         addInfo(v);
     }
 
     public void addInfo(Vehiculo v){
         TextView b1, b2, b3, b4, b5, b6, b7, b8, b9, b10;
-        LinearLayout t1, t2, t3, t4, t5, t6, t7;
+        LinearLayout t1, t2, t3, t4, t5;
         ImageView imagen;
         CardView c;
         b1 = findViewById(R.id.modtv);
@@ -56,8 +64,6 @@ public class DetallesReserva extends AppCompatActivity {
         t3 = findViewById(R.id.tvam);
         t4 = findViewById(R.id.tvma);
         t5 = findViewById(R.id.tvtelf);
-        t6 = findViewById(R.id.tvfecha);
-        t7 = findViewById(R.id.tvprecio);
         imagen = findViewById(R.id.imagen);
         c = findViewById(R.id.carddetalle);
 
@@ -69,13 +75,15 @@ public class DetallesReserva extends AppCompatActivity {
             case COCHE:
                 imagen.setBackgroundColor(getColor(R.color.C1));
                 c.getBackground().setTint(getColor(R.color.C1));
-                b1.setText(v.getMarca() + v.getModelo());
+                b1.setText(v.getMarca() + " " + v.getModelo());
                 b2.setText(v.getPotencia());
                 b3.setText(v.getCombustible());
                 if(v.isAdaptado())b4.setText("Si");
                 else b4.setText("No");
                 b5.setText(v.getAño());
                 b6.setText(v.getInfo());
+                b9.setText(f);
+                b10.setText(String.valueOf(p));
                 if(v.isReservado()){
                     b7.setText(v.getMatricula());
                     b8.setText(v.getTelefono());
@@ -88,11 +96,13 @@ public class DetallesReserva extends AppCompatActivity {
             case MOTOCICLETA:
                 imagen.setBackgroundColor(getColor(R.color.C2));
                 c.getBackground().setTint(getColor(R.color.C2));
-                b1.setText(v.getMarca() + v.getModelo());
+                b1.setText(v.getMarca() + " " + v.getModelo());
                 b2.setText(v.getPotencia());
                 b3.setText(v.getCombustible());
                 b5.setText(v.getAño());
                 b6.setText(v.getInfo());
+                b9.setText(f);
+                b10.setText(String.valueOf(p));
                 if(v.isReservado()){
                     b7.setText(v.getMatricula());
                     b8.setText(v.getTelefono());
@@ -106,9 +116,11 @@ public class DetallesReserva extends AppCompatActivity {
             case BICICLETA:
                 imagen.setBackgroundColor(getColor(R.color.C3));
                 c.getBackground().setTint(getColor(R.color.C3));
-                b1.setText(v.getMarca() + v.getModelo());
+                b1.setText(v.getMarca() + " " + v.getModelo());
                 b5.setText(v.getAño());
                 b6.setText(v.getAño());
+                b9.setText(f);
+                b10.setText(String.valueOf(p));
                 if(v.isReservado()){
                     b8.setText(v.getTelefono());
                 } else {

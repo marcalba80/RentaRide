@@ -5,16 +5,18 @@ import com.github.sundeepk.compactcalendarview.domain.Event;
 
 public class Reserva extends Event {
     Vehiculo v;
-    String fecha, precio;
+    double precio;
 
-    public Reserva(int color, long timeInMillis, Vehiculo v) {
+    public Reserva(int color, long timeInMillis, Vehiculo v, double precio) {
         super(color, timeInMillis);
         this.v = v;
+        this.precio = precio;
     }
 
-    public Reserva(int color, long timeInMillis, Object data, Vehiculo v) {
+    public Reserva(int color, long timeInMillis, Object data, Vehiculo v, double precio) {
         super(color, timeInMillis, data);
         this.v = v;
+        this.precio = precio;
     }
 
     public Vehiculo getV() {
@@ -25,19 +27,11 @@ public class Reserva extends Event {
         this.v = v;
     }
 
-    public void setFecha(String fecha){
-        this.fecha = fecha;
+    public double getPrecio() {
+        return precio;
     }
 
-    public void setPrecio(String precio){
+    public void setPrecio(double precio) {
         this.precio = precio;
-    }
-
-    public String getFecha(){
-        return this.fecha;
-    }
-
-    public String getPrecio(){
-        return this.precio;
     }
 }

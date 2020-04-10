@@ -80,6 +80,8 @@ public class Calendar extends AppCompatActivity {
                 Intent i = new Intent(Calendar.this, DetallesReserva.class);
                 actual = list.indexOf(le.get(position));
                 i.putExtra("ve", le.get(position).getV());
+                i.putExtra("da", le.get(position).getTimeInMillis());
+                i.putExtra("pr", le.get(position).getPrecio());
                 startActivityForResult(i, 2);
             }
         });
@@ -91,12 +93,12 @@ public class Calendar extends AppCompatActivity {
 
     private void recuperar() {
         long day = 86400000;
-        list.add(new Reserva(getColor(R.color.C1), new Date().getTime(),cocheprueba));
-        list.add(new Reserva(getColor(R.color.C2), new Date().getTime(), motoprueba));
-        list.add(new Reserva(getColor(R.color.C3), new Date().getTime(),biciprueba));
-        list.add(new Reserva(getColor(R.color.C1), new Date().getTime()+day,cocheprueba));
-        list.add(new Reserva(getColor(R.color.C2), new Date().getTime()+day*2,motoprueba));
-        list.add(new Reserva(getColor(R.color.C3), new Date().getTime()+day*3,biciprueba));
+        list.add(new Reserva(getColor(R.color.C1), new Date().getTime(),cocheprueba, 90.5));
+        list.add(new Reserva(getColor(R.color.C2), new Date().getTime(), motoprueba, 20));
+        list.add(new Reserva(getColor(R.color.C3), new Date().getTime(),biciprueba, 10.99));
+        list.add(new Reserva(getColor(R.color.C1), new Date().getTime()+day,cocheprueba, 102.5));
+        list.add(new Reserva(getColor(R.color.C2), new Date().getTime()+day*2,motoprueba, 19.95));
+        list.add(new Reserva(getColor(R.color.C3), new Date().getTime()+day*3,biciprueba, 9.5));
         cv.addEvents(list);
     }
 
