@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.example.rentaride.R;
 import com.example.rentaride.Logica.Vehiculo;
+import com.github.nikartm.button.FitButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +31,7 @@ public class DetallesReserva extends AppCompatActivity {
     Vehiculo v;
     String f;
     double p;
+    FitButton fit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +40,10 @@ public class DetallesReserva extends AppCompatActivity {
         v = (Vehiculo) getIntent().getSerializableExtra("ve");
         p = getIntent().getDoubleExtra("pr", 0);
         long d = getIntent().getLongExtra("da",0);
+        fit = findViewById(R.id.eliminar);
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         f = s.format(new Date(d));
-        v.setReservado(true);
+        //v.setReservado(true);
         addInfo(v);
     }
 
@@ -90,6 +93,8 @@ public class DetallesReserva extends AppCompatActivity {
                 } else {
                     t4.setVisibility(View.GONE);
                     t5.setVisibility(View.GONE);
+                    fit.setText("Reservar");
+                    fit.setButtonColor(getColor(R.color.pb_blue));
                 }
                 break;
 
@@ -109,6 +114,8 @@ public class DetallesReserva extends AppCompatActivity {
                 } else {
                     t4.setVisibility(View.GONE);
                     t5.setVisibility(View.GONE);
+                    fit.setText("Reservar");
+                    fit.setButtonColor(getColor(R.color.pb_blue));
                 }
                 t3.setVisibility(View.GONE);
                 break;
@@ -125,6 +132,8 @@ public class DetallesReserva extends AppCompatActivity {
                     b8.setText(v.getTelefono());
                 } else {
                     t5.setVisibility(View.GONE);
+                    fit.setText("Reservar");
+                    fit.setButtonColor(getColor(R.color.pb_blue));
                 }
                 t1.setVisibility(View.GONE);
                 t2.setVisibility(View.GONE);
