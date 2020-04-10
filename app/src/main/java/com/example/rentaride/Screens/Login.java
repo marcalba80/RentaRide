@@ -21,7 +21,6 @@ public class Login extends AppCompatActivity {
     String email, password;
     SharedPreferences pref;
 
-    SharedPreferences mPreference;
     SharedPreferences.Editor mEditor;
 
     @Override
@@ -49,7 +48,7 @@ public class Login extends AppCompatActivity {
             botonlogin.showProgress();
             botonlogin.setIndeterminateProgressMode(true);
             botonlogin.showComplete();
-            SharedPreferences.Editor mEditor = mPreference.edit();
+            SharedPreferences.Editor mEditor = pref.edit();
             mEditor.putBoolean(getString(R.string.mantenersesion), true);
             mEditor.apply();
             Toast.makeText(getApplicationContext(), R.string.correctologin, Toast.LENGTH_LONG).show();
