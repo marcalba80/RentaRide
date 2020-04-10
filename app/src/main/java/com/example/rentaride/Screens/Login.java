@@ -19,6 +19,7 @@ public class Login extends AppCompatActivity {
     EditText textoemail, textocontraseña;
     CircularProgressButton botonlogin;
     String email, password;
+    SharedPreferences pref;
 
     SharedPreferences mPreference;
     SharedPreferences.Editor mEditor;
@@ -30,27 +31,17 @@ public class Login extends AppCompatActivity {
         botonlogin = findViewById(R.id.login);
         textocontraseña = findViewById(R.id.input_password);
         textoemail = findViewById(R.id.input_email);
-
-        //mPreference = getSharedPreferences(getString(R.string.configuration), Context.MODE_PRIVATE);
-        mPreference = PreferenceManager.getDefaultSharedPreferences(this);
-
-        checkSharedPreferences();
-
-        botonlogin.setOnClickListener(new View.OnClickListener() {
+        pref = PreferenceManager.getDefaultSharedPreferences(Login.this);
+        if(pref.getBoolean(getString(R.string.mantenersesion),false)){
+            startActivity(new Intent(Login.this, Main.class));
+            finish();
+        }else
+            botonlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
             }
         });
-
-    }
-
-    private void checkSharedPreferences() {
-        String email = mPreference.getString(getString(R.string.preferenceEmail), "");
-        String pass = mPreference.getString(getString(R.string.preferencePass), "");
-
-        textoemail.setText(email);
-        textocontraseña.setText(pass);
     }
 
     public void login() {
@@ -58,41 +49,33 @@ public class Login extends AppCompatActivity {
             botonlogin.showProgress();
             botonlogin.setIndeterminateProgressMode(true);
             botonlogin.showComplete();
+            SharedPreferences.Editor mEditor = mPreference.edit();
+            mEditor.putBoolean(getString(R.string.mantenersesion), true);
+            mEditor.apply();
             Toast.makeText(getApplicationContext(), R.string.correctologin, Toast.LENGTH_LONG).show();
-            startActivity(new Intent(Login.this, Calendar.class));
+            startActivity(new Intent(Login.this, Main.class));
             finish();
         }else
             Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();
-
-        //startActivity(new Intent(Login.this, Calendar.class));
-        mEditor = mPreference.edit();
-        mEditor.putString(getString(R.string.preferenceEmail), textoemail.getText().toString());
-        mEditor.apply();
-        mEditor.putString(getString(R.string.preferencePass), textocontraseña.getText().toString());
-        mEditor.apply();
-        mEditor.putString(getString(R.string.preferenceUsername), "marc");
-        mEditor.apply();
-
-        startActivity(new Intent(Login.this, Main.class));
-        finish();
     }
 
     public boolean validate() {
-        boolean valid = true;
-
         email = textoemail.getText().toString();
         password = textocontraseña.getText().toString();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             textoemail.setError(getString(R.string.email));
-            valid = false;
+            return false;
         }
 
         if (password.isEmpty() || password.length() < 6 ) {
             textocontraseña.setError(getString(R.string.errorcontraseña));
-            valid = false;
+            return false;
         }
-        return valid;
+
+        if(email.equals(pref.getString(getString(R.string.preferenceEmail), "")) &&  password.equals(pref.getString(getString(R.string.preferencePass), "")))
+        return true;
+        return false;
     }
 
     public void olvidado(View view) {

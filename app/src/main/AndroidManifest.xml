@@ -12,9 +12,6 @@
             android:name=".Screens.Main"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".Screens.Configuracio"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
             android:name=".Screens.DetallesReserva"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -24,9 +21,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Screens.RegistrarUsuario"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Screens.Calendar"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Screens.Login"

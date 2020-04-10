@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rentaride.Logica.AdapterEvento;
 import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.R;
-import com.example.rentaride.Screens.Calendar;
 import com.example.rentaride.Screens.DetallesReserva;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;

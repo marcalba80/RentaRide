@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Screens.Configuracio">
-
-    <include layout="@layout/toolbar" />
-
+    android:layout_marginBottom="20dp"
+    android:gravity="center"
+    android:orientation="vertical">
     <FrameLayout
         android:id="@+id/pref_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_weight="3"/>
     <com.github.nikartm.button.FitButton
         android:id="@+id/contraseña"
         android:padding="15dp"
@@ -25,6 +24,7 @@
         app:fb_divColor="@color/button"
         android:paddingEnd="30dp"
         android:paddingStart="30dp"
+        android:onClick="recuperar"
         android:layout_marginBottom="10dp"
         app:fb_shape="rectangle"
         app:fb_text="Cambiar Contraseña"
@@ -36,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:enabled="true"
+        android:onClick="cerrar"
         android:gravity="center"
         app:fb_backgroundColor="@color/red"
         app:fb_cornerRadius="50dp"
