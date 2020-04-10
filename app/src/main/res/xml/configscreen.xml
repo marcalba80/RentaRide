@@ -15,5 +15,15 @@
             android:selectable="true"
             android:summary="Alias del usuario"
             android:title="@string/literalUsername"/>
+        <EditTextPreference
+            android:key="@string/preftelefono"
+            android:selectable="true"
+            android:summary="Numero de contacto"
+            android:title="@string/literalTelefono"/>
+        <SwitchPreference
+            android:key="@string/mantenersesion"
+            android:title="Mantener sesión iniciada"
+            android:summary="La sesión permanecera iniciada"
+            android:defaultValue="true"/>
     </PreferenceCategory>
 </PreferenceScreen>

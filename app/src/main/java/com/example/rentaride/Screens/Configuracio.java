@@ -30,7 +30,7 @@ public class Configuracio extends AppCompatActivity {
         SharedPreferences mPreference;
         SharedPreferences.Editor mEditor;
 
-        EditTextPreference emailEditText, usernameEditText;
+        EditTextPreference emailEditText, usernameEditText, numberEditText;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,7 @@ public class Configuracio extends AppCompatActivity {
 
             emailEditText = (EditTextPreference) findPreference(getResources().getString(R.string.preferenceEmail));
             usernameEditText = (EditTextPreference) findPreference(getResources().getString(R.string.preferenceUsername));
+            numberEditText = (EditTextPreference) findPreference(getResources().getString(R.string.preftelefono));
 
             checkSharedPreferences();
             usernameEditText.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -56,15 +57,33 @@ public class Configuracio extends AppCompatActivity {
                     return true;
                 }
             });
+
+            numberEditText.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    final String val = (String) newValue;
+                    SharedPreferences.Editor mEdit = mPreference.edit();
+                    mEdit.putString(getString(R.string.preftelefono), val);
+                    mEdit.apply();
+                    numberEditText.setTitle(getResources().getString(R.string.literalTelefono) + " " + val);
+                    return true;
+                }
+            });
         }
 
         private void checkSharedPreferences() {
             String email = mPreference.getString(getString(R.string.preferenceEmail), "");
             String username = mPreference.getString(getString(R.string.preferenceUsername), "");
+            String number = mPreference.getString(getString(R.string.preftelefono), "");
+
 
             emailEditText.setTitle(getResources().getString(R.string.literalCorreo) + " " + email);
             usernameEditText.setTitle(getResources().getString(R.string.literalUsername) + " " + username);
+            numberEditText.setTitle(getResources().getString(R.string.literalTelefono) + " " + number);
             usernameEditText.setText(username);
+            numberEditText.setText(number);
+
         }
     }
 }
