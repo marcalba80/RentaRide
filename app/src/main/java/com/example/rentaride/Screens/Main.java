@@ -3,13 +3,18 @@ package com.example.rentaride.Screens;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.rentaride.Fragments.MisReservasFragment;
 import com.example.rentaride.Fragments.OfertaFragment;
 import com.example.rentaride.Fragments.ReservaFragment;
 import com.example.rentaride.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -18,7 +23,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 public class Main extends AppCompatActivity {
-    private Button reserva, oferta;
+    BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +34,30 @@ public class Main extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(this, R.xml.configscreen, false);
 
-        reserva = findViewById(R.id.reserva_frag);
-        oferta = findViewById(R.id.oferta_frag);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mires:
+                        abrirFragment(new MisReservasFragment());
+                        return true;
+                    case R.id.reservar:
+                        abrirFragment(new ReservaFragment());
+                        return true;
+                    case R.id.publicar:
+                        abrirFragment(new OfertaFragment());
+                        return true;
+                           /* case R.id.perfil:
+                                abrirFragment(new OfertaFragment());
+                                return true;*/
+                }
+                return false;
+            }
+        });
 
-        reserva(reserva);
+        bottomNavigation.setSelectedItemId(R.id.mires);
+
     }
 
     @Override
@@ -63,15 +88,10 @@ public class Main extends AppCompatActivity {
         }
     }
 
-    public void reserva(View view){
-        view.setSelected(true);
-        oferta.setSelected(false);
-        getFragmentManager().beginTransaction().replace(R.id.mainFrag, new ReservaFragment()).commit();
-    }
-
-    public void oferta(View view){
-        view.setSelected(true);
-        reserva.setSelected(false);
-        getFragmentManager().beginTransaction().replace(R.id.mainFrag, new OfertaFragment()).commit();
+    public void abrirFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
