@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void login() {
-      /*  if(validate()){
+        if(validate()){
             botonlogin.showProgress();
             botonlogin.setIndeterminateProgressMode(true);
             botonlogin.showComplete();
@@ -40,7 +40,7 @@ public class Login extends AppCompatActivity {
             startActivity(new Intent(Login.this, Calendar.class));
             finish();
         }else
-            Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();*/
+            Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();
 
         startActivity(new Intent(Login.this, Calendar.class));
         finish();
