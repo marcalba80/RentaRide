@@ -1,13 +1,11 @@
-package com.example.rentaride;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+package com.example.rentaride.Logica;
 
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
 
-class Reserva extends Event {
+public class Reserva extends Event {
     Vehiculo v;
+    String fecha, precio;
 
     public Reserva(int color, long timeInMillis, Vehiculo v) {
         super(color, timeInMillis);
@@ -25,5 +23,21 @@ class Reserva extends Event {
 
     public void setV(Vehiculo v) {
         this.v = v;
+    }
+
+    public void setFecha(String fecha){
+        this.fecha = fecha;
+    }
+
+    public void setPrecio(String precio){
+        this.precio = precio;
+    }
+
+    public String getFecha(){
+        return this.fecha;
+    }
+
+    public String getPrecio(){
+        return this.precio;
     }
 }

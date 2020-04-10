@@ -8,7 +8,7 @@
     android:paddingTop="20dp"
     android:orientation="horizontal"
     android:layout_height="match_parent"
-    tools:context=".DetallesReserva">
+    tools:context=".Screens.DetallesReserva">
    
    <androidx.cardview.widget.CardView 
        android:layout_width="match_parent" 

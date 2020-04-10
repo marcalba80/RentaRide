@@ -1,21 +1,22 @@
-package com.example.rentaride;
+package com.example.rentaride.Logica;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentaride.R;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-import static com.example.rentaride.Utils.VIEW_TYPE_MESSAGE_RECEIVED;
-import static com.example.rentaride.Utils.VIEW_TYPE_MESSAGE_SENT;
+import static com.example.rentaride.Utils.Utils.VIEW_TYPE_MESSAGE_RECEIVED;
+import static com.example.rentaride.Utils.Utils.VIEW_TYPE_MESSAGE_SENT;
 
 public class MessageAdapter extends RecyclerView.Adapter {
 

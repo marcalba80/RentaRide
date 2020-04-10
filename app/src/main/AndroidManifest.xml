@@ -9,21 +9,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".DetallesReserva"
+            android:name=".Screens.Main"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Screens.Configuracio"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Screens.DetallesReserva"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Chat"/>
+            android:name=".Screens.Chat"/>
         <activity
-            android:name=".RecuperarContrasena"
+            android:name=".Screens.RecuperarContrasena"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RegistrarUsuario"
+            android:name=".Screens.RegistrarUsuario"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Calendar"
+            android:name=".Screens.Calendar"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Login"
+            android:name=".Screens.Login"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

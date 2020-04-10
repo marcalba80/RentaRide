@@ -1,4 +1,4 @@
-package com.example.rentaride;
+package com.example.rentaride.Logica;
 
 public class User {
     String nickname;
