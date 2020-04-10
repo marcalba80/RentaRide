@@ -1,4 +1,4 @@
-package com.example.rentaride;
+package com.example.rentaride.Logica;
 
 import android.os.Parcelable;
 
@@ -6,14 +6,15 @@ import java.io.Serializable;
 
 public class Vehiculo implements Serializable {
     int type;
-    String modelo, año, info, telefono, matricula, potencia, combustible, imagen;
+    String marca, modelo, año, info, telefono, matricula, potencia, combustible, imagen;
     boolean adaptado, reservado;
 
     public Vehiculo() {
     }
 
-    public Vehiculo(int type, String modelo, String año, String info, String telefono, String matricula, String potencia, String combustible, String imagen, boolean adaptado) {
+    public Vehiculo(int type, String marca, String modelo, String año, String info, String telefono, String matricula, String potencia, String combustible, String imagen, boolean adaptado) {
         this.type = type;
+        this.marca = marca;
         this.modelo = modelo;
         this.año = año;
         this.info = info;
@@ -25,8 +26,9 @@ public class Vehiculo implements Serializable {
         this.adaptado = adaptado;
     }
 
-    public Vehiculo(int type, String modelo, String año, String info, String telefono, String matricula, String potencia, String combustible, String imagen) {
+    public Vehiculo(int type, String marca, String modelo, String año, String info, String telefono, String matricula, String potencia, String combustible, String imagen) {
         this.type = type;
+        this.marca = marca;
         this.modelo = modelo;
         this.año = año;
         this.info = info;
@@ -37,8 +39,9 @@ public class Vehiculo implements Serializable {
         this.imagen = imagen;
     }
 
-    public Vehiculo(int type, String modelo, String año, String info, String telefono, String imagen) {
+    public Vehiculo(int type, String marca, String modelo, String año, String info, String telefono, String imagen) {
         this.type = type;
+        this.marca = marca;
         this.modelo = modelo;
         this.año = año;
         this.info = info;
@@ -53,6 +56,14 @@ public class Vehiculo implements Serializable {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 
     public String getModelo() {

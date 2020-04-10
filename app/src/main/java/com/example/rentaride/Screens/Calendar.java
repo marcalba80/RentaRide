@@ -1,13 +1,10 @@
-package com.example.rentaride;
+package com.example.rentaride.Screens;
 
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentaride.Logica.AdapterEvento;
+import com.example.rentaride.R;
+import com.example.rentaride.Logica.Reserva;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
@@ -26,12 +26,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.example.rentaride.Utils.BICICLETA;
-import static com.example.rentaride.Utils.COCHE;
-import static com.example.rentaride.Utils.MOTOCICLETA;
-import static com.example.rentaride.Utils.biciprueba;
-import static com.example.rentaride.Utils.cocheprueba;
-import static com.example.rentaride.Utils.motoprueba;
+import static com.example.rentaride.Utils.Utils.biciprueba;
+import static com.example.rentaride.Utils.Utils.cocheprueba;
+import static com.example.rentaride.Utils.Utils.motoprueba;
 
 public class Calendar extends AppCompatActivity {
     List<Event> list = new ArrayList<>();
@@ -82,7 +79,9 @@ public class Calendar extends AppCompatActivity {
             public void onItemClick(int position, View v) {
                 Intent i = new Intent(Calendar.this, DetallesReserva.class);
                 actual = list.indexOf(le.get(position));
-                i.putExtra("ve", le.get(position).v);
+                i.putExtra("ve", le.get(position).getV());
+                i.putExtra("da", le.get(position).getTimeInMillis());
+                i.putExtra("pr", le.get(position).getPrecio());
                 startActivityForResult(i, 2);
             }
         });
@@ -94,12 +93,12 @@ public class Calendar extends AppCompatActivity {
 
     private void recuperar() {
         long day = 86400000;
-        list.add(new Reserva(getColor(R.color.C1), new Date().getTime(),cocheprueba));
-        list.add(new Reserva(getColor(R.color.C2), new Date().getTime(), motoprueba));
-        list.add(new Reserva(getColor(R.color.C3), new Date().getTime(),biciprueba));
-        list.add(new Reserva(getColor(R.color.C1), new Date().getTime()+day,cocheprueba));
-        list.add(new Reserva(getColor(R.color.C2), new Date().getTime()+day*2,motoprueba));
-        list.add(new Reserva(getColor(R.color.C3), new Date().getTime()+day*3,biciprueba));
+        list.add(new Reserva(getColor(R.color.C1), new Date().getTime(),cocheprueba, 90.5));
+        list.add(new Reserva(getColor(R.color.C2), new Date().getTime(), motoprueba, 20));
+        list.add(new Reserva(getColor(R.color.C3), new Date().getTime(),biciprueba, 10.99));
+        list.add(new Reserva(getColor(R.color.C1), new Date().getTime()+day,cocheprueba, 102.5));
+        list.add(new Reserva(getColor(R.color.C2), new Date().getTime()+day*2,motoprueba, 19.95));
+        list.add(new Reserva(getColor(R.color.C3), new Date().getTime()+day*3,biciprueba, 9.5));
         cv.addEvents(list);
     }
 

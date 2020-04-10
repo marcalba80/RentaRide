@@ -7,9 +7,8 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.rentaride.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:name="com.example.rentaride.Fragments.ReservaFragment"
+        tools:layout="@layout/fragment_reserva">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
@@ -17,9 +16,8 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.rentaride.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:name="com.example.rentaride.Fragments.OfertaFragment"
+        tools:layout="@layout/fragment_oferta">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"

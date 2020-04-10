@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">RentaRide</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Configuración</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="email">Introduzca un email válido.</string>
     <string name="errorcontraseña">Debe introducir más de seis carácteres.</string>
@@ -16,11 +14,33 @@
     <string name="correctologin">Se ha realizado el inicio de sesión correctamente!</string>
     <string name="correctoregistro">Se ha creado la cuenta correctamente!</string>
     <string name="mail">Email</string>
-    <string name="si">Si</string>
+    <string name="si">Sí</string>
     <string name="no">No</string>
     <string name="nombre">Nombre y Apellidos</string>
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="nomensaje">No hay ningun mensaje!</string>
     <string name="cargando_mensajes">Cargando mensajes...</string>
+    <string name="botonreserva">Reserva</string>
+    <string name="botonoferta">Oferta</string>
+    <string name="botoncalendar">Calendario</string>
+    <string name="literalCuenta">Cuenta</string>
+    <string name="exitButton">exitButton</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="preferenceEmail">prefEmail</string>
+    <string name="preferencePass">prefPass</string>
+    <string name="preferenceUsername">prefUser</string>
+    <string name="calendar">Calendario</string>
+    <string name="configuration">Config</string>
+    <string name="literalCorreo">Correo electrónico:</string>
+    <string name="literalUsername">Nombre del usuario:</string>
+    <string name="buscar">Buscar</string>
+    <string name="ofertar">Ofertar</string>
+    <string name="reservaMapa">Reservar desde Mapa</string>
+
+    <string name="tipoCombustible">Tipo combustible</string>
+    <string-array name="combustible_arrays">
+    <item>Gasolina</item>
+    <item>Gasoil</item>
+    <item>Hibrido</item>
+    <item>Electrico</item>
+    </string-array>
 </resources>

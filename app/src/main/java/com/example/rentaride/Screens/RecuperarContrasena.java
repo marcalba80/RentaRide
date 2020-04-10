@@ -1,4 +1,4 @@
-package com.example.rentaride;
+package com.example.rentaride.Screens;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.rentaride.R;
 
 
 public class RecuperarContrasena extends AppCompatActivity {

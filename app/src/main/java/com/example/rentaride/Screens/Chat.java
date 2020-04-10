@@ -1,4 +1,4 @@
-package com.example.rentaride;
+package com.example.rentaride.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,12 +8,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.rentaride.Logica.Message;
+import com.example.rentaride.Logica.MessageAdapter;
+import com.example.rentaride.R;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.rentaride.Utils.VIEW_TYPE_MESSAGE_RECEIVED;
-import static com.example.rentaride.Utils.VIEW_TYPE_MESSAGE_SENT;
+import static com.example.rentaride.Utils.Utils.VIEW_TYPE_MESSAGE_RECEIVED;
+import static com.example.rentaride.Utils.Utils.VIEW_TYPE_MESSAGE_SENT;
 
 public class Chat extends AppCompatActivity {
 

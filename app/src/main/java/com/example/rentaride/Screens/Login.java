@@ -1,11 +1,16 @@
-package com.example.rentaride;
+package com.example.rentaride.Screens;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.rentaride.R;
 import com.nihaskalam.progressbuttonlibrary.CircularProgressButton;
 
 
@@ -14,6 +19,9 @@ public class Login extends AppCompatActivity {
     CircularProgressButton botonlogin;
     String email, password;
 
+    SharedPreferences mPreference;
+    SharedPreferences.Editor mEditor;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,14 +29,27 @@ public class Login extends AppCompatActivity {
         botonlogin = findViewById(R.id.login);
         textocontraseña = findViewById(R.id.input_password);
         textoemail = findViewById(R.id.input_email);
-        botonlogin.setOnClickListener(new View.OnClickListener() {
 
+        //mPreference = getSharedPreferences(getString(R.string.configuration), Context.MODE_PRIVATE);
+        mPreference = PreferenceManager.getDefaultSharedPreferences(this);
+
+        checkSharedPreferences();
+
+        botonlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
             }
         });
 
+    }
+
+    private void checkSharedPreferences() {
+        String email = mPreference.getString(getString(R.string.preferenceEmail), "");
+        String pass = mPreference.getString(getString(R.string.preferencePass), "");
+
+        textoemail.setText(email);
+        textocontraseña.setText(pass);
     }
 
     public void login() {
@@ -42,7 +63,16 @@ public class Login extends AppCompatActivity {
         }else
             Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();
 
-        startActivity(new Intent(Login.this, Calendar.class));
+        //startActivity(new Intent(Login.this, Calendar.class));
+        mEditor = mPreference.edit();
+        mEditor.putString(getString(R.string.preferenceEmail), textoemail.getText().toString());
+        mEditor.apply();
+        mEditor.putString(getString(R.string.preferencePass), textocontraseña.getText().toString());
+        mEditor.apply();
+        mEditor.putString(getString(R.string.preferenceUsername), "marc");
+        mEditor.apply();
+
+        startActivity(new Intent(Login.this, Main.class));
         finish();
     }
 

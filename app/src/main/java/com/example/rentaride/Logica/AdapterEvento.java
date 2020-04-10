@@ -1,6 +1,5 @@
-package com.example.rentaride;
+package com.example.rentaride.Logica;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,10 @@ import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentaride.R;
+
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder> {
     private List<Reserva> mDataset;
@@ -46,8 +45,8 @@ public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Reserva evento =  mDataset.get(position);
-        holder.desc.setText(evento.v.modelo);
+        Reserva evento = mDataset.get(position);
+        holder.desc.setText(evento.v.marca + " " + evento.v.modelo);
         if(evento.v.type == 0){
             holder.tipo.setText("Coche");
             holder.cv.getBackground().setTint(evento.getColor());
