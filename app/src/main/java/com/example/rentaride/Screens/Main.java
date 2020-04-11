@@ -56,9 +56,8 @@ public class Main extends AppCompatActivity {
                 return false;
             }
         });
-
-        bottomNavigation.setSelectedItemId(R.id.mires);
-
+        if(savedInstanceState != null) bottomNavigation.setSelectedItemId(savedInstanceState.getInt("fragment", 0));
+        else bottomNavigation.setSelectedItemId(R.id.mires);
     }
 
     @Override
@@ -92,4 +91,11 @@ public class Main extends AppCompatActivity {
         Toast.makeText(this, "Se ha enviado un correo para cambiar la contraseña!\n Siga las instrucciones indicadas", Toast.LENGTH_LONG).show();
         finish();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("fragment", bottomNavigation.getSelectedItemId());
+        super.onSaveInstanceState(outState);
+    }
+
 }
