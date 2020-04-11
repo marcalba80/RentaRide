@@ -147,36 +147,36 @@ public class OfertaFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(marca.getText().toString().equals("")){
-                    marca.setError("Introduzca una marca");
+                    marca.setError(getString(R.string.marca));
                     return;
                 }
                 if(modelo.getText().toString().equals("")){
-                    modelo.setError("Introduzca un modelo");
+                    modelo.setError(getString(R.string.modelo));
                     return;
                 }
                 if(fecha.getText().toString().equals("")){
-                    fecha.setError("Introduzca una fecha");
+                    fecha.setError(getString(R.string.fecha));
                     return;
                 }
                 if(precio.getText().toString().equals("")){
-                    precio.setError("Introduzca un precio");
+                    precio.setError(getString(R.string.precio));
                     return;
                 }
                 if(t.getSelectedItemPosition() != 2){
                     if(potencia.getText().toString().equals("")){
-                        potencia.setError("Introduzca una potencia");
+                        potencia.setError(getString(R.string.potencia));
                         return;
                     }
                     if(año.getText().toString().equals("")){
-                        año.setError("Introduzca un año");
+                        año.setError(getString(R.string.año));
                         return;
                     }
                     if(matricula.getText().toString().equals("")){
-                        matricula.setError("Introduzca una matricula");
+                        matricula.setError(getString(R.string.matricula));
                         return;
                     }
                 }
-                Vehiculo v = new Vehiculo(t.getSelectedItemPosition(), marca.getText().toString(),modelo.getText().toString(),año.getText().toString(), info.getText().toString(), "636666663", matricula.getText().toString(),potencia.getText().toString()+" cv", com.getSelectedItem().toString(), "",c.isChecked());
+                Vehiculo v = new Vehiculo(t.getSelectedItemPosition(), marca.getText().toString(),modelo.getText().toString(),año.getText().toString(), info.getText().toString(), "636666663", matricula.getText().toString(),potencia.getText().toString()+getString(R.string.cv), com.getSelectedItem().toString(), "",c.isChecked());
                 Reserva r = new Reserva(color, f,  v, Double.parseDouble(precio.getText().toString()));
                 list.add(r);
                 adapterEventoReservar = new AdapterEventoReservar(list);
@@ -192,10 +192,10 @@ public class OfertaFragment extends Fragment {
             public void onItemClick(int position, View v) {
                 Intent i = new Intent(getContext(), DetallesReserva.class);
                 actual = list.indexOf(list.get(position));
-                i.putExtra("ve", list.get(position).getV());
-                i.putExtra("da", list.get(position).getTimeInMillis());
-                i.putExtra("pr", list.get(position).getPrecio());
-                i.putExtra("ac", 0);
+                i.putExtra(getString(R.string.ve), list.get(position).getV());
+                i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
+                i.putExtra(getString(R.string.pr), list.get(position).getPrecio());
+                i.putExtra(getString(R.string.ac), 0);
                 startActivityForResult(i, 2);
             }
         });
@@ -216,13 +216,13 @@ public class OfertaFragment extends Fragment {
             if (requestCode == 2) {
                 list.remove(actual);
                 adapterEventoReservar.clear();
-                Toast.makeText(getContext(), "Se ha eliminado la oferta correctamente!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.eliminar_oferta, Toast.LENGTH_SHORT).show();
                 adapterEventoReservar = new AdapterEventoReservar(list);
                 lv.setHasFixedSize(true);
                 lv.setLayoutManager(new LinearLayoutManager(getContext()));
                 lv.setAdapter(adapterEventoReservar);
             }else{
-                Toast.makeText(getContext(), "Se ha guardado la imagen correctamente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.guardar_correctamente, Toast.LENGTH_SHORT).show();
             }
         }
     }

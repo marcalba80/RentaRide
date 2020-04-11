@@ -23,7 +23,7 @@ public class RecuperarContrasena extends AppCompatActivity {
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             e.setError(getString(R.string.email));
         } else {
-            Toast.makeText(getApplicationContext(), "Se ha enviado el correo de recuperación! Revise su buzón.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.correo_recuperacion, Toast.LENGTH_LONG).show();
             startActivity(new Intent(RecuperarContrasena.this, Login.class));
         }
     }

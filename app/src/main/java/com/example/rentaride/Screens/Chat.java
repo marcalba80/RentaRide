@@ -30,9 +30,9 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        getSupportActionBar().setTitle("Chat con Lucy");
-        list.add(new Message("Buenas!", "Lucy", new Date().getTime(), VIEW_TYPE_MESSAGE_RECEIVED));
-        list.add(new Message("¿Está el vehiculo disponible?", "Lucy", new Date().getTime(), VIEW_TYPE_MESSAGE_RECEIVED));
+        getSupportActionBar().setTitle(R.string.chat_lucy);
+        list.add(new Message(getString(R.string.buenas), getString(R.string.Lucy), new Date().getTime(), VIEW_TYPE_MESSAGE_RECEIVED));
+        list.add(new Message(getString(R.string.estadisponible), getString(R.string.Lucy), new Date().getTime(), VIEW_TYPE_MESSAGE_RECEIVED));
         mMessageRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
         mMessageAdapter = new MessageAdapter(getApplicationContext(), list);
         mMessageRecycler.setHasFixedSize(true);
@@ -44,11 +44,11 @@ public class Chat extends AppCompatActivity {
         EditText e = findViewById(R.id.edittext_chatbox);
         String s = e.getText().toString();
         if(!s.isEmpty()){
-            list.add(new Message(s, "John", new Date().getTime(), VIEW_TYPE_MESSAGE_SENT));
+            list.add(new Message(s, getString(R.string.jhon), new Date().getTime(), VIEW_TYPE_MESSAGE_SENT));
             mMessageAdapter.notifyDataSetChanged();
             e.setText("");
         }else{
-            e.setError("Debe introducir un mensaje!");
+            e.setError(getString(R.string.introduzca_mensaje));
         }
     }
 }
