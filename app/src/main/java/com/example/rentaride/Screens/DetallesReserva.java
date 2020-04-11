@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -83,7 +82,7 @@ public class DetallesReserva extends AppCompatActivity {
                 b3.setText(v.getCombustible());
                 if(v.isAdaptado())b4.setText("Si");
                 else b4.setText("No");
-                b5.setText(v.getAño());
+                b5.setText(v.getAnyo());
                 b6.setText(v.getInfo());
                 b9.setText(f);
                 b10.setText(String.valueOf(p));
@@ -104,7 +103,7 @@ public class DetallesReserva extends AppCompatActivity {
                 b1.setText(v.getMarca() + " " + v.getModelo());
                 b2.setText(v.getPotencia());
                 b3.setText(v.getCombustible());
-                b5.setText(v.getAño());
+                b5.setText(v.getAnyo());
                 b6.setText(v.getInfo());
                 b9.setText(f);
                 b10.setText(String.valueOf(p));
@@ -124,8 +123,8 @@ public class DetallesReserva extends AppCompatActivity {
                 imagen.setBackgroundColor(getColor(R.color.C3));
                 c.getBackground().setTint(getColor(R.color.C3));
                 b1.setText(v.getMarca() + " " + v.getModelo());
-                b5.setText(v.getAño());
-                b6.setText(v.getAño());
+                b5.setText(v.getAnyo());
+                b6.setText(v.getAnyo());
                 b9.setText(f);
                 b10.setText(String.valueOf(p));
                 if(v.isReservado()){

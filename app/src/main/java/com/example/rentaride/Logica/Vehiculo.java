@@ -1,51 +1,88 @@
 package com.example.rentaride.Logica;
 
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 public class Vehiculo implements Serializable {
     int type;
-    String marca, modelo, año, info, telefono, matricula, potencia, combustible, imagen;
-    boolean adaptado, reservado;
+    private String marca, modelo, anyo, info, telefono, matricula, potencia, combustible, fecha, imagen;
+    private boolean adaptado, reservado;
+    private double precio;
+
 
     public Vehiculo() {
     }
 
-    public Vehiculo(int type, String marca, String modelo, String año, String info, String telefono, String matricula, String potencia, String combustible, String imagen, boolean adaptado) {
+    public Vehiculo(int type,
+                    String marca,
+                    String modelo,
+                    String anyo,
+                    String info,
+                    String telefono,
+                    String matricula,
+                    String potencia,
+                    String combustible,
+                    String fecha,
+                    double precio,
+                    String imagen,
+                    boolean adaptado) {
         this.type = type;
         this.marca = marca;
         this.modelo = modelo;
-        this.año = año;
+        this.anyo = anyo;
         this.info = info;
         this.telefono = telefono;
         this.matricula = matricula;
         this.potencia = potencia;
         this.combustible = combustible;
+        this.fecha = fecha;
+        this.precio = precio;
         this.imagen = imagen;
         this.adaptado = adaptado;
     }
 
-    public Vehiculo(int type, String marca, String modelo, String año, String info, String telefono, String matricula, String potencia, String combustible, String imagen) {
+    public Vehiculo(int type,
+                    String marca,
+                    String modelo,
+                    String anyo,
+                    String info,
+                    String telefono,
+                    String matricula,
+                    String potencia,
+                    String combustible,
+                    String fecha,
+                    double precio,
+                    String imagen) {
         this.type = type;
         this.marca = marca;
         this.modelo = modelo;
-        this.año = año;
+        this.anyo = anyo;
         this.info = info;
         this.telefono = telefono;
         this.matricula = matricula;
         this.potencia = potencia;
         this.combustible = combustible;
+        this.fecha = fecha;
+        this.precio = precio;
         this.imagen = imagen;
     }
 
-    public Vehiculo(int type, String marca, String modelo, String año, String info, String telefono, String imagen) {
+    public Vehiculo(int type,
+                    String marca,
+                    String modelo,
+                    String anyo,
+                    String info,
+                    String telefono,
+                    String fecha,
+                    double precio,
+                    String imagen) {
         this.type = type;
         this.marca = marca;
         this.modelo = modelo;
-        this.año = año;
+        this.anyo = anyo;
         this.info = info;
         this.telefono = telefono;
+        this.fecha = fecha;
+        this.precio = precio;
         this.imagen = imagen;
     }
 
@@ -74,12 +111,12 @@ public class Vehiculo implements Serializable {
         this.modelo = modelo;
     }
 
-    public String getAño() {
-        return año;
+    public String getAnyo() {
+        return anyo;
     }
 
-    public void setAño(String año) {
-        this.año = año;
+    public void setAnyo(String anyo) {
+        this.anyo = anyo;
     }
 
     public String getInfo() {
@@ -120,6 +157,22 @@ public class Vehiculo implements Serializable {
 
     public void setCombustible(String combustible) {
         this.combustible = combustible;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setFecha(double precio) {
+        this.precio = precio;
     }
 
     public boolean isAdaptado() {

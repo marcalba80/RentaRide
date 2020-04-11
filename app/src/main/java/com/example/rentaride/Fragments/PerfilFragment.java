@@ -1,40 +1,22 @@
 package com.example.rentaride.Fragments;
 
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragment;
+import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreference;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.preference.PreferenceManager;
 
-import com.example.rentaride.Logica.AdapterEvento;
-import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.R;
-import com.example.rentaride.Screens.DetallesReserva;
-import com.github.sundeepk.compactcalendarview.CompactCalendarView;
-import com.github.sundeepk.compactcalendarview.domain.Event;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import static com.example.rentaride.Utils.Utils.biciprueba;
-import static com.example.rentaride.Utils.Utils.cocheprueba;
-import static com.example.rentaride.Utils.Utils.motoprueba;
 
 public class PerfilFragment extends Fragment {
 
@@ -56,7 +38,7 @@ public class PerfilFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_config, container, false);
-        getFragmentManager().beginTransaction().replace(R.id.pref_content,new PrefsFragment()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.pref_content, new PrefsFragment()).commit();
 
         return v;
     }
@@ -64,7 +46,7 @@ public class PerfilFragment extends Fragment {
 
         SharedPreferences mPreference;
 
-        androidx.preference.EditTextPreference emailEditText, usernameEditText, numberEditText;
+        EditTextPreference emailEditText, usernameEditText, numberEditText;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -75,14 +57,14 @@ public class PerfilFragment extends Fragment {
 
             mPreference = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
-            emailEditText = (androidx.preference.EditTextPreference) findPreference(getResources().getString(R.string.preferenceEmail));
-            usernameEditText = (androidx.preference.EditTextPreference) findPreference(getResources().getString(R.string.preferenceUsername));
-            numberEditText = (androidx.preference.EditTextPreference) findPreference(getResources().getString(R.string.preftelefono));
+            emailEditText = (EditTextPreference) findPreference(getResources().getString(R.string.preferenceEmail));
+            usernameEditText = (EditTextPreference) findPreference(getResources().getString(R.string.preferenceUsername));
+            numberEditText = (EditTextPreference) findPreference(getResources().getString(R.string.preftelefono));
 
             checkSharedPreferences();
-            usernameEditText.setOnPreferenceChangeListener(new androidx.preference.Preference.OnPreferenceChangeListener() {
+            usernameEditText.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceChange(androidx.preference.Preference preference, Object newValue) {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
                     final String val = (String) newValue;
                     SharedPreferences.Editor mEdit = mPreference.edit();
                     mEdit.putString(getString(R.string.preferenceUsername), val);
@@ -92,9 +74,9 @@ public class PerfilFragment extends Fragment {
                 }
             });
 
-            numberEditText.setOnPreferenceChangeListener(new androidx.preference.Preference.OnPreferenceChangeListener() {
+            numberEditText.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceChange(androidx.preference.Preference preference, Object newValue) {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
                     final String val = (String) newValue;
                     SharedPreferences.Editor mEdit = mPreference.edit();
                     mEdit.putString(getString(R.string.preftelefono), val);

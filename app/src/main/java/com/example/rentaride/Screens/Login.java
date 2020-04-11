@@ -30,7 +30,8 @@ public class Login extends AppCompatActivity {
         botonlogin = findViewById(R.id.login);
         textocontraseña = findViewById(R.id.input_password);
         textoemail = findViewById(R.id.input_email);
-        pref = PreferenceManager.getDefaultSharedPreferences(Login.this);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        checkSharedPreferences();
         if(pref.getBoolean(getString(R.string.mantenersesion),false)){
             startActivity(new Intent(Login.this, Main.class));
             finish();
@@ -50,6 +51,10 @@ public class Login extends AppCompatActivity {
             botonlogin.showComplete();
             SharedPreferences.Editor mEditor = pref.edit();
             mEditor.putBoolean(getString(R.string.mantenersesion), true);
+            mEditor.apply();
+            mEditor.putString(getString(R.string.preferenceEmail), email);
+            mEditor.apply();
+            mEditor.putString(getString(R.string.preferencePass), password);
             mEditor.apply();
             Toast.makeText(getApplicationContext(), R.string.correctologin, Toast.LENGTH_LONG).show();
             startActivity(new Intent(Login.this, Main.class));
@@ -75,6 +80,14 @@ public class Login extends AppCompatActivity {
         if(email.equals(pref.getString(getString(R.string.preferenceEmail), "")) &&  password.equals(pref.getString(getString(R.string.preferencePass), "")))
         return true;
         return false;
+    }
+
+    private void checkSharedPreferences() {
+        String email = pref.getString(getString(R.string.preferenceEmail), "");
+        String pass = pref.getString(getString(R.string.preferencePass), "");
+
+        textoemail.setText(email);
+        textocontraseña.setText(pass);
     }
 
     public void olvidado(View view) {

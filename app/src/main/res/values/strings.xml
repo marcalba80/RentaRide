@@ -35,9 +35,12 @@
     <string name="buscar">Buscar</string>
     <string name="ofertar">Ofertar</string>
     <string name="reservaMapa">Reservar desde Mapa</string>
+    <string name="eliminarReserva">Eliminar Reserva</string>
+    <string name="reservar">Reservar</string>
     <string name="preftelefono">teléfono</string>
     <string name="literalTelefono">Número de teléfono:</string>
     <string name="mantenersesion">sesión</string>
+
     <string name="tipoCombustible">Tipo combustible</string>
     <string-array name="combustible_arrays">
     <item>Gasolina</item>
