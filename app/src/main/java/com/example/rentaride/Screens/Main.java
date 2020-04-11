@@ -56,7 +56,7 @@ public class Main extends AppCompatActivity {
                 return false;
             }
         });
-        if(savedInstanceState != null) bottomNavigation.setSelectedItemId(savedInstanceState.getInt("fragment", 0));
+        if(savedInstanceState != null) bottomNavigation.setSelectedItemId(savedInstanceState.getInt(getString(R.string.fragment), 0));
         else bottomNavigation.setSelectedItemId(R.id.mires);
     }
 
@@ -78,7 +78,7 @@ public class Main extends AppCompatActivity {
         SharedPreferences.Editor mEditor = mPreference.edit();
         mEditor.putBoolean(getString(R.string.mantenersesion), false);
         mEditor.apply();
-        Toast.makeText(this, "Se ha cerrado la sesión!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.cerrar_sesion, Toast.LENGTH_SHORT).show();
         startActivity(new Intent(Main.this, Login.class));
         finish();
     }
@@ -88,13 +88,13 @@ public class Main extends AppCompatActivity {
         mEditor.putBoolean(getString(R.string.mantenersesion), false);
         mEditor.apply();
         startActivity(new Intent(Main.this, Login.class));
-        Toast.makeText(this, "Se ha enviado un correo para cambiar la contraseña!\n Siga las instrucciones indicadas", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.contraseña_enviada, Toast.LENGTH_LONG).show();
         finish();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("fragment", bottomNavigation.getSelectedItemId());
+        outState.putInt(getString(R.string.fragment), bottomNavigation.getSelectedItemId());
         super.onSaveInstanceState(outState);
     }
 

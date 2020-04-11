@@ -97,10 +97,10 @@ public class MisReservasFragment extends Fragment {
             public void onItemClick(int position, View v) {
                 Intent i = new Intent(getContext(), DetallesReserva.class);
                 actual = list.indexOf(le.get(position));
-                i.putExtra("ve", le.get(position).getV());
-                i.putExtra("da", le.get(position).getTimeInMillis());
-                i.putExtra("pr", le.get(position).getPrecio());
-                i.putExtra("ac", 1);
+                i.putExtra(getString(R.string.ve), le.get(position).getV());
+                i.putExtra(getString(R.string.da), le.get(position).getTimeInMillis());
+                i.putExtra(getString(R.string.pr), le.get(position).getPrecio());
+                i.putExtra(getString(R.string.ac), 1);
                 startActivityForResult(i, 2);
             }
         });
@@ -129,7 +129,7 @@ public class MisReservasFragment extends Fragment {
                 list.remove(actual);
                 cv.removeAllEvents();
                 cv.addEvents(list);
-                Toast.makeText(getContext(), "Se ha eliminado la reserva correctamente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.reserva_eliminada, Toast.LENGTH_SHORT).show();
                 mostrar(last);
             }
         }

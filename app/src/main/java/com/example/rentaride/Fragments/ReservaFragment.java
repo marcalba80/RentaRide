@@ -16,7 +16,7 @@ import com.example.rentaride.R;
 public class ReservaFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     View rootView;
     Spinner spin;
-    String[] typeFuel = {"Gasolina", "Dieses", "Hibrido", "Electrico"};
+    String[] typeFuel = {getString(R.string.gasolina), getString(R.string.diesel), getString(R.string.hibrido), getString(R.string.electrico)};
 
 
     public ReservaFragment(){

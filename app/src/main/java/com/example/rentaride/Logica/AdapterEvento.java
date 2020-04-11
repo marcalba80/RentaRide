@@ -48,15 +48,15 @@ public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder
         Reserva evento = mDataset.get(position);
         holder.desc.setText(evento.v.marca + " " + evento.v.modelo);
         if(evento.v.type == 0){
-            holder.tipo.setText("Coche");
+            holder.tipo.setText(R.string.coche);
             holder.cv.getBackground().setTint(evento.getColor());
         }else if(evento.v.type == 1){
 
-            holder.tipo.setText("Moto");
+            holder.tipo.setText(R.string.moto);
             holder.cv.getBackground().setTint(evento.getColor());
 
         }else{
-            holder.tipo.setText("Bicicleta");
+            holder.tipo.setText(R.string.bici);
             holder.cv.getBackground().setTint(evento.getColor());
         }
         SimpleDateFormat s = new SimpleDateFormat("HH:MM");

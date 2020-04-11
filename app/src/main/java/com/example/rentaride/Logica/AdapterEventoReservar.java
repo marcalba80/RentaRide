@@ -53,15 +53,15 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
         holder.desc.setText(evento.v.marca + " " + evento.v.modelo);
         holder.precio.setText(String.valueOf(evento.getPrecio())+ "€");
         if(evento.v.type == 0){
-            holder.tipo.setText("Coche");
+            holder.tipo.setText(R.string.coche);
             holder.cv.getBackground().setTint(evento.getColor());
         }else if(evento.v.type == 1){
 
-            holder.tipo.setText("Moto");
+            holder.tipo.setText(R.string.moto);
             holder.cv.getBackground().setTint(evento.getColor());
 
         }else{
-            holder.tipo.setText("Bicicleta");
+            holder.tipo.setText(R.string.bici);
             holder.cv.getBackground().setTint(evento.getColor());
         }
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");

@@ -37,19 +37,19 @@ public class DetallesReserva extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_reserva);
-        v = (Vehiculo) getIntent().getSerializableExtra("ve");
-        p = getIntent().getDoubleExtra("pr", 0);
-        long d = getIntent().getLongExtra("da",0);
+        v = (Vehiculo) getIntent().getSerializableExtra(getString(R.string.ve));
+        p = getIntent().getDoubleExtra(getString(R.string.pr), 0);
+        long d = getIntent().getLongExtra(getString(R.string.da),0);
         fit = findViewById(R.id.eliminar);
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         f = s.format(new Date(d));
-        switch(getIntent().getIntExtra("ac", 0)){
+        switch(getIntent().getIntExtra(getString(R.string.ac), 0)){
             case 0:
                 FitButton fb = findViewById(R.id.boton);
                 FitButton fb2 = findViewById(R.id.eliminar);
                 v.setReservado(true);
                 fb.setVisibility(View.GONE);
-                fb2.setText("Cancelar Oferta");
+                fb2.setText(getString(R.string.cancelar_oferta));
                 break;
             case 1:
                 v.setReservado(true);
@@ -94,8 +94,8 @@ public class DetallesReserva extends AppCompatActivity {
                 b1.setText(v.getMarca() + " " + v.getModelo());
                 b2.setText(v.getPotencia());
                 b3.setText(v.getCombustible());
-                if(v.isAdaptado())b4.setText("Si");
-                else b4.setText("No");
+                if(v.isAdaptado())b4.setText(R.string.si);
+                else b4.setText(R.string.no);
                 b5.setText(v.getAño());
                 b6.setText(v.getInfo());
                 b9.setText(f);
@@ -106,7 +106,7 @@ public class DetallesReserva extends AppCompatActivity {
                 } else {
                     t4.setVisibility(View.GONE);
                     t5.setVisibility(View.GONE);
-                    fit.setText("Reservar");
+                    fit.setText(getString(R.string.reservar));
                     fit.setButtonColor(getColor(R.color.pb_blue));
                 }
                 break;
@@ -127,7 +127,7 @@ public class DetallesReserva extends AppCompatActivity {
                 } else {
                     t4.setVisibility(View.GONE);
                     t5.setVisibility(View.GONE);
-                    fit.setText("Reservar");
+                    fit.setText(getString(R.string.reservar));
                     fit.setButtonColor(getColor(R.color.pb_blue));
                 }
                 t3.setVisibility(View.GONE);
@@ -145,7 +145,7 @@ public class DetallesReserva extends AppCompatActivity {
                     b8.setText(v.getTelefono());
                 } else {
                     t5.setVisibility(View.GONE);
-                    fit.setText("Reservar");
+                    fit.setText(getString(R.string.reservar));
                     fit.setButtonColor(getColor(R.color.pb_blue));
                 }
                 t1.setVisibility(View.GONE);
@@ -167,8 +167,8 @@ public class DetallesReserva extends AppCompatActivity {
 
     public void eliminar(View view) {
         new AlertDialog.Builder(this)
-                .setTitle("Eliminar reserva")
-                .setMessage("¿Seguro que quiere eliminar esta reserva?")
+                .setTitle(R.string.eliminar_reserva)
+                .setMessage(R.string.seguro_eliminar)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(getString(R.string.si), new DialogInterface.OnClickListener() {
 
