@@ -44,34 +44,19 @@
     <string name="coche">Coche</string>
     <string name="moto">Moto</string>
     <string name="bici">Bicicleta</string>
-    <string name="coche">Coche</string>
-    <string name="moto">Moto</string>
-    <string name="bici">Bicicleta</string>
     <string name="chat_lucy">Chat con Lucy</string>
     <string name="buenas">Buenas!</string>
-    <string name="Lucy">Lucy</string>
     <string name="estadisponible">¿Está el vehiculo disponible?</string>
     <string name="Lucy">Lucy</string>
     <string name="jhon">John</string>
     <string name="introduzca_mensaje">Debe introducir un mensaje!</string>
-    <string name="ve">ve</string>
-    <string name="pr">pr</string>
-    <string name="da">da</string>
-    <string name="ac">ac</string>
     <string name="cancelar_oferta">Cancelar Oferta</string>
-    <string name="reservar">Reservar</string>
-    <string name="reservar">Reservar</string>
     <string name="reservar">Reservar</string>
     <string name="eliminar_reserva">Eliminar reserva</string>
     <string name="seguro_eliminar">¿Seguro que quiere eliminar esta reserva?</string>
-    <string name="fragment">fragment</string>
     <string name="cerrar_sesion">Se ha cerrado la sesión!</string>
     <string name="contraseña_enviada">Se ha enviado un correo para cambiar la contraseña!\n Siga las instrucciones indicadas</string>
     <string name="fragment">fragment</string>
-    <string name="ve">ve</string>
-    <string name="da">da</string>
-    <string name="pr">pr</string>
-    <string name="ac">ac</string>
     <string name="reserva_eliminada">Se ha eliminado la reserva correctamente</string>
     <string name="marca">Introduzca una marca</string>
     <string name="modelo">Introduzca un modelo</string>
@@ -92,6 +77,9 @@
     <string name="diesel">Dieses</string>
     <string name="hibrido">Hibrido</string>
     <string name="electrico">Electrico</string>
+    <string name="permission_denied_explanation">Debe habilitar la ubicación</string>
+    <string name="settings">Settings</string>
+    <string name="permission_rationale">Se precisan de los permisos de ubicacion!</string>
     <string-array name="combustible_arrays">
     <item>Gasolina</item>
     <item>Gasoil</item>

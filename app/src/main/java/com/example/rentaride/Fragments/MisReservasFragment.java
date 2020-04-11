@@ -1,6 +1,7 @@
 package com.example.rentaride.Fragments;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,12 +113,15 @@ public class MisReservasFragment extends Fragment {
 
     private void recuperar() {
         long day = 86400000;
-        list.add(new Reserva(getResources().getColor(R.color.C1), new Date().getTime(),cocheprueba, 90.5));
-        list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime(), motoprueba, 20));
-        list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime(),biciprueba, 10.99));
-        list.add(new Reserva(getResources().getColor(R.color.C1), new Date().getTime()+day,cocheprueba, 102.5));
-        list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime()+day*2,motoprueba, 19.95));
-        list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime()+day*3,biciprueba, 9.5));
+        Location l = new Location("");
+        l.setLatitude(0.0);
+        l.setLongitude(0.0);
+        list.add(new Reserva(getResources().getColor(R.color.C1), new Date().getTime(),cocheprueba, 90.5,l));
+        list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime(), motoprueba, 20,l));
+        list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime(),biciprueba, 10.99,l));
+        list.add(new Reserva(getResources().getColor(R.color.C1), new Date().getTime()+day,cocheprueba, 102.5,l));
+        list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime()+day*2,motoprueba, 19.95,l));
+        list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime()+day*3,biciprueba, 9.5,l));
         cv.addEvents(list);
     }
 
