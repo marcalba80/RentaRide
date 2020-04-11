@@ -143,32 +143,32 @@ public class OfertaFragment extends Fragment {
         oferta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(marca.getText().toString()==""){
+                if(marca.getText().toString().equals("")){
                     marca.setError("Introduzca una marca");
                     return;
                 }
-                if(modelo.getText().toString()==""){
+                if(modelo.getText().toString().equals("")){
                     modelo.setError("Introduzca un modelo");
                     return;
                 }
-                if(fecha.getText().toString()==""){
+                if(fecha.getText().toString().equals("")){
                     fecha.setError("Introduzca una fecha");
                     return;
                 }
-                if(precio.getText().toString()==""){
+                if(precio.getText().toString().equals("")){
                     precio.setError("Introduzca un precio");
                     return;
                 }
                 if(t.getSelectedItemPosition() != 2){
-                    if(potencia.getText().toString()==""){
+                    if(potencia.getText().toString().equals("")){
                         potencia.setError("Introduzca una potencia");
                         return;
                     }
-                    if(año.getText().toString()==""){
+                    if(año.getText().toString().equals("")){
                         año.setError("Introduzca un año");
                         return;
                     }
-                    if(matricula.getText().toString()==""){
+                    if(matricula.getText().toString().equals("")){
                         matricula.setError("Introduzca una matricula");
                         return;
                     }
