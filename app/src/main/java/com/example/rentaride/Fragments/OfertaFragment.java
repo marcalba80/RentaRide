@@ -24,6 +24,7 @@ import com.example.rentaride.Logica.AdapterEventoReservar;
 import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.Logica.Vehiculo;
 import com.example.rentaride.R;
+import com.example.rentaride.Screens.DetallesReserva;
 import com.github.nikartm.button.FitButton;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
@@ -32,9 +33,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.rentaride.Utils.Utils.motoprueba;
+
 public class OfertaFragment extends Fragment {
     long f = 0;
-    int color = 0;
+    int color = 0, actual;
     RecyclerView lv;
     List<Reserva> list = new ArrayList<>();
     AdapterEventoReservar adapterEventoReservar;
@@ -184,19 +187,43 @@ public class OfertaFragment extends Fragment {
         });
         obtener();
         adapterEventoReservar = new AdapterEventoReservar(list);
+        adapterEventoReservar.setOnItemClickListener(new AdapterEventoReservar.ClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                Intent i = new Intent(getContext(), DetallesReserva.class);
+                actual = list.indexOf(list.get(position));
+                i.putExtra("ve", list.get(position).getV());
+                i.putExtra("da", list.get(position).getTimeInMillis());
+                i.putExtra("pr", list.get(position).getPrecio());
+                i.putExtra("ac", 0);
+                startActivityForResult(i, 2);
+            }
+        });
         lv.setHasFixedSize(true);
         lv.setLayoutManager(new LinearLayoutManager(getContext()));
         lv.setAdapter(adapterEventoReservar);
     }
 
     public void obtener(){
-
+        list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime(), motoprueba, 20));
     }
 
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(resultCode == -1 && requestCode == 1){
-            Toast.makeText(getContext(), "Se ha guardado la imagen correctamente", Toast.LENGTH_SHORT).show();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == -1) {
+            if (requestCode == 2) {
+                list.remove(actual);
+                adapterEventoReservar.clear();
+                Toast.makeText(getContext(), "Se ha eliminado la oferta correctamente!", Toast.LENGTH_SHORT).show();
+                adapterEventoReservar = new AdapterEventoReservar(list);
+                lv.setHasFixedSize(true);
+                lv.setLayoutManager(new LinearLayoutManager(getContext()));
+                lv.setAdapter(adapterEventoReservar);
+            }else{
+                Toast.makeText(getContext(), "Se ha guardado la imagen correctamente", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

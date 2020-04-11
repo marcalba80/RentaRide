@@ -43,7 +43,20 @@ public class DetallesReserva extends AppCompatActivity {
         fit = findViewById(R.id.eliminar);
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         f = s.format(new Date(d));
-        //v.setReservado(true);
+        switch(getIntent().getIntExtra("ac", 0)){
+            case 0:
+                FitButton fb = findViewById(R.id.boton);
+                FitButton fb2 = findViewById(R.id.eliminar);
+                v.setReservado(true);
+                fb.setVisibility(View.GONE);
+                fb2.setText("Cancelar Oferta");
+                break;
+            case 1:
+                v.setReservado(true);
+                break;
+            case 2:
+                break;
+        }
         addInfo(v);
     }
 

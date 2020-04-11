@@ -100,6 +100,7 @@ public class MisReservasFragment extends Fragment {
                 i.putExtra("ve", le.get(position).getV());
                 i.putExtra("da", le.get(position).getTimeInMillis());
                 i.putExtra("pr", le.get(position).getPrecio());
+                i.putExtra("ac", 1);
                 startActivityForResult(i, 2);
             }
         });
