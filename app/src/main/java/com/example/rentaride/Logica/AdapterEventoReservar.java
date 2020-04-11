@@ -50,7 +50,7 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Reserva evento = mDataset.get(position);
-        holder.desc.setText(evento.v.marca + " " + evento.v.modelo);
+        holder.desc.setText(evento.getV().getMarca() + " " + evento.getV().getModelo());
         holder.precio.setText(String.valueOf(evento.getPrecio())+ "€");
         if(evento.v.type == 0){
             holder.tipo.setText("Coche");

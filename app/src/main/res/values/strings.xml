@@ -41,6 +41,12 @@
     <string name="literalTelefono">Número de teléfono:</string>
     <string name="mantenersesion">sesión</string>
 
+    <string name="tipo">Tipo vehiculo</string>
+    <string-array name="tipo_vehiculo">
+        <item>Coche</item>
+        <item>Motocicleta</item>
+        <item>Bicicleta</item>
+    </string-array>
     <string name="tipoCombustible">Tipo combustible</string>
     <string name="Tipo">Tipo</string>
     <string name="imagen">Seleccionar Imagen</string>
@@ -54,5 +60,6 @@
         <item>Coche</item>
         <item>Motocicleta</item>
         <item>Bicicleta</item>
+        <item>Todos</item>
     </string-array>
 </resources>

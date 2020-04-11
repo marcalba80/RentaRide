@@ -32,6 +32,8 @@ public class DetallesReserva extends AppCompatActivity {
     double p;
     FitButton fit;
 
+    int typeRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +44,8 @@ public class DetallesReserva extends AppCompatActivity {
         fit = findViewById(R.id.eliminar);
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         f = s.format(new Date(d));
-        switch(getIntent().getIntExtra("ac", 0)){
+        typeRequest = getIntent().getIntExtra("ac", 0);
+        switch(typeRequest){
             case 0:
                 FitButton fb = findViewById(R.id.boton);
                 FitButton fb2 = findViewById(R.id.eliminar);
@@ -97,7 +100,7 @@ public class DetallesReserva extends AppCompatActivity {
                 else b4.setText("No");
                 b5.setText(v.getAnyo());
                 b6.setText(v.getInfo());
-                b9.setText(f);
+                b9.setText(v.getFecha());
                 b10.setText(String.valueOf(p));
                 if(v.isReservado()){
                     b7.setText(v.getMatricula());
@@ -118,7 +121,7 @@ public class DetallesReserva extends AppCompatActivity {
                 b3.setText(v.getCombustible());
                 b5.setText(v.getAnyo());
                 b6.setText(v.getInfo());
-                b9.setText(f);
+                b9.setText(v.getFecha());
                 b10.setText(String.valueOf(p));
                 if(v.isReservado()){
                     b7.setText(v.getMatricula());
@@ -138,7 +141,7 @@ public class DetallesReserva extends AppCompatActivity {
                 b1.setText(v.getMarca() + " " + v.getModelo());
                 b5.setText(v.getAnyo());
                 b6.setText(v.getAnyo());
-                b9.setText(f);
+                b9.setText(v.getFecha());
                 b10.setText(String.valueOf(p));
                 if(v.isReservado()){
                     b8.setText(v.getTelefono());
@@ -165,6 +168,20 @@ public class DetallesReserva extends AppCompatActivity {
     }
 
     public void eliminar(View view) {
+        if (typeRequest == 0)
+            new AlertDialog.Builder(this)
+                    .setTitle("Eliminar oferta")
+                    .setMessage("¿Seguro que quiere eliminar esta oferta?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(getString(R.string.si), new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            Intent intent = getIntent();
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }})
+                    .setNegativeButton(android.R.string.no, null).show();
+        else
         new AlertDialog.Builder(this)
                 .setTitle("Eliminar reserva")
                 .setMessage("¿Seguro que quiere eliminar esta reserva?")

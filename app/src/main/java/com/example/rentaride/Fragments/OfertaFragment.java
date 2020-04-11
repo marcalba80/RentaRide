@@ -102,7 +102,6 @@ public class OfertaFragment extends Fragment {
                         extra.setVisibility(View.GONE);
                         color = getResources().getColor(R.color.C3);
                         break;
-
                 }
             }
 
@@ -176,7 +175,19 @@ public class OfertaFragment extends Fragment {
                         return;
                     }
                 }
-                Vehiculo v = new Vehiculo(t.getSelectedItemPosition(), marca.getText().toString(),modelo.getText().toString(),año.getText().toString(), info.getText().toString(), "636666663", matricula.getText().toString(),potencia.getText().toString()+" cv", com.getSelectedItem().toString(), "",c.isChecked());
+                Vehiculo v = new Vehiculo(t.getSelectedItemPosition(),
+                        marca.getText().toString(),
+                        modelo.getText().toString(),
+                        año.getText().toString(),
+                        info.getText().toString(),
+                        "636666663",
+                        matricula.getText().toString(),
+                        potencia.getText().toString()+" cv",
+                        com.getSelectedItem().toString(),
+                        fecha.getText().toString(),
+                        Double.parseDouble(precio.getText().toString()),
+                        "",
+                        c.isChecked());
                 Reserva r = new Reserva(color, f,  v, Double.parseDouble(precio.getText().toString()));
                 list.add(r);
                 adapterEventoReservar = new AdapterEventoReservar(list);
