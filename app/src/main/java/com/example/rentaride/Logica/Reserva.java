@@ -1,22 +1,20 @@
 package com.example.rentaride.Logica;
 
+import android.location.Location;
+
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
 
 public class Reserva extends Event {
     Vehiculo v;
     double precio;
+    Location location;
 
-    public Reserva(int color, long timeInMillis, Vehiculo v, double precio) {
+    public Reserva(int color, long timeInMillis, Vehiculo v, double precio, Location location) {
         super(color, timeInMillis);
         this.v = v;
         this.precio = precio;
-    }
-
-    public Reserva(int color, long timeInMillis, Object data, Vehiculo v, double precio) {
-        super(color, timeInMillis, data);
-        this.v = v;
-        this.precio = precio;
+        this.location = location;
     }
 
     public Vehiculo getV() {
@@ -33,5 +31,13 @@ public class Reserva extends Event {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
