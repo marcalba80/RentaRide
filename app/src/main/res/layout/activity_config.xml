@@ -7,6 +7,14 @@
     android:layout_marginBottom="20dp"
     android:gravity="center"
     android:orientation="vertical">
+    <TextView
+        android:paddingStart="10dp"
+        android:paddingTop="20dp"
+        android:textSize="20dp"
+        android:textColor="@color/Black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cuenta"/>
     <FrameLayout
         android:id="@+id/pref_content"
         android:layout_width="match_parent"
