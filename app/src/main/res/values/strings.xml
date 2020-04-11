@@ -39,10 +39,17 @@
     <string name="literalTelefono">Número de teléfono:</string>
     <string name="mantenersesion">sesión</string>
     <string name="tipoCombustible">Tipo combustible</string>
+    <string name="Tipo">Tipo</string>
+    <string name="imagen">Seleccionar Imagen</string>
     <string-array name="combustible_arrays">
     <item>Gasolina</item>
     <item>Gasoil</item>
     <item>Hibrido</item>
     <item>Electrico</item>
+    </string-array>
+    <string-array name="tipo_arrays">
+        <item>Coche</item>
+        <item>Motocicleta</item>
+        <item>Bicicleta</item>
     </string-array>
 </resources>

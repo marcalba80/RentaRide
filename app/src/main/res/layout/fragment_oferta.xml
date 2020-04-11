@@ -4,71 +4,178 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:hint="Marca"
-            android:id="@+id/reservaMarca"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:hint="Modelo"
-            android:id="@+id/reservaModelo"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:entries="@array/combustible_arrays"
-            android:prompt="@string/tipoCombustible"
-            android:id="@+id/spin"/>
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Adaptado para minusvalidos"
-            android:id="@+id/adaptado"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="0dp"
+        android:id="@+id/carddetalle"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="10dp"
+        android:backgroundTint="#EAE8E8">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="Fecha: dd/mm/aa"
-            android:inputType="date" />
-    </LinearLayout>
+            android:padding="10dp"
+            android:orientation="vertical">
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/tipo_arrays"
+                android:prompt="@string/Tipo"
+                android:id="@+id/tip"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="Marca"
+                    android:id="@+id/reservaMarca"/>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="Modelo"
+                    android:id="@+id/reservaModelo"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/fecha"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Fecha"
+                    android:focusable="false" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Información adicional" />
+                <EditText
+                    android:id="@+id/precio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:inputType="number"
+                    android:hint="Precio" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/extra"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:entries="@array/combustible_arrays"
+                        android:prompt="@string/tipoCombustible"
+                        android:id="@+id/spin"/>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Adaptado para minusvalidos"
+                        android:id="@+id/adaptado"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="Potencia (cv)"
+                        android:maxLength="3"
+                        android:inputType="number"
+                        android:id="@+id/potencia"/>
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:maxLength="7"
+                        android:hint="Matrícula"
+                        android:id="@+id/matricula"/>
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="Año"
+                        android:maxLength="4"
+                        android:inputType="number"
+                        android:id="@+id/año"/>
+                </LinearLayout>
+            </LinearLayout>L
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/ofertar"
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/imagen"
+            android:padding="15dp"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="@string/ofertar" />
-
+            android:layout_marginEnd="10dp"
+            android:enabled="true"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/button"
+            app:fb_cornerRadius="50dp"
+            app:fb_divColor="@color/button"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            app:fb_shape="rectangle"
+            app:fb_text="@string/imagen"
+            app:fb_textSize="15dp"
+            app:fb_textColor="@color/White" />
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/ofertar"
+            android:padding="15dp"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.8"
+            android:enabled="true"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/colorPrimaryDark"
+            app:fb_cornerRadius="50dp"
+            app:fb_divColor="@color/colorPrimaryDark"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            app:fb_shape="rectangle"
+            app:fb_text="@string/ofertar"
+            app:fb_textSize="15dp"
+            app:fb_textColor="@color/White" />
     </LinearLayout>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

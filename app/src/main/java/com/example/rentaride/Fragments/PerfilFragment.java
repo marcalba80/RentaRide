@@ -115,6 +115,7 @@ public class PerfilFragment extends Fragment {
             String username = mPreference.getString(getString(R.string.preferenceUsername), "");
             String number = mPreference.getString(getString(R.string.preftelefono), "");
 
+
             emailEditText.setTitle(getResources().getString(R.string.literalCorreo) + " " + email);
             usernameEditText.setTitle(getResources().getString(R.string.literalUsername) + " " + username);
             numberEditText.setTitle(getResources().getString(R.string.literalTelefono) + " " + number);
