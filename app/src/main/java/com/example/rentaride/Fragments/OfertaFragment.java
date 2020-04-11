@@ -1,6 +1,8 @@
 package com.example.rentaride.Fragments;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -18,17 +20,24 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import com.example.rentaride.Logica.AdapterEventoReservar;
 import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.Logica.Vehiculo;
 import com.example.rentaride.R;
 import com.github.nikartm.button.FitButton;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class OfertaFragment extends Fragment {
     long f = 0;
     int color = 0;
+    RecyclerView lv;
+    List<Reserva> list = new ArrayList<>();
+    AdapterEventoReservar adapterEventoReservar;
 
     public OfertaFragment(){
 
@@ -48,11 +57,11 @@ public class OfertaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_oferta, container, false);
-        inizializar(v);
+        inicializar(v);
         return v;
     }
 
-    private void inizializar(View v) {
+    private void inicializar(View v) {
         FitButton imagen, oferta;
         final LinearLayout extra;
         final Spinner t, com;
@@ -65,6 +74,7 @@ public class OfertaFragment extends Fragment {
         fecha = v.findViewById(R.id.fecha);
         c = v.findViewById(R.id.adaptado);
         com = v.findViewById(R.id.spin);
+        lv = v.findViewById(R.id.list);
         imagen = v.findViewById(R.id.imagen);
         oferta = v.findViewById(R.id.ofertar);
         matricula = v.findViewById(R.id.matricula);
@@ -165,8 +175,22 @@ public class OfertaFragment extends Fragment {
                 }
                 Vehiculo v = new Vehiculo(t.getSelectedItemPosition(), marca.getText().toString(),modelo.getText().toString(),año.getText().toString(), info.getText().toString(), "636666663", matricula.getText().toString(),potencia.getText().toString()+" cv", com.getSelectedItem().toString(), "",c.isChecked());
                 Reserva r = new Reserva(color, f,  v, Double.parseDouble(precio.getText().toString()));
+                list.add(r);
+                adapterEventoReservar = new AdapterEventoReservar(list);
+                lv.setHasFixedSize(true);
+                lv.setLayoutManager(new LinearLayoutManager(getContext()));
+                lv.setAdapter(adapterEventoReservar);
             }
         });
+        obtener();
+        adapterEventoReservar = new AdapterEventoReservar(list);
+        lv.setHasFixedSize(true);
+        lv.setLayoutManager(new LinearLayoutManager(getContext()));
+        lv.setAdapter(adapterEventoReservar);
+    }
+
+    public void obtener(){
+
     }
 
     @Override
