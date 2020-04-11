@@ -1,29 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout="@layout/toolbar">
-    <PreferenceCategory
-        android:title="@string/literalCuenta"
-        android:layout="@layout/preference_text">
         <EditTextPreference
             android:key="@string/preferenceEmail"
             android:selectable="false"
+            app:iconSpaceReserved="false"
             android:summary="Correo electronico de la cuenta"
             android:title="@string/literalCorreo"/>
         <EditTextPreference
             android:key="@string/preferenceUsername"
             android:selectable="true"
+            app:iconSpaceReserved="false"
             android:summary="Alias del usuario"
             android:title="@string/literalUsername"/>
         <EditTextPreference
             android:key="@string/preftelefono"
             android:selectable="true"
+            app:iconSpaceReserved="false"
             android:summary="Numero de contacto"
             android:title="@string/literalTelefono"/>
         <SwitchPreference
             android:key="@string/mantenersesion"
+            app:iconSpaceReserved="false"
             android:title="Mantener sesión iniciada"
             android:summary="La sesión permanecera iniciada"
             android:defaultValue="true"/>
-    </PreferenceCategory>
 </PreferenceScreen>
