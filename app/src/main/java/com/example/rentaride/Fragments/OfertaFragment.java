@@ -9,11 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
@@ -132,19 +135,19 @@ public class OfertaFragment extends Fragment {
 
 //***********************************************************************************************
 
-    public OfertaFragment(){
+    public OfertaFragment() {
 
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    //Location
+        //Location
         mRequestingLocationUpdates = false;
         isRequestRequired = true;
         mLastUpdateTime = "";
@@ -192,7 +195,7 @@ public class OfertaFragment extends Fragment {
         t.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i){
+                switch (i) {
                     case 0:
                         extra.setVisibility(View.VISIBLE);
                         color = getResources().getColor(R.color.C1);
@@ -222,7 +225,7 @@ public class OfertaFragment extends Fragment {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                fecha.setText(dayOfMonth +"/"+(monthOfYear+1)+"/"+year);
+                fecha.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                 f = myCalendar.getTimeInMillis();
             }
 
@@ -248,32 +251,32 @@ public class OfertaFragment extends Fragment {
         oferta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(marca.getText().toString().equals("")){
+                if (marca.getText().toString().equals("")) {
                     marca.setError("Introduzca una marca");
                     return;
                 }
-                if(modelo.getText().toString().equals("")){
+                if (modelo.getText().toString().equals("")) {
                     modelo.setError("Introduzca un modelo");
                     return;
                 }
-                if(fecha.getText().toString().equals("")){
+                if (fecha.getText().toString().equals("")) {
                     fecha.setError("Introduzca una fecha");
                     return;
                 }
-                if(precio.getText().toString().equals("")){
+                if (precio.getText().toString().equals("")) {
                     precio.setError("Introduzca un precio");
                     return;
                 }
-                if(t.getSelectedItemPosition() != 2){
-                    if(potencia.getText().toString().equals("")){
+                if (t.getSelectedItemPosition() != 2) {
+                    if (potencia.getText().toString().equals("")) {
                         potencia.setError("Introduzca una potencia");
                         return;
                     }
-                    if(año.getText().toString().equals("")){
+                    if (año.getText().toString().equals("")) {
                         año.setError("Introduzca un año");
                         return;
                     }
-                    if(matricula.getText().toString().equals("")){
+                    if (matricula.getText().toString().equals("")) {
                         matricula.setError("Introduzca una matricula");
                         return;
                     }
@@ -286,7 +289,7 @@ public class OfertaFragment extends Fragment {
                         info.getText().toString(),
                         "636666663",
                         matricula.getText().toString(),
-                        potencia.getText().toString()+" cv",
+                        potencia.getText().toString() + " cv",
                         com.getSelectedItem().toString(),
                         fecha.getText().toString(),
                         Double.parseDouble(precio.getText().toString()),
@@ -294,12 +297,22 @@ public class OfertaFragment extends Fragment {
                         c.isChecked(),
                         //41.621625, 0.638906);
                         coord[0], coord[1]);
-                Reserva r = new Reserva(color, f,  v);
+                Reserva r = new Reserva(color, f, v);
                 list.add(r);
                 adapterEventoReservar = new AdapterEventoReservar(list);
                 lv.setHasFixedSize(true);
                 lv.setLayoutManager(new LinearLayoutManager(getContext()));
                 lv.setAdapter(adapterEventoReservar);
+                adapterEventoReservar.setOnItemClickListener(new AdapterEventoReservar.ClickListener() {
+                    @Override
+                    public void onItemClick(int position, View v) {
+                        Intent i = new Intent(getContext(), DetallesReserva.class);
+                        actual = list.indexOf(list.get(position));
+                        i.putExtra("ve", list.get(position).getV());
+                        i.putExtra("ac", 0);
+                        startActivityForResult(i, 2);
+                    }
+                });
             }
         });
         obtener();
@@ -319,7 +332,7 @@ public class OfertaFragment extends Fragment {
         lv.setAdapter(adapterEventoReservar);
     }
 
-    public void obtener(){
+    public void obtener() {
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         Date date;
         try {
@@ -334,7 +347,7 @@ public class OfertaFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CHECK_SETTINGS){
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     Log.i(TAG, "User agreed to make required location settings changes.");
@@ -345,8 +358,7 @@ public class OfertaFragment extends Fragment {
                     mRequestingLocationUpdates = false;
                     break;
             }
-        }else
-        if (resultCode == -1) {
+        } else if (resultCode == -1) {
             if (requestCode == 2) {
                 list.remove(actual);
                 adapterEventoReservar.clear();
@@ -355,7 +367,7 @@ public class OfertaFragment extends Fragment {
                 lv.setHasFixedSize(true);
                 lv.setLayoutManager(new LinearLayoutManager(getContext()));
                 lv.setAdapter(adapterEventoReservar);
-            }else{
+            } else {
                 Toast.makeText(getContext(), "Se ha guardado la imagen correctamente", Toast.LENGTH_SHORT).show();
             }
         }
@@ -363,15 +375,29 @@ public class OfertaFragment extends Fragment {
 
     //Location
 
-    private double[] locate (){
+    private double[] locate() {
         double[] coord = new double[2];
         // Kick off the process of building the LocationCallback, LocationRequest, and
         // LocationSettingsRequest objects.
-        createLocationCallback();
+        /*createLocationCallback();
         createLocationRequest();
-        buildLocationSettingsRequest();
-        coord[0] = mCurrentLocation.getLatitude();
-        coord[1] = mCurrentLocation.getLongitude();
+        buildLocationSettingsRequest();*/
+
+        mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                mLocationCallback, Looper.myLooper());
+
+        LocationManager location = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions();
+        }
+        Location loc = location.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+
+        /*coord[0] = mCurrentLocation.getLatitude();
+        coord[1] = mCurrentLocation.getLongitude();*/
+        coord[0] = loc.getLatitude();
+        coord[1] = loc.getLongitude();
         return coord;
     }
 
@@ -435,7 +461,7 @@ public class OfertaFragment extends Fragment {
         super.onResume();
         // Within {@code onPause()}, we remove location updates. Here, we resume receiving
         // location updates if the user has requested them.
-        if (!checkPermissions() && isRequestRequired) {
+        if (!checkPermissions()) {
             requestPermissions();
         }
 
