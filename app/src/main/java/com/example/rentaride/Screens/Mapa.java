@@ -128,7 +128,6 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
                     break;
             }
         }
-        int a = 0;
     }
 
     public void showCotxe() {

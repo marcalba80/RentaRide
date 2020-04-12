@@ -217,11 +217,11 @@ public class OfertaFragment extends Fragment {
                         potencia.setError(getString(R.string.potencia));
                         return;
                     }
-                    if (año.getText().toString().equals("")) {
+                    if (año.getText().toString().equals("") || año.getText().toString().length() != 4) {
                         año.setError(getString(R.string.año));
                         return;
                     }
-                    if (matricula.getText().toString().equals("")) {
+                    if (matricula.getText().toString().equals("") || matricula.getText().toString().length() != 7) {
                         matricula.setError(getString(R.string.matricula));
                         return;
                     }
