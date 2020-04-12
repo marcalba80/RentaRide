@@ -6,8 +6,9 @@ public class Vehiculo implements Serializable {
     int type;
     private String marca, modelo, anyo, info, telefono, matricula, potencia, combustible, fecha, imagen;
     private boolean adaptado, reservado;
-    private double precio;
+    private double precio, lat, lng;
 
+    User user;
 
     public Vehiculo() {
     }
@@ -24,7 +25,9 @@ public class Vehiculo implements Serializable {
                     String fecha,
                     double precio,
                     String imagen,
-                    boolean adaptado) {
+                    boolean adaptado,
+                    double lat,
+                    double lng) {
         this.type = type;
         this.marca = marca;
         this.modelo = modelo;
@@ -38,6 +41,8 @@ public class Vehiculo implements Serializable {
         this.precio = precio;
         this.imagen = imagen;
         this.adaptado = adaptado;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public Vehiculo(int type,
@@ -51,7 +56,9 @@ public class Vehiculo implements Serializable {
                     String combustible,
                     String fecha,
                     double precio,
-                    String imagen) {
+                    String imagen,
+                    double lat,
+                    double lng) {
         this.type = type;
         this.marca = marca;
         this.modelo = modelo;
@@ -64,6 +71,8 @@ public class Vehiculo implements Serializable {
         this.fecha = fecha;
         this.precio = precio;
         this.imagen = imagen;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public Vehiculo(int type,
@@ -74,7 +83,9 @@ public class Vehiculo implements Serializable {
                     String telefono,
                     String fecha,
                     double precio,
-                    String imagen) {
+                    String imagen,
+                    double lat,
+                    double lng) {
         this.type = type;
         this.marca = marca;
         this.modelo = modelo;
@@ -84,6 +95,8 @@ public class Vehiculo implements Serializable {
         this.fecha = fecha;
         this.precio = precio;
         this.imagen = imagen;
+        this.lat = lat;
+        this.lng = lng;
     }
 
 
@@ -171,8 +184,16 @@ public class Vehiculo implements Serializable {
         return precio;
     }
 
-    public void setFecha(double precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLng(){
+        return lng;
     }
 
     public boolean isAdaptado() {

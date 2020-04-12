@@ -28,10 +28,7 @@ import static com.example.rentaride.Utils.Utils.MOTOCICLETA;
 
 public class DetallesReserva extends AppCompatActivity {
     Vehiculo v;
-    String f;
-    double p;
     FitButton fit;
-
     int typeRequest;
 
     @Override
@@ -39,19 +36,16 @@ public class DetallesReserva extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_reserva);
         v = (Vehiculo) getIntent().getSerializableExtra("ve");
-        p = getIntent().getDoubleExtra("pr", 0);
-        long d = getIntent().getLongExtra("da",0);
+
         fit = findViewById(R.id.eliminar);
-        SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
-        f = s.format(new Date(d));
         typeRequest = getIntent().getIntExtra("ac", 0);
         switch(typeRequest){
             case 0:
                 FitButton fb = findViewById(R.id.boton);
-                FitButton fb2 = findViewById(R.id.eliminar);
+                //FitButton fb2 = findViewById(R.id.eliminar);
                 v.setReservado(true);
                 fb.setVisibility(View.GONE);
-                fb2.setText("Cancelar Oferta");
+                fit.setText("Cancelar Oferta");
                 break;
             case 1:
                 v.setReservado(true);
@@ -101,7 +95,7 @@ public class DetallesReserva extends AppCompatActivity {
                 b5.setText(v.getAnyo());
                 b6.setText(v.getInfo());
                 b9.setText(v.getFecha());
-                b10.setText(String.valueOf(p));
+                b10.setText(String.valueOf(v.getPrecio()));
                 if(v.isReservado()){
                     b7.setText(v.getMatricula());
                     b8.setText(v.getTelefono());
@@ -122,7 +116,7 @@ public class DetallesReserva extends AppCompatActivity {
                 b5.setText(v.getAnyo());
                 b6.setText(v.getInfo());
                 b9.setText(v.getFecha());
-                b10.setText(String.valueOf(p));
+                b10.setText(String.valueOf(v.getPrecio()));
                 if(v.isReservado()){
                     b7.setText(v.getMatricula());
                     b8.setText(v.getTelefono());
@@ -140,9 +134,9 @@ public class DetallesReserva extends AppCompatActivity {
                 c.getBackground().setTint(getColor(R.color.C3));
                 b1.setText(v.getMarca() + " " + v.getModelo());
                 b5.setText(v.getAnyo());
-                b6.setText(v.getAnyo());
+                b6.setText(v.getInfo());
                 b9.setText(v.getFecha());
-                b10.setText(String.valueOf(p));
+                b10.setText(String.valueOf(v.getPrecio()));
                 if(v.isReservado()){
                     b8.setText(v.getTelefono());
                 } else {
@@ -164,7 +158,10 @@ public class DetallesReserva extends AppCompatActivity {
     }
 
     public void mapa(View view){
-
+        Intent in = new Intent(this, MapActivity.class);
+        in.putExtra("ac", 1);
+        in.putExtra("ve", v);
+        startActivity(in);
     }
 
     public void eliminar(View view) {

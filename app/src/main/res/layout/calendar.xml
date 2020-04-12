@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/White"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Screens.Calendar">
+    android:orientation="vertical">
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"

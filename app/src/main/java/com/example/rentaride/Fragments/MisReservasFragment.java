@@ -19,6 +19,7 @@ import com.example.rentaride.Screens.DetallesReserva;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,8 +99,6 @@ public class MisReservasFragment extends Fragment {
                 Intent i = new Intent(getContext(), DetallesReserva.class);
                 actual = list.indexOf(le.get(position));
                 i.putExtra("ve", le.get(position).getV());
-                i.putExtra("da", le.get(position).getTimeInMillis());
-                i.putExtra("pr", le.get(position).getPrecio());
                 i.putExtra("ac", 1);
                 startActivityForResult(i, 2);
             }
@@ -111,13 +110,25 @@ public class MisReservasFragment extends Fragment {
 
 
     private void recuperar() {
-        long day = 86400000;
+        /*long day = 86400000;
         list.add(new Reserva(getResources().getColor(R.color.C1), new Date().getTime(),cocheprueba, 90.5));
         list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime(), motoprueba, 20));
         list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime(),biciprueba, 10.99));
         list.add(new Reserva(getResources().getColor(R.color.C1), new Date().getTime()+day,cocheprueba, 102.5));
         list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime()+day*2,motoprueba, 19.95));
-        list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime()+day*3,biciprueba, 9.5));
+        list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime()+day*3,biciprueba, 9.5));*/
+        SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
+        Date date;
+        try {
+            date = s.parse(cocheprueba.getFecha());
+            list.add(new Reserva(getResources().getColor(R.color.C1), date.getTime(), cocheprueba));
+            date = s.parse(motoprueba.getFecha());
+            list.add(new Reserva(getResources().getColor(R.color.C2), date.getTime(), motoprueba));
+            date = s.parse(biciprueba.getFecha());
+            list.add(new Reserva(getResources().getColor(R.color.C3), date.getTime(), biciprueba));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         cv.addEvents(list);
     }
 

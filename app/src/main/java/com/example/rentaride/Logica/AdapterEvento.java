@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentaride.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder> {
@@ -59,8 +61,14 @@ public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder
             holder.tipo.setText("Bicicleta");
             holder.cv.getBackground().setTint(evento.getColor());
         }
-        SimpleDateFormat s = new SimpleDateFormat("HH:MM");
-        holder.hora.setText(s.format(evento.getTimeInMillis()));
+        holder.hora.setText(evento.getV().getFecha());
+        /*SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = s.parse(evento.getV().getFecha());
+            holder.hora.setText(String.valueOf(date.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }*/
     }
 
     @Override

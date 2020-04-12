@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.example.rentaride.Logica.Vehiculo;
 import com.example.rentaride.R;
 import com.example.rentaride.Screens.DetallesReserva;
+import com.example.rentaride.Screens.MapActivity;
 import com.example.rentaride.Utils.Utils;
 import com.github.nikartm.button.FitButton;
 
@@ -166,8 +167,6 @@ public class ReservaFragment extends Fragment{
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent i = new Intent(rootView.getContext(), DetallesReserva.class);
                     i.putExtra("ve", filtrado.get(position));
-                    i.putExtra("da", filtrado.get(position).getFecha());
-                    i.putExtra("pr", filtrado.get(position).getPrecio());
                     i.putExtra("ac", 2);
                     startActivityForResult(i, 2);
                 }
@@ -179,8 +178,6 @@ public class ReservaFragment extends Fragment{
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent i = new Intent(rootView.getContext(), DetallesReserva.class);
                     i.putExtra("ve", listvehiculo.get(position));
-                    i.putExtra("da", listvehiculo.get(position).getFecha());
-                    i.putExtra("pr", listvehiculo.get(position).getPrecio());
                     i.putExtra("ac", 2);
                     startActivityForResult(i, 2);
                 }
@@ -236,7 +233,7 @@ public class ReservaFragment extends Fragment{
     }
 
     public void mapa(){
-
+        startActivity(new Intent(rootView.getContext(), MapActivity.class));
     }
 
     private class CustomArrayAdapter extends ArrayAdapter<Vehiculo>{

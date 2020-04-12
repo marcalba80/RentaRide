@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentaride.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoReservar.ViewHolder> {
@@ -51,7 +53,7 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Reserva evento = mDataset.get(position);
         holder.desc.setText(evento.getV().getMarca() + " " + evento.getV().getModelo());
-        holder.precio.setText(String.valueOf(evento.getPrecio())+ "€");
+        holder.precio.setText(String.valueOf(evento.getV().getPrecio())+ "€");
         if(evento.v.type == 0){
             holder.tipo.setText("Coche");
             holder.cv.getBackground().setTint(evento.getColor());
@@ -64,8 +66,15 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
             holder.tipo.setText("Bicicleta");
             holder.cv.getBackground().setTint(evento.getColor());
         }
-        SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
-        holder.hora.setText(s.format(evento.getTimeInMillis()));
+        holder.hora.setText(evento.getV().getFecha());
+        /*SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = s.parse(evento.getV().getFecha());
+            holder.hora.setText(String.valueOf(date.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }*/
+
     }
 
     @Override
@@ -170,14 +179,13 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
         notifyDataSetChanged();
     }
 
-    public void filtrarFecha(long dia) {
-        long day = 86400000;
+    /*public void filtrarFecha(String fecha) {
         mDataset.clear();
         for (Reserva item : copia) {
-            if (item.getTimeInMillis() >= dia && item.getTimeInMillis() < (dia+day)) {
+            if (item >= dia && item.getTimeInMillis() < (dia+day)) {
                 mDataset.add(item);
             }
         }
         notifyDataSetChanged();
-    }
+    }*/
 }
