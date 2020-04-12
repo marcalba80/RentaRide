@@ -75,7 +75,7 @@ public class RegistrarUsuario extends AppCompatActivity {
             return false;
         }
 
-        if (telefono.isEmpty()) {
+        if (telefono.isEmpty() || telefono.length() < 9) {
             textotelefono.setError(getString(R.string.telef));
             return false;
         }
