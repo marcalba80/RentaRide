@@ -6,47 +6,48 @@ import java.io.Serializable;
 
 public class Vehiculo implements Serializable {
     int type;
-    String marca, modelo, año, info, telefono, matricula, potencia, combustible, imagen;
-    boolean adaptado, reservado;
+    String marca, modelo, año, info, matricula, potencia, combustible, imagen;
+    boolean adaptado;
+    double precio;
 
     public Vehiculo() {
     }
 
-    public Vehiculo(int type, String marca, String modelo, String año, String info, String telefono, String matricula, String potencia, String combustible, String imagen, boolean adaptado) {
+    public Vehiculo(int type, String marca, String modelo, String año, String info, String matricula, String potencia, String combustible, String imagen, boolean adaptado, double precio) {
         this.type = type;
         this.marca = marca;
         this.modelo = modelo;
         this.año = año;
         this.info = info;
-        this.telefono = telefono;
         this.matricula = matricula;
         this.potencia = potencia;
         this.combustible = combustible;
         this.imagen = imagen;
         this.adaptado = adaptado;
+        this.precio = precio;
     }
 
-    public Vehiculo(int type, String marca, String modelo, String año, String info, String telefono, String matricula, String potencia, String combustible, String imagen) {
+    public Vehiculo(int type, String marca, String modelo, String año, String info, String matricula, String potencia, String combustible, String imagen, double precio) {
         this.type = type;
         this.marca = marca;
         this.modelo = modelo;
         this.año = año;
         this.info = info;
-        this.telefono = telefono;
         this.matricula = matricula;
         this.potencia = potencia;
         this.combustible = combustible;
         this.imagen = imagen;
+        this.precio = precio;
     }
 
-    public Vehiculo(int type, String marca, String modelo, String año, String info, String telefono, String imagen) {
+    public Vehiculo(int type, String marca, String modelo, String año, String info, String imagen, double precio) {
         this.type = type;
         this.marca = marca;
         this.modelo = modelo;
         this.año = año;
         this.info = info;
-        this.telefono = telefono;
         this.imagen = imagen;
+        this.precio = precio;
     }
 
 
@@ -90,14 +91,6 @@ public class Vehiculo implements Serializable {
         this.info = info;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
     public String getMatricula() {
         return matricula;
     }
@@ -130,10 +123,6 @@ public class Vehiculo implements Serializable {
         this.adaptado = adaptado;
     }
 
-    public boolean isReservado() {
-        return reservado;
-    }
-
     public String getImagen() {
         return imagen;
     }
@@ -142,7 +131,11 @@ public class Vehiculo implements Serializable {
         this.imagen = imagen;
     }
 
-    public void setReservado(boolean reservado) {
-        this.reservado = reservado;
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 }

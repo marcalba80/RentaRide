@@ -15,9 +15,9 @@ import com.github.nikartm.button.FitButton;
 
 
 public class RegistrarUsuario extends AppCompatActivity {
-    EditText textoemail, textocontraseña, textonombre;
+    EditText textoemail, textocontraseña, textonombre, textotelefono;
     FitButton botonregistrar;
-    String email, password, nombre;
+    String email, password, nombre, telefono;
     SharedPreferences mPreference;
     SharedPreferences.Editor mEditor;
 
@@ -29,6 +29,7 @@ public class RegistrarUsuario extends AppCompatActivity {
         textonombre = findViewById(R.id.reg_nombre);
         textocontraseña = findViewById(R.id.reg_contraseña);
         textoemail = findViewById(R.id.reg_email);
+        textotelefono = findViewById(R.id.telefono);
         mPreference = PreferenceManager.getDefaultSharedPreferences(RegistrarUsuario.this);
         botonregistrar.setOnClickListener(new View.OnClickListener() {
 
@@ -48,6 +49,8 @@ public class RegistrarUsuario extends AppCompatActivity {
             mEditor.apply();
             mEditor.putString(getString(R.string.preferencePass), textocontraseña.getText().toString());
             mEditor.apply();
+            mEditor.putString(getString(R.string.preftelefono), textotelefono.getText().toString());
+            mEditor.apply();
             mEditor.putString(getString(R.string.preferenceUsername), textonombre.getText().toString());
             mEditor.apply();
             startActivity(new Intent(RegistrarUsuario.this, Login.class));
@@ -60,6 +63,7 @@ public class RegistrarUsuario extends AppCompatActivity {
         email = textoemail.getText().toString();
         password = textocontraseña.getText().toString();
         nombre = textonombre.getText().toString();
+        telefono = textotelefono.getText().toString();
 
         if (nombre.isEmpty()){
             textonombre.setError(getString(R.string.errornombre));
@@ -68,6 +72,11 @@ public class RegistrarUsuario extends AppCompatActivity {
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             textoemail.setError(getString(R.string.email));
+            return false;
+        }
+
+        if (telefono.isEmpty()) {
+            textotelefono.setError(getString(R.string.telef));
             return false;
         }
 

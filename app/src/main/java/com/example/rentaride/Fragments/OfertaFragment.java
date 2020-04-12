@@ -17,7 +17,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,17 +37,13 @@ import com.example.rentaride.R;
 import com.example.rentaride.Screens.DetallesReserva;
 import com.example.rentaride.Utils.Utils;
 import com.github.nikartm.button.FitButton;
-import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import static com.example.rentaride.Utils.Utils.motoprueba;
 
 public class OfertaFragment extends Fragment {
     long f = 0;
@@ -197,8 +192,8 @@ public class OfertaFragment extends Fragment {
                         return;
                     }
                 }
-                Vehiculo v = new Vehiculo(t.getSelectedItemPosition(), marca.getText().toString(), modelo.getText().toString(), año.getText().toString(), info.getText().toString(), "636666663", matricula.getText().toString(), potencia.getText().toString() + getString(R.string.cv), com.getSelectedItem().toString(), "", c.isChecked());
-                Reserva r = new Reserva(color, f, v, Double.parseDouble(precio.getText().toString()), obtenerUbicacion(getContext()));
+                Vehiculo v = new Vehiculo(t.getSelectedItemPosition(), marca.getText().toString(), modelo.getText().toString(), año.getText().toString(), info.getText().toString(), matricula.getText().toString(), potencia.getText().toString() + getString(R.string.cv), com.getSelectedItem().toString(), "", c.isChecked(), Double.parseDouble(precio.getText().toString()));
+                Reserva r = new Reserva(color, f, v, obtenerUbicacion(getContext()),Utils.ID, Utils.T1);
                 list.add(r);
                 Toast.makeText(getContext(), R.string.ofveh, Toast.LENGTH_SHORT).show();
                 adapterEventoReservar = new AdapterEventoReservar(list);
@@ -209,10 +204,11 @@ public class OfertaFragment extends Fragment {
                         actual = list.indexOf(list.get(position));
                         i.putExtra(getString(R.string.ve), list.get(position).getV());
                         i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
-                        i.putExtra(getString(R.string.pr), list.get(position).getPrecio());
+                        i.putExtra(getString(R.string.telef), list.get(position).getTelefonoC());
                         i.putExtra(getString(R.string.lat), list.get(position).getLocation().getLatitude());
                         i.putExtra(getString(R.string.lon), list.get(position).getLocation().getLongitude());
                         i.putExtra(getString(R.string.ac), 0);
+                        i.putExtra(getString(R.string.reservar), list.get(position).isReservado());
                         startActivityForResult(i, 2);
                     }
                 });
@@ -230,10 +226,11 @@ public class OfertaFragment extends Fragment {
                 actual = list.indexOf(list.get(position));
                 i.putExtra(getString(R.string.ve), list.get(position).getV());
                 i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
-                i.putExtra(getString(R.string.pr), list.get(position).getPrecio());
+                i.putExtra(getString(R.string.telef), list.get(position).getTelefonoC());
                 i.putExtra(getString(R.string.lat), list.get(position).getLocation().getLatitude());
                 i.putExtra(getString(R.string.lon), list.get(position).getLocation().getLongitude());
                 i.putExtra(getString(R.string.ac), 0);
+                i.putExtra(getString(R.string.reservar), list.get(position).isReservado());
                 startActivityForResult(i, 2);
             }
         });
@@ -243,7 +240,11 @@ public class OfertaFragment extends Fragment {
     }
 
     public void obtener() {
-        list.add( (Reserva) Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3)).get(0));
+        for(Reserva r : Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3))){
+            if( r.getIDOfertor() == Utils.ID ){
+                list.add(r);
+            }
+        }
     }
 
 

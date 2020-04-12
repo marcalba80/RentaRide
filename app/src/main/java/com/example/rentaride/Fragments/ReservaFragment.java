@@ -3,14 +3,11 @@ package com.example.rentaride.Fragments;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -30,7 +27,6 @@ import com.example.rentaride.Screens.DetallesReserva;
 import com.example.rentaride.Screens.Mapa;
 import com.example.rentaride.Utils.Utils;
 import com.github.nikartm.button.FitButton;
-import com.github.sundeepk.compactcalendarview.domain.Event;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -169,9 +165,10 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
     }
 
     private void recuperar() {
-        List<Event> le = Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3));
-        for (Event r : le) {
-            list.add((Reserva) r);
+        for(Reserva r : Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3))){
+            if(!r.isReservado() && r.getIDOfertor() != Utils.ID){
+                list.add(r);
+            }
         }
     }
     @Override
@@ -195,10 +192,11 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
         actual = list.indexOf(r);
         i.putExtra(getString(R.string.ve), r.getV());
         i.putExtra(getString(R.string.da), r.getTimeInMillis());
-        i.putExtra(getString(R.string.pr), r.getPrecio());
+        i.putExtra(getString(R.string.telef),r.getTelefonoC());
         i.putExtra(getString(R.string.lat), r.getLocation().getLatitude());
         i.putExtra(getString(R.string.lon), r.getLocation().getLongitude());
         i.putExtra(getString(R.string.ac), 2);
+        i.putExtra(getString(R.string.reservar), r.isReservado());
         startActivityForResult(i, 2);
     }
 }

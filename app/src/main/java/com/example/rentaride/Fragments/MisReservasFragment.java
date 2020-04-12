@@ -1,7 +1,6 @@
 package com.example.rentaride.Fragments;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +25,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import static com.example.rentaride.Utils.Utils.biciprueba;
-import static com.example.rentaride.Utils.Utils.cocheprueba;
-import static com.example.rentaride.Utils.Utils.motoprueba;
 
 public class MisReservasFragment extends Fragment {
     List<Event> list = new ArrayList<>();
@@ -97,10 +92,11 @@ public class MisReservasFragment extends Fragment {
                 actual = list.indexOf(le.get(position));
                 i.putExtra(getString(R.string.ve), le.get(position).getV());
                 i.putExtra(getString(R.string.da), le.get(position).getTimeInMillis());
-                i.putExtra(getString(R.string.pr), le.get(position).getPrecio());
+                i.putExtra(getString(R.string.telef), le.get(position).getTelefonoO());
                 i.putExtra(getString(R.string.lat), le.get(position).getLocation().getLatitude());
                 i.putExtra(getString(R.string.lon), le.get(position).getLocation().getLongitude());
                 i.putExtra(getString(R.string.ac), 1);
+                i.putExtra(getString(R.string.reservar), le.get(position).isReservado());
                 startActivityForResult(i, 2);
             }
         });
@@ -111,7 +107,11 @@ public class MisReservasFragment extends Fragment {
 
 
     private void recuperar() {
-        list = Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3));
+        for(Reserva r : Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3))){
+            if(r.isReservado() && r.getIDCliente() == Utils.ID ){
+                list.add((Event) r);
+            }
+        }
         cv.addEvents(list);
     }
 

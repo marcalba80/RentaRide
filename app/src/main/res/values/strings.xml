@@ -36,7 +36,7 @@
     <string name="ofertar">Ofertar</string>
     <string name="reservaMapa">Reservar desde Mapa</string>
     <string name="preftelefono">teléfono</string>
-    <string name="literalTelefono">Número de teléfono:</string>
+    <string name="literalTelefono">Número de teléfono</string>
     <string name="mantenersesion">sesión</string>
     <string name="tipoCombustible">Tipo combustible</string>
     <string name="Tipo">Tipo</string>
@@ -93,6 +93,7 @@
     <string name="map">map</string>
     <string name="ofveh">Se ha ofrecido el vehiculo correctamente!</string>
     <string name="reservacor">Se ha hecho la reserva correctamente!</string>
+    <string name="telef">Introduzca un teléfono válido!</string>
     <string-array name="combustible_arrays">
         <item>Gasolina</item>
         <item>Gasoil</item>

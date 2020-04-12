@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -110,9 +109,13 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
     }
 
     private void obtenerReservas() {
-        List<Event> le = Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3));
-        for (Event r : le) {
-            Reserva res = (Reserva) r;
+        List<Reserva> l = new ArrayList<>();
+        for(Reserva r : Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3))){
+            if(!r.isReservado() && r.getIDOfertor() != Utils.ID){
+                l.add(r);
+            }
+        }
+        for (Reserva res : l) {
             switch(res.getV().getType()){
                 case 0:
                     coches.add(res);
@@ -222,11 +225,12 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
         Intent i = new Intent(Mapa.this, DetallesReserva.class);
         i.putExtra(getString(R.string.ve), r.getV());
         i.putExtra(getString(R.string.da), r.getTimeInMillis());
-        i.putExtra(getString(R.string.pr), r.getPrecio());
+        i.putExtra(getString(R.string.telef),r.getTelefonoO());
         i.putExtra(getString(R.string.lat), r.getLocation().getLatitude());
         i.putExtra(getString(R.string.lon), r.getLocation().getLongitude());
         i.putExtra(getString(R.string.map), true);
         i.putExtra(getString(R.string.ac), 2);
+        i.putExtra(getString(R.string.reservar), r.isReservado());
         startActivityForResult(i, 2);
         return false;
     }

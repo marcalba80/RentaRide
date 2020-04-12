@@ -30,19 +30,21 @@ import static com.example.rentaride.Utils.Utils.MOTOCICLETA;
 public class DetallesReserva extends AppCompatActivity {
     Vehiculo v;
     String f;
-    double p, lat, lon;
+    double lat, lon;
     FitButton fit, map;
-    String mensaje;
+    String mensaje, telefono;
+    boolean reservado = false, propia = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_reserva);
         v = (Vehiculo) getIntent().getSerializableExtra(getString(R.string.ve));
-        p = getIntent().getDoubleExtra(getString(R.string.pr), 0);
         long d = getIntent().getLongExtra(getString(R.string.da),0);
         lat = getIntent().getDoubleExtra(getString(R.string.lat), 0.0);
         lon = getIntent().getDoubleExtra(getString(R.string.lon), 0.0);
+        telefono = getIntent().getStringExtra(getString(R.string.telef));
+        reservado = getIntent().getBooleanExtra(getString(R.string.reservar), false);
         fit = findViewById(R.id.eliminar);
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         f = s.format(new Date(d));
@@ -51,12 +53,11 @@ public class DetallesReserva extends AppCompatActivity {
             case 0:
                 FitButton fb = findViewById(R.id.boton);
                 FitButton fb2 = findViewById(R.id.eliminar);
-                v.setReservado(true);
                 fb.setVisibility(View.GONE);
+                propia = true;
                 fb2.setText(getString(R.string.cancelar_oferta));
                 break;
             case 1:
-                v.setReservado(true);
                 break;
             case 2:
                 mensaje = getString(R.string.resveh);
@@ -119,10 +120,10 @@ public class DetallesReserva extends AppCompatActivity {
                 b5.setText(ve.getAño());
                 b6.setText(ve.getInfo());
                 b9.setText(f);
-                b10.setText(String.valueOf(p));
-                if(ve.isReservado()){
+                b10.setText(String.valueOf(ve.getPrecio()) + " €");
+                if(reservado || propia){
                     b7.setText(ve.getMatricula());
-                    b8.setText(ve.getTelefono());
+                    b8.setText(telefono);
                 } else {
                     t4.setVisibility(View.GONE);
                     t5.setVisibility(View.GONE);
@@ -140,10 +141,10 @@ public class DetallesReserva extends AppCompatActivity {
                 b5.setText(ve.getAño());
                 b6.setText(ve.getInfo());
                 b9.setText(f);
-                b10.setText(String.valueOf(p));
-                if(ve.isReservado()){
+                b10.setText(String.valueOf(ve.getPrecio()) + " €");
+                if(reservado || propia){
                     b7.setText(ve.getMatricula());
-                    b8.setText(ve.getTelefono());
+                    b8.setText(telefono);
                 } else {
                     t4.setVisibility(View.GONE);
                     t5.setVisibility(View.GONE);
@@ -160,9 +161,9 @@ public class DetallesReserva extends AppCompatActivity {
                 b5.setText(ve.getAño());
                 b6.setText(ve.getAño());
                 b9.setText(f);
-                b10.setText(String.valueOf(p));
-                if(ve.isReservado()){
-                    b8.setText(ve.getTelefono());
+                b10.setText(String.valueOf(ve.getPrecio()) + " €");
+                if(reservado || propia){
+                    b8.setText(telefono);
                 } else {
                     t5.setVisibility(View.GONE);
                     fit.setText(getString(R.string.reservar));
