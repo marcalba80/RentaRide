@@ -36,10 +36,13 @@ import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.Logica.Vehiculo;
 import com.example.rentaride.R;
 import com.example.rentaride.Screens.DetallesReserva;
+import com.example.rentaride.Utils.Utils;
 import com.github.nikartm.button.FitButton;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -134,7 +137,12 @@ public class OfertaFragment extends Fragment {
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 fecha.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                f = myCalendar.getTimeInMillis();
+                SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                try {
+                    f = s.parse(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year+ " 00:00").getTime();
+                } catch (ParseException e) {
+                    f = myCalendar.getTimeInMillis();
+                }
             }
 
         };
@@ -193,6 +201,20 @@ public class OfertaFragment extends Fragment {
                 Reserva r = new Reserva(color, f, v, Double.parseDouble(precio.getText().toString()), obtenerUbicacion(getContext()));
                 list.add(r);
                 adapterEventoReservar = new AdapterEventoReservar(list);
+                adapterEventoReservar.setOnItemClickListener(new AdapterEventoReservar.ClickListener() {
+                    @Override
+                    public void onItemClick(int position, View v) {
+                        Intent i = new Intent(getContext(), DetallesReserva.class);
+                        actual = list.indexOf(list.get(position));
+                        i.putExtra(getString(R.string.ve), list.get(position).getV());
+                        i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
+                        i.putExtra(getString(R.string.pr), list.get(position).getPrecio());
+                        i.putExtra(getString(R.string.lat), list.get(position).getLocation().getLatitude());
+                        i.putExtra(getString(R.string.lon), list.get(position).getLocation().getLongitude());
+                        i.putExtra(getString(R.string.ac), 0);
+                        startActivityForResult(i, 2);
+                    }
+                });
                 lv.setHasFixedSize(true);
                 lv.setLayoutManager(new LinearLayoutManager(getContext()));
                 lv.setAdapter(adapterEventoReservar);
@@ -208,6 +230,8 @@ public class OfertaFragment extends Fragment {
                 i.putExtra(getString(R.string.ve), list.get(position).getV());
                 i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
                 i.putExtra(getString(R.string.pr), list.get(position).getPrecio());
+                i.putExtra(getString(R.string.lat), list.get(position).getLocation().getLatitude());
+                i.putExtra(getString(R.string.lon), list.get(position).getLocation().getLongitude());
                 i.putExtra(getString(R.string.ac), 0);
                 startActivityForResult(i, 2);
             }
@@ -218,10 +242,7 @@ public class OfertaFragment extends Fragment {
     }
 
     public void obtener() {
-        Location l = new Location("");
-        l.setLatitude(0.0);
-        l.setLongitude(0.0);
-        list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime(), motoprueba, 20, l));
+        list.add( (Reserva) Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3)).get(0));
     }
 
 
@@ -232,7 +253,7 @@ public class OfertaFragment extends Fragment {
             if (requestCode == 2) {
                 list.remove(actual);
                 adapterEventoReservar.clear();
-                Toast.makeText(getContext(), R.string.eliminar_oferta, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.ofveh, Toast.LENGTH_SHORT).show();
                 adapterEventoReservar = new AdapterEventoReservar(list);
                 lv.setHasFixedSize(true);
                 lv.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -74,17 +74,30 @@
     <string name="guardar_correctamente">Se ha guardado la imagen correctamente</string>
     <string name="correo_recuperacion">Se ha enviado el correo de recuperación! Revise su buzón.</string>
     <string name="gasolina">Gasolina</string>
-    <string name="diesel">Dieses</string>
+    <string name="diesel">Gasoil</string>
     <string name="hibrido">Hibrido</string>
     <string name="electrico">Electrico</string>
     <string name="permission_denied_explanation">Debe habilitar la ubicación</string>
     <string name="settings">Settings</string>
     <string name="permission_rationale">Se precisan de los permisos de ubicacion!</string>
+    <string name="needed">Se necesitan permisos de localización!</string>
+    <string name="prop">Proporcione los permisos necesarios para que la aplicación pueda funcionar.</string>
+    <string name="su">Si</string>
+    <string name="No">No</string>
+    <string name="perm">Se necesitan los permisos.</string>
+    <string name="lon">lon</string>
+    <string name="lat">lat</string>
+    <string name="tit">tit</string>
+    <string name="resveh">¿Seguro que quiere reservar este vehiculo?</string>
+    <string name="at">Atención</string>
+    <string name="map">map</string>
+    <string name="ofveh">Se ha ofrecido el vehiculo correctamente!</string>
+    <string name="reservacor">Se ha hecho la reserva correctamente!</string>
     <string-array name="combustible_arrays">
-    <item>Gasolina</item>
-    <item>Gasoil</item>
-    <item>Hibrido</item>
-    <item>Electrico</item>
+        <item>Gasolina</item>
+        <item>Gasoil</item>
+        <item>Hibrido</item>
+        <item>Electrico</item>
     </string-array>
     <string-array name="tipo_arrays">
         <item>Coche</item>

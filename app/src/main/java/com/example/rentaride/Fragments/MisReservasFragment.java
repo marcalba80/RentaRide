@@ -17,6 +17,7 @@ import com.example.rentaride.Logica.AdapterEvento;
 import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.R;
 import com.example.rentaride.Screens.DetallesReserva;
+import com.example.rentaride.Utils.Utils;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
@@ -79,10 +80,6 @@ public class MisReservasFragment extends Fragment {
         return v;
     }
 
-    public void ofertar(View view){
-
-    }
-
     private void mostrar(Date fecha) {
         last = fecha;
         SimpleDateFormat dateFormat = new SimpleDateFormat("d LLLL y", Locale.getDefault());
@@ -101,6 +98,8 @@ public class MisReservasFragment extends Fragment {
                 i.putExtra(getString(R.string.ve), le.get(position).getV());
                 i.putExtra(getString(R.string.da), le.get(position).getTimeInMillis());
                 i.putExtra(getString(R.string.pr), le.get(position).getPrecio());
+                i.putExtra(getString(R.string.lat), le.get(position).getLocation().getLatitude());
+                i.putExtra(getString(R.string.lon), le.get(position).getLocation().getLongitude());
                 i.putExtra(getString(R.string.ac), 1);
                 startActivityForResult(i, 2);
             }
@@ -112,16 +111,7 @@ public class MisReservasFragment extends Fragment {
 
 
     private void recuperar() {
-        long day = 86400000;
-        Location l = new Location("");
-        l.setLatitude(0.0);
-        l.setLongitude(0.0);
-        list.add(new Reserva(getResources().getColor(R.color.C1), new Date().getTime(),cocheprueba, 90.5,l));
-        list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime(), motoprueba, 20,l));
-        list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime(),biciprueba, 10.99,l));
-        list.add(new Reserva(getResources().getColor(R.color.C1), new Date().getTime()+day,cocheprueba, 102.5,l));
-        list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime()+day*2,motoprueba, 19.95,l));
-        list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime()+day*3,biciprueba, 9.5,l));
+        list = Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3));
         cv.addEvents(list);
     }
 

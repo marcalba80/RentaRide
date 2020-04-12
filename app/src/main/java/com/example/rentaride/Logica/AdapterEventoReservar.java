@@ -18,20 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoReservar.ViewHolder> {
-    private List<Reserva> mDataset,copia;
+    private List<Reserva> mDataset = new ArrayList<>(),copia = new ArrayList<>();
     private ClickListener clickListener;
 
     public AdapterEventoReservar(List<Reserva> myDataset) {
-        mDataset = myDataset;
+        mDataset.addAll(myDataset);
         clickListener = new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
 
             }
         };
-        copia = new ArrayList<>();
-        copia.addAll(mDataset);
-
     }
 
     @NonNull
@@ -107,77 +104,83 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
     }
 
     public void addAll(List<Reserva> events) {
-        mDataset = events;
+        mDataset.addAll(events);
     }
 
     public void filtrarMarca(String text) {
-        mDataset.clear();
-        if (text.isEmpty()) {
-            mDataset.addAll(copia);
-        } else {
-            text = text.toLowerCase();
-            for (Reserva item : copia) {
-                if (item.v.getMarca().toLowerCase().contains(text)) {
-                    mDataset.add(item);
-                }
+        text = text.toLowerCase();
+        for (Reserva item : mDataset) {
+            if (item.v.getMarca().toLowerCase().contains(text)) {
+                copia.add(item);
             }
         }
+        mDataset.clear();
+        mDataset.addAll(copia);
+        copia.clear();
         notifyDataSetChanged();
     }
 
     public void filtrarModelo(String text) {
-        mDataset.clear();
-        if (text.isEmpty()) {
-            mDataset.addAll(copia);
-        } else {
-            text = text.toLowerCase();
-            for (Reserva item : copia) {
-                if (item.v.getModelo().toLowerCase().contains(text)) {
-                    mDataset.add(item);
-                }
+        text = text.toLowerCase();
+        for (Reserva item : mDataset) {
+            if (item.v.getModelo().toLowerCase().contains(text)) {
+                copia.add(item);
             }
         }
+        mDataset.clear();
+        mDataset.addAll(copia);
+        copia.clear();
         notifyDataSetChanged();
     }
 
     public void filtrarTipo(int tipo) {
-        mDataset.clear();
-        for (Reserva item : copia) {
+        for (Reserva item : mDataset) {
             if (item.v.getType() == tipo) {
-                mDataset.add(item);
+                copia.add(item);
             }
         }
+        mDataset.clear();
+        mDataset.addAll(copia);
+        copia.clear();
         notifyDataSetChanged();
     }
 
     public void filtrarCombustible(String com) {
-        mDataset.clear();
-        for (Reserva item : copia) {
+        for (Reserva item : mDataset) {
+            if(item.getV().getType() != 2)
             if (item.v.getCombustible().equals(com)) {
-                mDataset.add(item);
+                copia.add(item);
             }
         }
+        mDataset.clear();
+        mDataset.addAll(copia);
+        copia.clear();
         notifyDataSetChanged();
     }
 
     public void filtrarAdaptado(boolean adaptado) {
-        mDataset.clear();
-        for (Reserva item : copia) {
+        for (Reserva item : mDataset) {
+            if(item.getV().getType() != 2)
             if (item.v.isAdaptado() == adaptado) {
-                mDataset.add(item);
+                copia.add(item);
             }
         }
+        mDataset.clear();
+        mDataset.addAll(copia);
+        copia.clear();
         notifyDataSetChanged();
     }
 
     public void filtrarFecha(long dia) {
         long day = 86400000;
-        mDataset.clear();
-        for (Reserva item : copia) {
+        for (Reserva item : mDataset) {
             if (item.getTimeInMillis() >= dia && item.getTimeInMillis() < (dia+day)) {
-                mDataset.add(item);
+                copia.add(item);
             }
         }
+        mDataset.clear();
+        mDataset.addAll(copia);
+        copia.clear();
         notifyDataSetChanged();
     }
 }

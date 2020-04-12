@@ -1,6 +1,7 @@
 package com.example.rentaride.Fragments;
 
-import android.location.Location;
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,34 +11,39 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.EditTextPreference;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentaride.Logica.AdapterEventoReservar;
 import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.R;
+import com.example.rentaride.Screens.DetallesReserva;
+import com.example.rentaride.Screens.Mapa;
+import com.example.rentaride.Utils.Utils;
+import com.github.nikartm.button.FitButton;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
-import static com.example.rentaride.Utils.Utils.biciprueba;
-import static com.example.rentaride.Utils.Utils.cocheprueba;
-import static com.example.rentaride.Utils.Utils.motoprueba;
-
 public class ReservaFragment extends Fragment {
-    View rootView;
-    Spinner spin;
-    String[] typeFuel = {"Gasolina", "Dieses", "Hibrido", "Electrico"};
+    int actual;
     List<Reserva> list = new ArrayList<>();
     AdapterEventoReservar arrayAdapter;
     RecyclerView lv;
+    long f;
 
 
     public ReservaFragment(){
@@ -52,8 +58,6 @@ public class ReservaFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //spin = (Spinner) rootView.findViewById(R.id.spin);
-       //spin.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -65,52 +69,136 @@ public class ReservaFragment extends Fragment {
     }
 
     private void inicializar(View v) {
-        final EditText marca, modelo;
-        Button b;
+        final EditText marca, modelo,fecha;
+        final Spinner t, com;
+        final CheckBox ch;
         lv = v.findViewById(R.id.list);
+        t = v.findViewById(R.id.tip);
+        final LinearLayout extra = v.findViewById(R.id.extra);
+        com = v.findViewById(R.id.spin);
         marca = v.findViewById(R.id.reservaMarca);
         modelo = v.findViewById(R.id.reservaModelo);
-        b = v.findViewById(R.id.buscar);
+        fecha = v.findViewById(R.id.fecha);
+        ch = v.findViewById(R.id.adaptado);
         recuperar();
         arrayAdapter = new AdapterEventoReservar(list);
+        arrayAdapter.setOnItemClickListener(new AdapterEventoReservar.ClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                Intent i = new Intent(getContext(), DetallesReserva.class);
+                actual = list.indexOf(list.get(position));
+                i.putExtra(getString(R.string.ve), list.get(position).getV());
+                i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
+                i.putExtra(getString(R.string.pr), list.get(position).getPrecio());
+                i.putExtra(getString(R.string.lat), list.get(position).getLocation().getLatitude());
+                i.putExtra(getString(R.string.lon), list.get(position).getLocation().getLongitude());
+                i.putExtra(getString(R.string.ac), 2);
+                startActivityForResult(i, 2);
+            }
+        });
         lv.setHasFixedSize(true);
         lv.setLayoutManager(new LinearLayoutManager(getContext()));
         lv.setAdapter(arrayAdapter);
-        marca.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+        FitButton button = v.findViewById(R.id.mapa);
+        FitButton buscar = v.findViewById(R.id.buscar);
+        final Calendar myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
-            public void afterTextChanged(Editable s) {
-                arrayAdapter.filtrarMarca(s.toString());
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                fecha.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                try {
+                    f = s.parse(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year+ " 00:00").getTime();
+                } catch (ParseException e) {
+                    f = myCalendar.getTimeInMillis();
+                }
+            }
+
+        };
+        fecha.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(getContext(), date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        modelo.addTextChangedListener(new TextWatcher() {
+        t.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i) {
+                    default:
+                        extra.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        extra.setVisibility(View.GONE);
+                        break;
+                }
+            }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                arrayAdapter.filtrarModelo(s.toString());
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), Mapa.class));
+            }
+        });
+        buscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayAdapter.clear();
+                arrayAdapter.addAll(list);
+                arrayAdapter.notifyDataSetChanged();
+                if (!marca.getText().toString().equals("")) {
+                    arrayAdapter.filtrarMarca(marca.getText().toString());
+                }
+                if (!modelo.getText().toString().equals("")) {
+                    arrayAdapter.filtrarModelo(modelo.getText().toString());
+
+                }
+                if (!fecha.getText().toString().equals("")) {
+                    arrayAdapter.filtrarFecha(f);
+                }
+                if(com != null && com.getSelectedItem() !=null ) arrayAdapter.filtrarCombustible(com.getSelectedItem().toString());
+                if (ch.isChecked()){
+                    arrayAdapter.filtrarAdaptado(true);
+                }else{
+                    arrayAdapter.filtrarAdaptado(false);
+                }
+                if(t != null && t.getSelectedItem() !=null ) arrayAdapter.filtrarTipo(t.getSelectedItemPosition());
+            }
+        });
+
     }
 
     private void recuperar() {
-        long day = 86400000;
-        Location l = new Location("");
-        l.setLatitude(0.0);
-        l.setLongitude(0.0);
-        list.add(new Reserva(getResources().getColor(R.color.C1), new Date().getTime(),cocheprueba, 90.5,l));
-        list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime(), motoprueba, 20,l));
-        list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime(),biciprueba, 10.99,l));
-        list.add(new Reserva(getResources().getColor(R.color.C1), new Date().getTime()+day,cocheprueba, 102.5,l));
-        list.add(new Reserva(getResources().getColor(R.color.C2), new Date().getTime()+day*2,motoprueba, 19.95,l));
-        list.add(new Reserva(getResources().getColor(R.color.C3), new Date().getTime()+day*3,biciprueba, 9.5,l));
+        List<Event> le = Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3));
+        for (Event r : le) {
+            list.add((Reserva) r);
+        }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            if (resultCode == -1) {
+                list.remove(actual);
+                arrayAdapter = new AdapterEventoReservar(list);
+                Toast.makeText(getActivity(), getString(R.string.reservacor), Toast.LENGTH_SHORT).show();
+                lv.setHasFixedSize(true);
+                lv.setLayoutManager(new LinearLayoutManager(getContext()));
+                lv.setAdapter(arrayAdapter);
+            }
+        }
     }
 }

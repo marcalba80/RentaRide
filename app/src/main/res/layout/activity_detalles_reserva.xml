@@ -242,15 +242,15 @@
                    android:textColor="@color/White"
                    android:text="Fecha: "
                    />
+
                <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:textSize="20sp"
                    android:id="@+id/fechatv"
+                   android:layout_width="wrap_content"
+                   android:layout_height="38dp"
                    android:layout_marginStart="10dp"
-                   android:textColor="@color/White"
                    android:text="12/04/20"
-                   />
+                   android:textColor="@color/White"
+                   android:textSize="20sp" />
                </LinearLayout>
                <LinearLayout
                    android:layout_width="match_parent"

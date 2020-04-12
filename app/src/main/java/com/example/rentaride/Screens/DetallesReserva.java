@@ -30,8 +30,9 @@ import static com.example.rentaride.Utils.Utils.MOTOCICLETA;
 public class DetallesReserva extends AppCompatActivity {
     Vehiculo v;
     String f;
-    double p;
-    FitButton fit;
+    double p, lat, lon;
+    FitButton fit, map;
+    String mensaje;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +41,12 @@ public class DetallesReserva extends AppCompatActivity {
         v = (Vehiculo) getIntent().getSerializableExtra(getString(R.string.ve));
         p = getIntent().getDoubleExtra(getString(R.string.pr), 0);
         long d = getIntent().getLongExtra(getString(R.string.da),0);
+        lat = getIntent().getDoubleExtra(getString(R.string.lat), 0.0);
+        lon = getIntent().getDoubleExtra(getString(R.string.lon), 0.0);
         fit = findViewById(R.id.eliminar);
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         f = s.format(new Date(d));
+        mensaje = getString(R.string.seguro_eliminar);
         switch(getIntent().getIntExtra(getString(R.string.ac), 0)){
             case 0:
                 FitButton fb = findViewById(R.id.boton);
@@ -55,12 +59,17 @@ public class DetallesReserva extends AppCompatActivity {
                 v.setReservado(true);
                 break;
             case 2:
+                mensaje = getString(R.string.resveh);
+                if(getIntent().hasExtra(getString(R.string.map))) {
+                    FitButton fb3 = findViewById(R.id.boton2);
+                    fb3.setVisibility(View.GONE);
+                }
                 break;
         }
         addInfo(v);
     }
 
-    public void addInfo(Vehiculo v){
+    public void addInfo(final Vehiculo ve){
         TextView b1, b2, b3, b4, b5, b6, b7, b8, b9, b10;
         LinearLayout t1, t2, t3, t4, t5;
         ImageView imagen;
@@ -82,27 +91,38 @@ public class DetallesReserva extends AppCompatActivity {
         t5 = findViewById(R.id.tvtelf);
         imagen = findViewById(R.id.imagen);
         c = findViewById(R.id.carddetalle);
+        map = findViewById(R.id.boton2);
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DetallesReserva.this, Mapa.class);
+                i.putExtra("lat", lat);
+                i.putExtra("lon", lon);
+                i.putExtra(getString(R.string.tit), ve.getMarca()+" "+ve.getModelo());
+                startActivity(i);
+            }
+        });
 
         Glide.with(this)
-                .load(v.getImagen())
+                .load(ve.getImagen())
                 .centerCrop()
                 .into(imagen);
-        switch(v.getType()){
+        switch(ve.getType()){
             case COCHE:
                 imagen.setBackgroundColor(getColor(R.color.C1));
                 c.getBackground().setTint(getColor(R.color.C1));
-                b1.setText(v.getMarca() + " " + v.getModelo());
-                b2.setText(v.getPotencia());
-                b3.setText(v.getCombustible());
-                if(v.isAdaptado())b4.setText(R.string.si);
+                b1.setText(ve.getMarca() + " " + ve.getModelo());
+                b2.setText(ve.getPotencia());
+                b3.setText(ve.getCombustible());
+                if(ve.isAdaptado())b4.setText(R.string.si);
                 else b4.setText(R.string.no);
-                b5.setText(v.getAño());
-                b6.setText(v.getInfo());
+                b5.setText(ve.getAño());
+                b6.setText(ve.getInfo());
                 b9.setText(f);
                 b10.setText(String.valueOf(p));
-                if(v.isReservado()){
-                    b7.setText(v.getMatricula());
-                    b8.setText(v.getTelefono());
+                if(ve.isReservado()){
+                    b7.setText(ve.getMatricula());
+                    b8.setText(ve.getTelefono());
                 } else {
                     t4.setVisibility(View.GONE);
                     t5.setVisibility(View.GONE);
@@ -114,16 +134,16 @@ public class DetallesReserva extends AppCompatActivity {
             case MOTOCICLETA:
                 imagen.setBackgroundColor(getColor(R.color.C2));
                 c.getBackground().setTint(getColor(R.color.C2));
-                b1.setText(v.getMarca() + " " + v.getModelo());
-                b2.setText(v.getPotencia());
-                b3.setText(v.getCombustible());
-                b5.setText(v.getAño());
-                b6.setText(v.getInfo());
+                b1.setText(ve.getMarca() + " " + ve.getModelo());
+                b2.setText(ve.getPotencia());
+                b3.setText(ve.getCombustible());
+                b5.setText(ve.getAño());
+                b6.setText(ve.getInfo());
                 b9.setText(f);
                 b10.setText(String.valueOf(p));
-                if(v.isReservado()){
-                    b7.setText(v.getMatricula());
-                    b8.setText(v.getTelefono());
+                if(ve.isReservado()){
+                    b7.setText(ve.getMatricula());
+                    b8.setText(ve.getTelefono());
                 } else {
                     t4.setVisibility(View.GONE);
                     t5.setVisibility(View.GONE);
@@ -136,13 +156,13 @@ public class DetallesReserva extends AppCompatActivity {
             case BICICLETA:
                 imagen.setBackgroundColor(getColor(R.color.C3));
                 c.getBackground().setTint(getColor(R.color.C3));
-                b1.setText(v.getMarca() + " " + v.getModelo());
-                b5.setText(v.getAño());
-                b6.setText(v.getAño());
+                b1.setText(ve.getMarca() + " " + ve.getModelo());
+                b5.setText(ve.getAño());
+                b6.setText(ve.getAño());
                 b9.setText(f);
                 b10.setText(String.valueOf(p));
-                if(v.isReservado()){
-                    b8.setText(v.getTelefono());
+                if(ve.isReservado()){
+                    b8.setText(ve.getTelefono());
                 } else {
                     t5.setVisibility(View.GONE);
                     fit.setText(getString(R.string.reservar));
@@ -167,8 +187,8 @@ public class DetallesReserva extends AppCompatActivity {
 
     public void eliminar(View view) {
         new AlertDialog.Builder(this)
-                .setTitle(R.string.eliminar_reserva)
-                .setMessage(R.string.seguro_eliminar)
+                .setTitle(R.string.at)
+                .setMessage(mensaje)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(getString(R.string.si), new DialogInterface.OnClickListener() {
 
