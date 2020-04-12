@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class ReservaFragment extends Fragment {
+public class ReservaFragment extends Fragment implements AdapterEventoReservar.ReservaListener {
     int actual;
     List<Reserva> list = new ArrayList<>();
     AdapterEventoReservar arrayAdapter;
@@ -82,20 +82,7 @@ public class ReservaFragment extends Fragment {
         ch = v.findViewById(R.id.adaptado);
         recuperar();
         arrayAdapter = new AdapterEventoReservar(list);
-        arrayAdapter.setOnItemClickListener(new AdapterEventoReservar.ClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Intent i = new Intent(getContext(), DetallesReserva.class);
-                actual = list.indexOf(list.get(position));
-                i.putExtra(getString(R.string.ve), list.get(position).getV());
-                i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
-                i.putExtra(getString(R.string.pr), list.get(position).getPrecio());
-                i.putExtra(getString(R.string.lat), list.get(position).getLocation().getLatitude());
-                i.putExtra(getString(R.string.lon), list.get(position).getLocation().getLongitude());
-                i.putExtra(getString(R.string.ac), 2);
-                startActivityForResult(i, 2);
-            }
-        });
+        arrayAdapter.setOnFilteredItemClickListener(this);
         lv.setHasFixedSize(true);
         lv.setLayoutManager(new LinearLayoutManager(getContext()));
         lv.setAdapter(arrayAdapter);
@@ -200,5 +187,18 @@ public class ReservaFragment extends Fragment {
                 lv.setAdapter(arrayAdapter);
             }
         }
+    }
+
+    @Override
+    public void onReservaSelected(Reserva r) {
+        Intent i = new Intent(getContext(), DetallesReserva.class);
+        actual = list.indexOf(r);
+        i.putExtra(getString(R.string.ve), r.getV());
+        i.putExtra(getString(R.string.da), r.getTimeInMillis());
+        i.putExtra(getString(R.string.pr), r.getPrecio());
+        i.putExtra(getString(R.string.lat), r.getLocation().getLatitude());
+        i.putExtra(getString(R.string.lon), r.getLocation().getLongitude());
+        i.putExtra(getString(R.string.ac), 2);
+        startActivityForResult(i, 2);
     }
 }

@@ -98,4 +98,15 @@ public class Main extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onBackPressed() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        if (R.id.mires !=  bottomNavigationView.getSelectedItemId()) {
+            bottomNavigationView.setSelectedItemId(R.id.mires);
+            abrirFragment(new MisReservasFragment());
+        } else {
+            finish();
+        }
+    }
+
 }

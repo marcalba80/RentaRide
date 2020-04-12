@@ -200,6 +200,7 @@ public class OfertaFragment extends Fragment {
                 Vehiculo v = new Vehiculo(t.getSelectedItemPosition(), marca.getText().toString(), modelo.getText().toString(), año.getText().toString(), info.getText().toString(), "636666663", matricula.getText().toString(), potencia.getText().toString() + getString(R.string.cv), com.getSelectedItem().toString(), "", c.isChecked());
                 Reserva r = new Reserva(color, f, v, Double.parseDouble(precio.getText().toString()), obtenerUbicacion(getContext()));
                 list.add(r);
+                Toast.makeText(getContext(), R.string.ofveh, Toast.LENGTH_SHORT).show();
                 adapterEventoReservar = new AdapterEventoReservar(list);
                 adapterEventoReservar.setOnItemClickListener(new AdapterEventoReservar.ClickListener() {
                     @Override
@@ -253,7 +254,7 @@ public class OfertaFragment extends Fragment {
             if (requestCode == 2) {
                 list.remove(actual);
                 adapterEventoReservar.clear();
-                Toast.makeText(getContext(), R.string.ofveh, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.eliminar_oferta, Toast.LENGTH_SHORT).show();
                 adapterEventoReservar = new AdapterEventoReservar(list);
                 lv.setHasFixedSize(true);
                 lv.setLayoutManager(new LinearLayoutManager(getContext()));

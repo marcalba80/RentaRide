@@ -20,13 +20,13 @@ import java.util.List;
 public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoReservar.ViewHolder> {
     private List<Reserva> mDataset = new ArrayList<>(),copia = new ArrayList<>();
     private ClickListener clickListener;
+    private ReservaListener rListener;
 
     public AdapterEventoReservar(List<Reserva> myDataset) {
         mDataset.addAll(myDataset);
         clickListener = new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-
             }
         };
     }
@@ -86,8 +86,9 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
 
         @Override
         public void onClick(View v) {
-            clickListener.onItemClick(getPosition(), v);
-
+            if(rListener != null){
+                rListener.onReservaSelected(mDataset.get(getAdapterPosition()));
+            }else{clickListener.onItemClick(getPosition(), v);}
         }
     }
 
@@ -97,6 +98,10 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
 
     public void setOnItemClickListener(ClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+
+    public void setOnFilteredItemClickListener(ReservaListener clickListener) {
+        this.rListener = clickListener;
     }
 
     public void clear() {
@@ -147,8 +152,11 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
 
     public void filtrarCombustible(String com) {
         for (Reserva item : mDataset) {
-            if(item.getV().getType() != 2)
-            if (item.v.getCombustible().equals(com)) {
+            if(item.getV().getType() != 2) {
+                if (item.v.getCombustible().equals(com)) {
+                    copia.add(item);
+                }
+            }else {
                 copia.add(item);
             }
         }
@@ -160,8 +168,11 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
 
     public void filtrarAdaptado(boolean adaptado) {
         for (Reserva item : mDataset) {
-            if(item.getV().getType() != 2)
-            if (item.v.isAdaptado() == adaptado) {
+            if (item.getV().getType() != 2) {
+                if (item.v.isAdaptado() == adaptado) {
+                    copia.add(item);
+                }
+            } else{
                 copia.add(item);
             }
         }
@@ -182,5 +193,9 @@ public class AdapterEventoReservar extends RecyclerView.Adapter<AdapterEventoRes
         mDataset.addAll(copia);
         copia.clear();
         notifyDataSetChanged();
+    }
+
+    public interface ReservaListener {
+        void onReservaSelected(Reserva r);
     }
 }
