@@ -35,11 +35,11 @@ import java.util.Calendar;
 import java.util.List;
 
 public class ReservaFragment extends Fragment implements AdapterEventoReservar.ReservaListener {
-    int actual;
-    List<Reserva> list = new ArrayList<>();
-    AdapterEventoReservar arrayAdapter;
-    RecyclerView lv;
-    long f;
+    private int actual;
+    private List<Reserva> list = new ArrayList<>();
+    private AdapterEventoReservar arrayAdapter;
+    private RecyclerView lv;
+    private long f;
 
 
     public ReservaFragment(){
@@ -84,6 +84,7 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
         lv.setAdapter(arrayAdapter);
         FitButton button = v.findViewById(R.id.mapa);
         FitButton buscar = v.findViewById(R.id.buscar);
+
         final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -93,7 +94,7 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                fecha.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                fecha.setText(String.format("%d/%d/%d", dayOfMonth, monthOfYear + 1, year));
                 SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 try {
                     f = s.parse(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year+ " 00:00").getTime();
@@ -103,6 +104,7 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
             }
 
         };
+
         fecha.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -112,23 +114,18 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
         t.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i) {
-                    default:
-                        extra.setVisibility(View.VISIBLE);
-                        break;
-                    case 2:
-                        extra.setVisibility(View.GONE);
-                        break;
+                if (i == 2) {
+                    extra.setVisibility(View.GONE);
+                } else {
+                    extra.setVisibility(View.VISIBLE);
                 }
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) { }
         });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,15 +155,15 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
                 }else{
                     arrayAdapter.filtrarAdaptado(false);
                 }
-                if(t != null && t.getSelectedItem() !=null ) arrayAdapter.filtrarTipo(t.getSelectedItemPosition());
+                if(t.getSelectedItem() !=null ) arrayAdapter.filtrarTipo(t.getSelectedItemPosition());
             }
         });
 
     }
 
     private void recuperar() {
-        for(Reserva r : Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3))){
-            if(!r.isReservado() && r.getIDOfertor() != Utils.ID){
+        for(Reserva r : Utils.obtenerReservas()){
+            if(!r.isReservado() && !r.getIDOfertor().equals(Utils.ID)){
                 list.add(r);
             }
         }
@@ -177,7 +174,8 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
         if (requestCode == 2) {
             if (resultCode == -1) {
                 list.remove(actual);
-                arrayAdapter = new AdapterEventoReservar(list);
+                arrayAdapter.clear();
+                arrayAdapter.addAll(list);
                 Toast.makeText(getActivity(), getString(R.string.reservacor), Toast.LENGTH_SHORT).show();
                 lv.setHasFixedSize(true);
                 lv.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -2,6 +2,7 @@ package com.example.rentaride.Fragments;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -103,15 +104,15 @@ public class OfertaFragment extends Fragment {
                 switch (i) {
                     case 0:
                         extra.setVisibility(View.VISIBLE);
-                        color = getResources().getColor(R.color.C1);
+                        color = ContextCompat.getColor(getContext(),R.color.C1);
                         break;
                     case 1:
                         extra.setVisibility(View.VISIBLE);
-                        color = getResources().getColor(R.color.C2);
+                        color = ContextCompat.getColor(getContext(),R.color.C2);
                         break;
                     case 2:
                         extra.setVisibility(View.GONE);
-                        color = getResources().getColor(R.color.C3);
+                        color = ContextCompat.getColor(getContext(),R.color.C3);
                         break;
 
                 }
@@ -196,22 +197,8 @@ public class OfertaFragment extends Fragment {
                 Reserva r = new Reserva(color, f, v, obtenerUbicacion(getContext()),Utils.ID, Utils.T1);
                 list.add(r);
                 Toast.makeText(getContext(), R.string.ofveh, Toast.LENGTH_SHORT).show();
-                adapterEventoReservar = new AdapterEventoReservar(list);
-                adapterEventoReservar.setOnItemClickListener(new AdapterEventoReservar.ClickListener() {
-                    @Override
-                    public void onItemClick(int position, View v) {
-                        Intent i = new Intent(getContext(), DetallesReserva.class);
-                        actual = list.indexOf(list.get(position));
-                        i.putExtra(getString(R.string.ve), list.get(position).getV());
-                        i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
-                        i.putExtra(getString(R.string.telef), list.get(position).getTelefonoC());
-                        i.putExtra(getString(R.string.lat), list.get(position).getLocation().getLatitude());
-                        i.putExtra(getString(R.string.lon), list.get(position).getLocation().getLongitude());
-                        i.putExtra(getString(R.string.ac), 0);
-                        i.putExtra(getString(R.string.reservar), list.get(position).isReservado());
-                        startActivityForResult(i, 2);
-                    }
-                });
+                adapterEventoReservar.clear();
+                adapterEventoReservar.addAll(list);
                 lv.setHasFixedSize(true);
                 lv.setLayoutManager(new LinearLayoutManager(getContext()));
                 lv.setAdapter(adapterEventoReservar);
@@ -240,8 +227,8 @@ public class OfertaFragment extends Fragment {
     }
 
     public void obtener() {
-        for(Reserva r : Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3))){
-            if( r.getIDOfertor() == Utils.ID ){
+        for(Reserva r : Utils.obtenerReservas()){
+            if(r.getIDOfertor().equals(Utils.ID)){
                 list.add(r);
             }
         }
@@ -266,7 +253,7 @@ public class OfertaFragment extends Fragment {
         }
     }
 
-    public Location obtenerUbicacion(Context mContext) {
+    private Location obtenerUbicacion(Context mContext) {
         LocationManager lm = (LocationManager)
                 mContext.getSystemService(Context.LOCATION_SERVICE);
         assert lm != null;

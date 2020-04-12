@@ -110,8 +110,8 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
 
     private void obtenerReservas() {
         List<Reserva> l = new ArrayList<>();
-        for(Reserva r : Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3))){
-            if(!r.isReservado() && r.getIDOfertor() != Utils.ID){
+        for(Reserva r : Utils.obtenerReservas()){
+            if(!r.isReservado() && !r.getIDOfertor().equals(Utils.ID)){
                 l.add(r);
             }
         }

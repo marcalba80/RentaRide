@@ -107,9 +107,9 @@ public class MisReservasFragment extends Fragment {
 
 
     private void recuperar() {
-        for(Reserva r : Utils.obtenerReservas(getResources().getColor(R.color.C1), getResources().getColor(R.color.C2), getResources().getColor(R.color.C3))){
-            if(r.isReservado() && r.getIDCliente() == Utils.ID ){
-                list.add((Event) r);
+        for(Reserva r : Utils.obtenerReservas()){
+            if(r.isReservado() && r.getIDCliente().equals(Utils.ID)){
+                list.add(r);
             }
         }
         cv.addEvents(list);
