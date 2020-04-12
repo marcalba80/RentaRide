@@ -96,7 +96,7 @@
             android:layout_marginTop="5dp"
             app:mtf_cardCollapsedHeight="4dp"
             app:mtf_hasFocus="false"
-            app:mtf_image="@drawable/ic_vpn_key_24px"
+            app:mtf_image="@android:drawable/stat_sys_phone_call"
             app:mtf_openKeyboardOnFocus="true">
 
             <EditText

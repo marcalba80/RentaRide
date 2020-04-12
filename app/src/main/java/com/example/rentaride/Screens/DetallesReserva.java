@@ -71,7 +71,7 @@ public class DetallesReserva extends AppCompatActivity {
     }
 
     public void addInfo(final Vehiculo ve){
-        TextView b1, b2, b3, b4, b5, b6, b7, b8, b9, b10;
+        TextView b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11;
         LinearLayout t1, t2, t3, t4, t5;
         ImageView imagen;
         CardView c;
@@ -122,6 +122,7 @@ public class DetallesReserva extends AppCompatActivity {
                 b9.setText(f);
                 b10.setText(String.valueOf(ve.getPrecio()) + " €");
                 if(reservado || propia){
+                    if(!reservado) t5.setVisibility(View.GONE);
                     b7.setText(ve.getMatricula());
                     b8.setText(telefono);
                 } else {
@@ -143,6 +144,7 @@ public class DetallesReserva extends AppCompatActivity {
                 b9.setText(f);
                 b10.setText(String.valueOf(ve.getPrecio()) + " €");
                 if(reservado || propia){
+                    if(!reservado) t5.setVisibility(View.GONE);
                     b7.setText(ve.getMatricula());
                     b8.setText(telefono);
                 } else {
@@ -163,6 +165,7 @@ public class DetallesReserva extends AppCompatActivity {
                 b9.setText(f);
                 b10.setText(String.valueOf(ve.getPrecio()) + " €");
                 if(reservado || propia){
+                    if(!reservado) t5.setVisibility(View.GONE);
                     b8.setText(telefono);
                 } else {
                     t5.setVisibility(View.GONE);

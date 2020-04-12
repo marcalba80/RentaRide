@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -38,12 +39,21 @@ import com.example.rentaride.R;
 import com.example.rentaride.Screens.DetallesReserva;
 import com.example.rentaride.Utils.Utils;
 import com.github.nikartm.button.FitButton;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class OfertaFragment extends Fragment {
@@ -53,6 +63,20 @@ public class OfertaFragment extends Fragment {
     RecyclerView lv;
     List<Reserva> list = new ArrayList<>();
     AdapterEventoReservar adapterEventoReservar;
+    private static final int REQUEST_CHECK_SETTINGS = 0x1;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
+            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+    private Boolean mRequestingLocationUpdates;
+    private boolean isRequestRequired;
+    private String mLastUpdateTime;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private SettingsClient mSettingsClient;
+    private LocationRequest mLocationRequest;
+    private LocationSettingsRequest mLocationSettingsRequest;
+    private LocationCallback mLocationCallback;
+    private Location mCurrentLocation;
+    private View rootView;
 
     public OfertaFragment() {
 
@@ -66,14 +90,23 @@ public class OfertaFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mRequestingLocationUpdates = false;
+        isRequestRequired = true;
+        mLastUpdateTime = "";
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(rootView.getContext());
+        mSettingsClient = LocationServices.getSettingsClient(rootView.getContext());
+
+        createLocationCallback();
+        createLocationRequest();
+        buildLocationSettingsRequest();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_oferta, container, false);
-        inicializar(v);
-        return v;
+        rootView = inflater.inflate(R.layout.fragment_oferta, container, false);
+        inicializar(rootView);
+        return rootView;
     }
 
     private void inicializar(View v) {
@@ -234,35 +267,16 @@ public class OfertaFragment extends Fragment {
         }
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == -1) {
-            if (requestCode == 2) {
-                list.remove(actual);
-                adapterEventoReservar.clear();
-                Toast.makeText(getContext(), R.string.eliminar_oferta, Toast.LENGTH_SHORT).show();
-                adapterEventoReservar = new AdapterEventoReservar(list);
-                lv.setHasFixedSize(true);
-                lv.setLayoutManager(new LinearLayoutManager(getContext()));
-                lv.setAdapter(adapterEventoReservar);
-            } else {
-                Toast.makeText(getContext(), R.string.guardar_correctamente, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private Location obtenerUbicacion(Context mContext) {
+    public Location obtenerUbicacion(Context mContext) {
         LocationManager lm = (LocationManager)
                 mContext.getSystemService(Context.LOCATION_SERVICE);
         assert lm != null;
-
-        Location redMobil = null, gps = null, finalLoc = null;
+        Location redMobil = null, gps = null;
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions();
         }
-        gps = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            gps = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
             redMobil = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         if (gps != null && redMobil != null) {
@@ -281,6 +295,73 @@ public class OfertaFragment extends Fragment {
         return null;
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    break;
+                case Activity.RESULT_CANCELED:
+                    mRequestingLocationUpdates = false;
+                    break;
+            }
+        } else if (resultCode == -1) {
+            if (requestCode == 2) {
+                list.remove(actual);
+                adapterEventoReservar.clear();
+                Toast.makeText(getContext(), "Se ha eliminado la oferta correctamente!", Toast.LENGTH_SHORT).show();
+                adapterEventoReservar = new AdapterEventoReservar(list);
+                lv.setHasFixedSize(true);
+                lv.setLayoutManager(new LinearLayoutManager(getContext()));
+                lv.setAdapter(adapterEventoReservar);
+            } else {
+                Toast.makeText(getContext(), "Se ha guardado la imagen correctamente", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    private void buildLocationSettingsRequest() {
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        mLocationSettingsRequest = builder.build();
+    }
+
+    private void createLocationCallback() {
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+
+                mCurrentLocation = locationResult.getLastLocation();
+                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+            }
+        };
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!checkPermissions()) {
+            requestPermissions();
+        }
+
+    }
+
+    private boolean checkPermissions() {
+        int permissionState = ActivityCompat.checkSelfPermission(rootView.getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        return permissionState == PackageManager.PERMISSION_GRANTED;
+    }
+
     private void showSnackbar(final int mainTextStringId, final int actionStringId,
                               View.OnClickListener listener) {
         Snackbar.make(
@@ -295,46 +376,46 @@ public class OfertaFragment extends Fragment {
                 ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                         Manifest.permission.ACCESS_FINE_LOCATION);
         if (shouldProvideRationale) {
-            showSnackbar(R.string.permission_rationale,
-                    android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            requestLocationPermissions();
-                        }
-                    });
+            showSnackbar(R.string.permission_rationale, android.R.string.ok, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    requestLocationActivity();
+                }
+            });
+
         } else {
-            requestLocationPermissions();
+            requestLocationActivity();
         }
+    }
+    private void requestLocationActivity(){
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_PERMISSIONS_REQUEST_CODE);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED){
-                showSnackbar(R.string.permission_denied_explanation,
-                        R.string.settings, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // Build intent that displays the App settings screen.
-                                Intent intent = new Intent();
-                                intent.setAction(
-                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package",
-                                        BuildConfig.APPLICATION_ID, null);
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        });
+            if(grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                boolean showRequestRationale = ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION);
+                if (!showRequestRationale){
+                    showSnackbar(R.string.permission_denied_explanation,
+                            R.string.settings, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivityForResult(intent, REQUEST_CHECK_SETTINGS);
+                                }
+                            });
+
+                    isRequestRequired = false;
+                }
             }
         }
     }
-
-    private void requestLocationPermissions() {
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                REQUEST_PERMISSIONS_REQUEST_CODE);
-    }
-
 }
+
