@@ -19,6 +19,14 @@
             app:iconSpaceReserved="false"
             android:summary="Numero de contacto"
             android:title="@string/literalTelefono"/>
+        <ListPreference
+            android:title="Visualización del Mapa"
+            android:summary="Red con la que se permite ver el mapa"
+            android:key="PreferenciaRed"
+            android:defaultValue="Wi-Fi"
+            android:entries="@array/nombres"
+            android:entryValues="@array/valores"
+            app:iconSpaceReserved="false"/>
         <SwitchPreference
             android:key="@string/mantenersesion"
             app:iconSpaceReserved="false"

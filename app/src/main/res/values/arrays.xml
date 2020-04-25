@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="nombres">
+        <item>Todas las redes</item>
+        <item>Solo con red Wi-Fi</item>
+    </string-array>
+    <string-array name="valores">
+        <item>Todas</item>
+        <item>Wi-Fi</item>
+    </string-array>
+</resources>

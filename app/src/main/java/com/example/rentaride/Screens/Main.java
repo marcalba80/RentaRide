@@ -1,7 +1,9 @@
 package com.example.rentaride.Screens;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import com.example.rentaride.Fragments.MisReservasFragment;
@@ -33,6 +35,7 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        registerReceiver(new Mapa.RedReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         mPreference = PreferenceManager.getDefaultSharedPreferences(Main.this);
 
         bottomNavigation = findViewById(R.id.bottom_navigation);

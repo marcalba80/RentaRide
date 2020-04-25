@@ -4,11 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.preference.PreferenceManager;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +23,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.R;
@@ -45,6 +53,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
     GoogleMap googleMap;
     double lat, lon;
     String tit;
+    private static boolean mostrar = true, detalle = true;
     List<Reserva> coches = new ArrayList<>();
     List<Reserva> motos = new ArrayList<>();
     List<Reserva> bicis = new ArrayList<>();
@@ -54,58 +63,60 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
     Map<Marker, Reserva> map = new HashMap<>();
 
 
-    boolean detalle = true;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
-        if(getIntent().hasExtra(getString(R.string.lat))) {
-            LinearLayout l = findViewById(R.id.checkboxes);
-            l.setVisibility(GONE);
-            FrameLayout f = findViewById(R.id.map);
-            f.getLayoutParams().height= ViewGroup.LayoutParams.MATCH_PARENT;
-            lat = getIntent().getDoubleExtra(getString(R.string.lat), 0.0);
-            lon = getIntent().getDoubleExtra(getString(R.string.lon), 0.0);
-            tit = getIntent().getStringExtra(getString(R.string.tit));
-        }else{
-            detalle = false;
-            obtenerReservas();
-            CheckBox checkCotxe = findViewById(R.id.cotxes);
-            checkCotxe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean bol) {
-                    if (bol) {
-                        showCotxe();
-                    } else {
-                        hideCotxes();
+        TextView error = findViewById(R.id.mensajeerror);
+        if(!mostrar)
+            error.setVisibility(View.VISIBLE);
+        else
+            if(getIntent().hasExtra(getString(R.string.lat))) {
+                LinearLayout l = findViewById(R.id.checkboxes);
+                l.setVisibility(GONE);
+                FrameLayout f = findViewById(R.id.map);
+                f.getLayoutParams().height= ViewGroup.LayoutParams.MATCH_PARENT;
+                lat = getIntent().getDoubleExtra(getString(R.string.lat), 0.0);
+                lon = getIntent().getDoubleExtra(getString(R.string.lon), 0.0);
+                tit = getIntent().getStringExtra(getString(R.string.tit));
+            }else{
+                detalle = false;
+                obtenerReservas();
+                CheckBox checkCotxe = findViewById(R.id.cotxes);
+                checkCotxe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean bol) {
+                        if (bol) {
+                            showCotxe();
+                        } else {
+                            hideCotxes();
+                        }
                     }
-                }
-            });
+                });
 
-            CheckBox checkMoto = findViewById(R.id.motos);
-            checkMoto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean bol) {
-                    if (bol) {
-                        showMotos();
-                    } else {
-                        hideMotos();
+                CheckBox checkMoto = findViewById(R.id.motos);
+                checkMoto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean bol) {
+                        if (bol) {
+                            showMotos();
+                        } else {
+                            hideMotos();
+                        }
                     }
-                }
-            });
-            CheckBox checkbici = findViewById(R.id.bicicleta);
-            checkbici.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean bol) {
-                    if (bol) {
-                        showBici();
-                    } else {
-                        hideBici();
+                });
+                CheckBox checkbici = findViewById(R.id.bicicleta);
+                checkbici.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean bol) {
+                        if (bol) {
+                            showBici();
+                        } else {
+                            hideBici();
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
     }
 
     private void obtenerReservas() {
@@ -320,5 +331,30 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
     public void onMapReady(GoogleMap map) {
         googleMap = map;
         setUpMap();
+    }
+
+    public static class RedReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+            String sPref = sharedPrefs.getString("PreferenciaRed", "Todas");
+            ConnectivityManager connMgr =
+                    (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                if(sPref.equals("Todas")){
+                    mostrar = true;
+                }else {
+                    if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                        mostrar = true;
+                    } else {
+                        mostrar = false;
+                    }
+                }
+            } else {
+                mostrar = false;
+            }
+        }
     }
 }
