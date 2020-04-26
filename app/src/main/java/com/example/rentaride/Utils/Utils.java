@@ -48,6 +48,10 @@ public class Utils {
 
         //CREAR OFERTAS PROPIAS
         listReservas.add(new Reserva(c1, new Date().getTime(),cocheprueba,l, ID, T1));
+        r = new Reserva(c2, new Date().getTime(), motoprueba,l2,ID, T1);
+        r.reservar(ID2,T2);
+        listReservas.add(r);
+
 
         //CREAR RESERVAS EFECTUADAS
         r = new Reserva(c2, new Date().getTime(), motoprueba,l2,ID2, T2);
