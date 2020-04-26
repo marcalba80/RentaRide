@@ -30,12 +30,14 @@ import android.widget.Toast;
 public class Main extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
     SharedPreferences mPreference;
+    Mapa.RedReceiver rr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        registerReceiver(new Mapa.RedReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        rr = new Mapa.RedReceiver();
+        registerReceiver(rr, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         mPreference = PreferenceManager.getDefaultSharedPreferences(Main.this);
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -112,4 +114,9 @@ public class Main extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(rr);
+    }
 }
