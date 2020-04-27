@@ -7,11 +7,20 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.example.rentaride.R;
 import com.github.nikartm.button.FitButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.kaopiz.kprogresshud.KProgressHUD;
+
+import java.util.Objects;
 
 
 public class RegistrarUsuario extends AppCompatActivity {
@@ -19,6 +28,7 @@ public class RegistrarUsuario extends AppCompatActivity {
     FitButton botonregistrar;
     String email, password, nombre, telefono;
     SharedPreferences mPreference;
+    private KProgressHUD k;
     SharedPreferences.Editor mEditor;
 
     @Override
@@ -42,18 +52,34 @@ public class RegistrarUsuario extends AppCompatActivity {
     }
 
     public void registrar() {
+        k = KProgressHUD.create(RegistrarUsuario.this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Creando usuario...")
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f);
+        k.show();
         if(validate()){
-            Toast.makeText(getApplicationContext(), R.string.correctoregistro, Toast.LENGTH_LONG).show();
-            mEditor = mPreference.edit();
-            mEditor.putString(getString(R.string.preferenceEmail), textoemail.getText().toString());
-            mEditor.apply();
-            mEditor.putString(getString(R.string.preferencePass), textocontraseña.getText().toString());
-            mEditor.apply();
-            mEditor.putString(getString(R.string.preftelefono), textotelefono.getText().toString());
-            mEditor.apply();
-            mEditor.putString(getString(R.string.preferenceUsername), textonombre.getText().toString());
-            mEditor.apply();
-            startActivity(new Intent(RegistrarUsuario.this, Login.class));
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), R.string.correctoregistro, Toast.LENGTH_LONG).show();
+                                mEditor = mPreference.edit();
+                                mEditor.putString(getString(R.string.preferenceEmail), textoemail.getText().toString());
+                                mEditor.apply();
+                                mEditor.putString(getString(R.string.preftelefono), textotelefono.getText().toString());
+                                mEditor.apply();
+                                mEditor.putString(getString(R.string.preferenceUsername), textonombre.getText().toString());
+                                mEditor.apply();
+                                startActivity(new Intent(RegistrarUsuario.this, Login.class));
+
+                            } else {
+                                k.dismiss();
+                                Toast.makeText(getApplicationContext(), R.string.errorregistro, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
         }else
             Toast.makeText(getApplicationContext(), R.string.errorregistro, Toast.LENGTH_LONG).show();
     }
@@ -87,4 +113,5 @@ public class RegistrarUsuario extends AppCompatActivity {
 
         return true;
     }
+
 }

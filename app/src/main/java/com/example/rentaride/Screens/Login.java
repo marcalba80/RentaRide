@@ -9,6 +9,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rentaride.R;
@@ -20,8 +26,6 @@ public class Login extends AppCompatActivity {
     CircularProgressButton botonlogin;
     String email, password;
     SharedPreferences pref;
-
-    SharedPreferences.Editor mEditor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,17 +47,31 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    public void login() {
+    private void login() {
         if(validate()){
             botonlogin.showProgress();
             botonlogin.setIndeterminateProgressMode(true);
-            botonlogin.showComplete();
-            SharedPreferences.Editor mEditor = pref.edit();
-            mEditor.putBoolean(getString(R.string.mantenersesion), true);
-            mEditor.apply();
-            Toast.makeText(getApplicationContext(), R.string.correctologin, Toast.LENGTH_LONG).show();
-            startActivity(new Intent(Login.this, Main.class));
-            finish();
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                botonlogin.showComplete();
+                                Toast.makeText(getApplicationContext(), R.string.correctologin, Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(Login.this, Main.class));
+                            }
+                            else {
+                                botonlogin.showError();
+                                Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                botonlogin.showIdle();
+                            }
+                        }
+                    });
         }else
             Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();
     }
