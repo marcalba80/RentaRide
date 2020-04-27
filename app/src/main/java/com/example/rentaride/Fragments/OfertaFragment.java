@@ -12,11 +12,13 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -47,6 +49,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -226,8 +230,10 @@ public class OfertaFragment extends Fragment {
                         return;
                     }
                 }
+                SharedPreferences mPreference = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
                 Vehiculo v = new Vehiculo(t.getSelectedItemPosition(), marca.getText().toString(), modelo.getText().toString(), año.getText().toString(), info.getText().toString(), matricula.getText().toString(), potencia.getText().toString() + getString(R.string.cv), com.getSelectedItem().toString(), "", c.isChecked(), Double.parseDouble(precio.getText().toString()));
-                Reserva r = new Reserva(color, f, v, obtenerUbicacion(getContext()),Utils.ID, Utils.T1);
+                Reserva r = new Reserva(color, f, v, obtenerUbicacion(getContext()), FirebaseAuth.getInstance().getCurrentUser().getUid(), mPreference.getString(getString(R.string.preftelefono), ""));
+                FirebaseFirestore.getInstance().collection("Reservas").add(r);
                 list.add(r);
                 Toast.makeText(getContext(), R.string.ofveh, Toast.LENGTH_SHORT).show();
                 adapterEventoReservar.clear();

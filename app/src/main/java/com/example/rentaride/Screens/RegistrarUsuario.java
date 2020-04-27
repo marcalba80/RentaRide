@@ -15,11 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.rentaride.R;
 import com.github.nikartm.button.FitButton;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 
@@ -64,16 +68,33 @@ public class RegistrarUsuario extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), R.string.correctoregistro, Toast.LENGTH_LONG).show();
-                                mEditor = mPreference.edit();
-                                mEditor.putString(getString(R.string.preferenceEmail), textoemail.getText().toString());
-                                mEditor.apply();
-                                mEditor.putString(getString(R.string.preftelefono), textotelefono.getText().toString());
-                                mEditor.apply();
-                                mEditor.putString(getString(R.string.preferenceUsername), textonombre.getText().toString());
-                                mEditor.apply();
-                                startActivity(new Intent(RegistrarUsuario.this, Login.class));
-
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(nombre)
+                                        .build();
+                                FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    HashMap<String, String> hm = new HashMap<>();
+                                                    hm.put("Telefono", telefono);
+                                                    FirebaseFirestore.getInstance().collection("Datos").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                            .set(hm);
+                                                    Toast.makeText(getApplicationContext(), R.string.correctoregistro, Toast.LENGTH_LONG).show();
+                                                    mEditor = mPreference.edit();
+                                                    mEditor.putString(getString(R.string.preferenceEmail), textoemail.getText().toString());
+                                                    mEditor.apply();
+                                                    mEditor.putString(getString(R.string.preftelefono), textotelefono.getText().toString());
+                                                    mEditor.apply();
+                                                    mEditor.putString(getString(R.string.preferenceUsername), textonombre.getText().toString());
+                                                    mEditor.apply();
+                                                    startActivity(new Intent(RegistrarUsuario.this, Login.class));
+                                                }else {
+                                                    k.dismiss();
+                                                    Toast.makeText(getApplicationContext(), R.string.errorregistro, Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
                             } else {
                                 k.dismiss();
                                 Toast.makeText(getApplicationContext(), R.string.errorregistro, Toast.LENGTH_LONG).show();
