@@ -73,7 +73,7 @@
             android:layout_marginStart="10dp"
             android:padding="15dp"
             android:layout_width="wrap_content"
-            android:onClick="recuperar"
+            android:onClick="recuperarLogin"
             android:layout_height="50dp"
             android:enabled="true"
             android:gravity="center"

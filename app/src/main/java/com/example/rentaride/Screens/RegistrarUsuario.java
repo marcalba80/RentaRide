@@ -88,6 +88,7 @@ public class RegistrarUsuario extends AppCompatActivity {
                                                     mEditor.apply();
                                                     mEditor.putString(getString(R.string.preferenceUsername), textonombre.getText().toString());
                                                     mEditor.apply();
+                                                    k.dismiss();
                                                     startActivity(new Intent(RegistrarUsuario.this, Login.class));
                                                 }else {
                                                     k.dismiss();
@@ -101,8 +102,11 @@ public class RegistrarUsuario extends AppCompatActivity {
                             }
                         }
                     });
-        }else
+        }else {
             Toast.makeText(getApplicationContext(), R.string.errorregistro, Toast.LENGTH_LONG).show();
+            k.dismiss();
+        }
+
     }
 
     public boolean validate() {
