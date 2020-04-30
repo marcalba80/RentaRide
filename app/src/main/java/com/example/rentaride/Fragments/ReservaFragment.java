@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,18 +28,27 @@ import com.example.rentaride.Screens.DetallesReserva;
 import com.example.rentaride.Screens.Mapa;
 import com.example.rentaride.Utils.Utils;
 import com.github.nikartm.button.FitButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class ReservaFragment extends Fragment implements AdapterEventoReservar.ReservaListener {
     private int actual;
     private List<Reserva> list = new ArrayList<>();
     private AdapterEventoReservar arrayAdapter;
     private RecyclerView lv;
+    private KProgressHUD k;
     private long f;
 
 
@@ -77,11 +87,6 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
         fecha = v.findViewById(R.id.fecha);
         ch = v.findViewById(R.id.adaptado);
         recuperar();
-        arrayAdapter = new AdapterEventoReservar(list);
-        arrayAdapter.setOnFilteredItemClickListener(this);
-        lv.setHasFixedSize(true);
-        lv.setLayoutManager(new LinearLayoutManager(getContext()));
-        lv.setAdapter(arrayAdapter);
         FitButton button = v.findViewById(R.id.mapa);
         FitButton buscar = v.findViewById(R.id.buscar);
 
@@ -161,13 +166,36 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
 
     }
 
-    private void recuperar() {
-        for(Reserva r : Utils.obtenerReservas()){
-            if(!r.isReservado() && !r.getIDOfertor().equals(Utils.ID)){
-                list.add(r);
-            }
-        }
+    public void recuperar() {
+        k = KProgressHUD.create(getContext())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Espere...")
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f);
+        k.show();
+        FirebaseFirestore.getInstance().collection("Reservas").whereEqualTo("reservado", false)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> l = Objects.requireNonNull(task.getResult()).getDocuments();
+                            for (DocumentSnapshot document : l) {
+                                Reserva r = document.toObject(Reserva.class);
+                                if(!r.getIDOfertor().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                                list.add(r);
+                            }
+                            arrayAdapter = new AdapterEventoReservar(list);
+                            arrayAdapter.setOnFilteredItemClickListener(ReservaFragment.this);
+                            lv.setHasFixedSize(true);
+                            lv.setLayoutManager(new LinearLayoutManager(getContext()));
+                            lv.setAdapter(arrayAdapter);
+                            k.dismiss();
+                        }
+                    }
+                });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -25,6 +26,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.util.ContentLengthInputStream;
+import com.example.rentaride.Fragments.ReservaFragment;
+import com.example.rentaride.Logica.AdapterEventoReservar;
 import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.R;
 import com.example.rentaride.Utils.Utils;
@@ -38,12 +42,20 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static android.view.View.GONE;
 import static com.google.android.gms.maps.CameraUpdateFactory.zoomIn;
@@ -119,26 +131,43 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
             }
     }
 
-    private void obtenerReservas() {
-        List<Reserva> l = new ArrayList<>();
-        for(Reserva r : Utils.obtenerReservas()){
-            if(!r.isReservado() && !r.getIDOfertor().equals(Utils.ID)){
-                l.add(r);
-            }
-        }
-        for (Reserva res : l) {
-            switch(res.getV().getType()){
-                case 0:
-                    coches.add(res);
-                    break;
-                case 1:
-                    motos.add(res);
-                    break;
-                case 2:
-                    bicis.add(res);
-                    break;
-            }
-        }
+    public void obtenerReservas() {
+        final KProgressHUD k = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Espere...")
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f);
+        k.show();
+        FirebaseFirestore.getInstance().collection("Reservas").whereEqualTo("reservado", false)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> l = Objects.requireNonNull(task.getResult()).getDocuments();
+                            List<Reserva> list = new ArrayList<>();
+                            for (DocumentSnapshot document : l) {
+                                Reserva r = document.toObject(Reserva.class);
+                                if(!r.getIDOfertor().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                                    list.add(r);
+                            }
+                            for (Reserva res : list) {
+                                switch(res.getV().getType()){
+                                    case 0:
+                                        coches.add(res);
+                                        break;
+                                    case 1:
+                                        motos.add(res);
+                                        break;
+                                    case 2:
+                                        bicis.add(res);
+                                        break;
+                                }
+                            }
+                            k.dismiss();
+                        }
+                    }
+                });
     }
 
     public void showCotxe() {
