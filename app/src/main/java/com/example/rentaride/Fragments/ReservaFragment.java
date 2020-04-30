@@ -191,8 +191,8 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
         i.putExtra(getString(R.string.ve), r.getV());
         i.putExtra(getString(R.string.da), r.getTimeInMillis());
         i.putExtra(getString(R.string.telef),r.getTelefonoC());
-        i.putExtra(getString(R.string.lat), r.getLocation().getLatitude());
-        i.putExtra(getString(R.string.lon), r.getLocation().getLongitude());
+        i.putExtra(getString(R.string.lat), r.getLatitud());
+        i.putExtra(getString(R.string.lon), r.getLongitud());
         i.putExtra(getString(R.string.ac), 2);
         i.putExtra(getString(R.string.reservar), r.isReservado());
         startActivityForResult(i, 2);

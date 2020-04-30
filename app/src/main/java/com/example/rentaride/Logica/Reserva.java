@@ -10,14 +10,43 @@ public class Reserva extends Event {
     boolean reservado;
     String IDCliente, IDOfertor;
     String telefonoC, telefonoO;
-    Location location;
+    double latitud, longitud;
+
+    public Reserva() {
+        super (0, 0);
+    }
 
     public Reserva(int color, long timeInMillis, Vehiculo v,Location location, String of, String telefonoO) {
         super(color, timeInMillis);
         this.v = v;
-        this.location = location;
+        this.latitud = location.getLatitude();
+        this.longitud = location.getLongitude();
         this.IDOfertor = of;
         this.telefonoO = telefonoO;
+    }
+
+    public Reserva(int color, long timeInMillis) {
+        super(color, timeInMillis);
+    }
+
+    public Reserva(int color, long timeInMillis, Object data) {
+        super(color, timeInMillis, data);
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
     }
 
     public Vehiculo getV() {
@@ -56,14 +85,6 @@ public class Reserva extends Event {
 
     public void setIDOfertor(String IDOfertor) {
         this.IDOfertor = IDOfertor;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     public String getTelefonoC() {

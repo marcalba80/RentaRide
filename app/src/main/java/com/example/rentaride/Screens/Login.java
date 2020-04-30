@@ -35,11 +35,15 @@ public class Login extends AppCompatActivity {
         textocontraseña = findViewById(R.id.input_password);
         textoemail = findViewById(R.id.input_email);
         pref = PreferenceManager.getDefaultSharedPreferences(Login.this);
+
         if(pref.getBoolean(getString(R.string.mantenersesion),false)){
-            startActivity(new Intent(Login.this, Main.class));
-            finish();
-        }else
-            botonlogin.setOnClickListener(new View.OnClickListener() {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                startActivity(new Intent(Login.this, Main.class));
+                finish();
+            }
+        }
+
+        botonlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
@@ -89,10 +93,7 @@ public class Login extends AppCompatActivity {
             textocontraseña.setError(getString(R.string.errorcontraseña));
             return false;
         }
-
-        if(email.equals(pref.getString(getString(R.string.preferenceEmail), "")) &&  password.equals(pref.getString(getString(R.string.preferencePass), "")))
         return true;
-        return false;
     }
 
     public void olvidado(View view) {

@@ -1,6 +1,7 @@
 package com.example.rentaride.Fragments;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -33,12 +35,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.example.rentaride.BuildConfig;
 import com.example.rentaride.Logica.AdapterEventoReservar;
 import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.Logica.Vehiculo;
 import com.example.rentaride.R;
 import com.example.rentaride.Screens.DetallesReserva;
+import com.example.rentaride.Screens.Login;
+import com.example.rentaride.Screens.Main;
 import com.example.rentaride.Utils.Utils;
 import com.github.nikartm.button.FitButton;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -48,9 +53,19 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -59,15 +74,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class OfertaFragment extends Fragment {
     long f = 0;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     int color = 0, actual;
+    String url = "";
+    private Uri imagen;
+    EditText marca, modelo, fecha, matricula, potencia, año, info, precio;
+    Spinner t, com;
+    CheckBox c;
     RecyclerView lv;
     List<Reserva> list = new ArrayList<>();
     AdapterEventoReservar adapterEventoReservar;
-    private static final int REQUEST_CHECK_SETTINGS = 0x1;
+    private static final int REQUEST_CHECK_SETTINGS = 3;
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
@@ -80,6 +101,7 @@ public class OfertaFragment extends Fragment {
     private LocationSettingsRequest mLocationSettingsRequest;
     private LocationCallback mLocationCallback;
     private Location mCurrentLocation;
+    private KProgressHUD k;
     private View rootView;
 
     public OfertaFragment() {
@@ -114,11 +136,8 @@ public class OfertaFragment extends Fragment {
     }
 
     private void inicializar(View v) {
-        FitButton imagen, oferta;
+        final FitButton imagen, oferta;
         final LinearLayout extra;
-        final Spinner t, com;
-        final EditText marca, modelo, fecha, matricula, potencia, año, info, precio;
-        final CheckBox c;
         extra = v.findViewById(R.id.extra);
         t = v.findViewById(R.id.tip);
         marca = v.findViewById(R.id.reservaMarca);
@@ -134,6 +153,11 @@ public class OfertaFragment extends Fragment {
         potencia = v.findViewById(R.id.potencia);
         info = v.findViewById(R.id.info);
         precio = v.findViewById(R.id.precio);
+        k = KProgressHUD.create(getContext())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Subiendo foto...")
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f);
 
         t.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -192,8 +216,7 @@ public class OfertaFragment extends Fragment {
         imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1);
+                editarImagen(view);
             }
         });
 
@@ -230,47 +253,81 @@ public class OfertaFragment extends Fragment {
                         return;
                     }
                 }
-                SharedPreferences mPreference = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-                Vehiculo v = new Vehiculo(t.getSelectedItemPosition(), marca.getText().toString(), modelo.getText().toString(), año.getText().toString(), info.getText().toString(), matricula.getText().toString(), potencia.getText().toString() + getString(R.string.cv), com.getSelectedItem().toString(), "", c.isChecked(), Double.parseDouble(precio.getText().toString()));
-                Reserva r = new Reserva(color, f, v, obtenerUbicacion(getContext()), FirebaseAuth.getInstance().getCurrentUser().getUid(), mPreference.getString(getString(R.string.preftelefono), ""));
-                FirebaseFirestore.getInstance().collection("Reservas").add(r);
-                list.add(r);
-                Toast.makeText(getContext(), R.string.ofveh, Toast.LENGTH_SHORT).show();
-                adapterEventoReservar.clear();
-                adapterEventoReservar.addAll(list);
-                lv.setHasFixedSize(true);
-                lv.setLayoutManager(new LinearLayoutManager(getContext()));
-                lv.setAdapter(adapterEventoReservar);
+                if(url.equals(""))
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("No hay imagen")
+                            .setMessage("¿Seguro que quiere publicar el vehiculo sin imagen?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes,  new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    subir();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no,null).show();
+                else{
+                    subir();
+                }
             }
         });
         obtener();
-        adapterEventoReservar = new AdapterEventoReservar(list);
-        adapterEventoReservar.setOnItemClickListener(new AdapterEventoReservar.ClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Intent i = new Intent(getContext(), DetallesReserva.class);
-                actual = list.indexOf(list.get(position));
-                i.putExtra(getString(R.string.ve), list.get(position).getV());
-                i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
-                i.putExtra(getString(R.string.telef), list.get(position).getTelefonoC());
-                i.putExtra(getString(R.string.lat), list.get(position).getLocation().getLatitude());
-                i.putExtra(getString(R.string.lon), list.get(position).getLocation().getLongitude());
-                i.putExtra(getString(R.string.ac), 0);
-                i.putExtra(getString(R.string.reservar), list.get(position).isReservado());
-                startActivityForResult(i, 2);
-            }
-        });
+    }
+
+    public void subir(){
+        SharedPreferences mPreference = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        Vehiculo v = new Vehiculo(t.getSelectedItemPosition(), marca.getText().toString(), modelo.getText().toString(), año.getText().toString(), info.getText().toString(), matricula.getText().toString(), potencia.getText().toString() + getString(R.string.cv), com.getSelectedItem().toString(), url, c.isChecked(), Double.parseDouble(precio.getText().toString()));
+        Reserva r = new Reserva(color, f, v, obtenerUbicacion(getContext()), FirebaseAuth.getInstance().getCurrentUser().getUid(), mPreference.getString(getString(R.string.preftelefono), ""));
+        FirebaseFirestore.getInstance().collection("Reservas").add(r);
+        list.add(r);
+        Toast.makeText(getContext(), R.string.ofveh, Toast.LENGTH_SHORT).show();
+        adapterEventoReservar.clear();
+        adapterEventoReservar.addAll(list);
         lv.setHasFixedSize(true);
         lv.setLayoutManager(new LinearLayoutManager(getContext()));
         lv.setAdapter(adapterEventoReservar);
     }
 
     public void obtener() {
-        for(Reserva r : Utils.obtenerReservas()){
-            if(r.getIDOfertor().equals(Utils.ID)){
-                list.add(r);
-            }
-        }
+        k = KProgressHUD.create(getContext())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Espere...")
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f);
+        k.show();
+        FirebaseFirestore.getInstance().collection("Reservas").whereEqualTo("idofertor", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> l = Objects.requireNonNull(task.getResult()).getDocuments();
+                            for (DocumentSnapshot document : l) {
+                                Reserva r = document.toObject(Reserva.class);
+                                    list.add(r);
+                            }
+                            adapterEventoReservar = new AdapterEventoReservar(list);
+                            adapterEventoReservar.setOnItemClickListener(new AdapterEventoReservar.ClickListener() {
+                                @Override
+                                public void onItemClick(int position, View v) {
+                                    Intent i = new Intent(getContext(), DetallesReserva.class);
+                                    actual = list.indexOf(list.get(position));
+                                    i.putExtra(getString(R.string.ve), list.get(position).getV());
+                                    i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
+                                    i.putExtra(getString(R.string.telef), list.get(position).getTelefonoC());
+                                    i.putExtra(getString(R.string.lat), list.get(position).getLatitud());
+                                    i.putExtra(getString(R.string.lon), list.get(position).getLongitud());
+                                    i.putExtra(getString(R.string.ac), 0);
+                                    i.putExtra(getString(R.string.reservar), list.get(position).isReservado());
+                                    startActivityForResult(i, 2);
+                                }
+                            });
+                            lv.setHasFixedSize(true);
+                            lv.setLayoutManager(new LinearLayoutManager(getContext()));
+                            lv.setAdapter(adapterEventoReservar);
+                            k.dismiss();
+                        }
+                    }
+                });
     }
 
     public Location obtenerUbicacion(Context mContext) {
@@ -323,7 +380,10 @@ public class OfertaFragment extends Fragment {
                 lv.setLayoutManager(new LinearLayoutManager(getContext()));
                 lv.setAdapter(adapterEventoReservar);
             } else {
-                Toast.makeText(getContext(), "Se ha guardado la imagen correctamente", Toast.LENGTH_SHORT).show();
+                if(data.getData() != null){
+                    imagen = data.getData();
+                    updatePhotograph();
+                }
             }
         }
     }
@@ -423,5 +483,63 @@ public class OfertaFragment extends Fragment {
             }
         }
     }
+
+    public void editarImagen(View view) {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            boolean shouldProvideRationale =
+                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                            Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (shouldProvideRationale) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Permiso")
+                        .setMessage("Se necesitan permisos para usar esta aplicación.")
+                        .setPositiveButton("Conceder", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                        2);
+                            }
+                        })
+                        .setNegativeButton("Más tarde", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getContext(), "No se han podido conceder los permisos", Toast.LENGTH_SHORT).show();
+                            }
+                        }).create().show();
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        2);
+            }
+        }
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Escoja una imagen"), 1);
+    }
+
+    private void updatePhotograph() {
+        k.show();
+        final StorageReference ref = FirebaseStorage.getInstance().getReference().child("Images/cars/" + FirebaseAuth.getInstance().getUid())
+                .child(Objects.requireNonNull(imagen.getLastPathSegment()));
+
+        ref.putFile(imagen).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw Objects.requireNonNull(task.getException());
+                }
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    url = task.getResult().toString();
+                    k.dismiss();
+                }
+            }
+        });
+    }
+
 }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,12 +20,20 @@ import com.example.rentaride.Screens.DetallesReserva;
 import com.example.rentaride.Utils.Utils;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MisReservasFragment extends Fragment {
     List<Event> list = new ArrayList<>();
@@ -32,13 +41,13 @@ public class MisReservasFragment extends Fragment {
     int actual;
     Date last;
     TextView tv;
+    private KProgressHUD k;
     List<Reserva> le = new ArrayList<>();
     AdapterEvento arrayAdapter;
     RecyclerView lv;
     SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
 
     public MisReservasFragment(){
-
     }
 
     @Override
@@ -93,8 +102,8 @@ public class MisReservasFragment extends Fragment {
                 i.putExtra(getString(R.string.ve), le.get(position).getV());
                 i.putExtra(getString(R.string.da), le.get(position).getTimeInMillis());
                 i.putExtra(getString(R.string.telef), le.get(position).getTelefonoO());
-                i.putExtra(getString(R.string.lat), le.get(position).getLocation().getLatitude());
-                i.putExtra(getString(R.string.lon), le.get(position).getLocation().getLongitude());
+                i.putExtra(getString(R.string.lat), le.get(position).getLatitud());
+                i.putExtra(getString(R.string.lon), le.get(position).getLongitud());
                 i.putExtra(getString(R.string.ac), 1);
                 i.putExtra(getString(R.string.reservar), le.get(position).isReservado());
                 startActivityForResult(i, 2);
@@ -103,16 +112,6 @@ public class MisReservasFragment extends Fragment {
         lv.setHasFixedSize(true);
         lv.setLayoutManager(new LinearLayoutManager(getContext()));
         lv.setAdapter(arrayAdapter);
-    }
-
-
-    private void recuperar() {
-        for(Reserva r : Utils.obtenerReservas()){
-            if(r.isReservado() && r.getIDCliente().equals(Utils.ID)){
-                list.add(r);
-            }
-        }
-        cv.addEvents(list);
     }
 
     @Override
@@ -127,6 +126,32 @@ public class MisReservasFragment extends Fragment {
                 mostrar(last);
             }
         }
+    }
+
+    private void recuperar(){
+        k = KProgressHUD.create(getContext())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Espere...")
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f);
+        k.show();
+        FirebaseFirestore.getInstance().collection("Reservas").whereEqualTo("reservado", true)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> l = Objects.requireNonNull(task.getResult()).getDocuments();
+                            for (DocumentSnapshot document : l) {
+                                Reserva r = document.toObject(Reserva.class);
+                                if(r.getIDCliente().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                                list.add(r);
+                            }
+                            cv.addEvents(list);
+                            k.dismiss();
+                        }
+                    }
+                });
     }
 
 }

@@ -71,6 +71,8 @@
     <string name="pr">pr</string>
     <string name="ac">ac</string>
     <string name="eliminar_oferta">Se ha eliminado la oferta correctamente!</string>
+    <string name="errorimagen">No se ha podido cargar la imagen correctamente</string>
+    <string name="correctaimagen">La imagen se ha cargado correctamente</string>
     <string name="guardar_correctamente">Se ha guardado la imagen correctamente</string>
     <string name="correo_recuperacion">Se ha enviado el correo de recuperación! Revise su buzón.</string>
     <string name="gasolina">Gasolina</string>

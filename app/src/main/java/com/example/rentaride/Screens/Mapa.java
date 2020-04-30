@@ -145,12 +145,12 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
         cotxeMarkers.clear();
         for (Reserva loc : coches) {
             Marker marker = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(loc.getLocation().getLatitude(),loc.getLocation().getLongitude()))
+                    .position(new LatLng(loc.getLatitud(),loc.getLongitud()))
                     .title(loc.getV().getMarca() + " " + loc.getV().getModelo())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(loc.getLocation().getLatitude(),loc.getLocation().getLongitude())).zoom(13).build();
+                    .target(new LatLng(loc.getLatitud(),loc.getLongitud())).zoom(13).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
 
@@ -163,12 +163,12 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
         motoMarkers.clear();
         for (Reserva loc : motos) {
             Marker marker = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(loc.getLocation().getLatitude(),loc.getLocation().getLongitude()))
+                    .position(new LatLng(loc.getLatitud(),loc.getLongitud()))
                     .title(loc.getV().getMarca() + " " + loc.getV().getModelo())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(loc.getLocation().getLatitude(),loc.getLocation().getLongitude())).zoom(15).build();
+                    .target(new LatLng(loc.getLatitud(),loc.getLongitud())).zoom(15).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
 
@@ -181,12 +181,12 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
         biciMarkers.clear();
         for (Reserva loc : bicis) {
             Marker marker = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(loc.getLocation().getLatitude(),loc.getLocation().getLongitude()))
+                    .position(new LatLng(loc.getLatitud(),loc.getLongitud()))
                     .title(loc.getV().getMarca() + " " + loc.getV().getModelo())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(loc.getLocation().getLatitude(),loc.getLocation().getLongitude())).zoom(15).build();
+                    .target(new LatLng(loc.getLatitud(),loc.getLongitud())).zoom(15).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
 
@@ -236,8 +236,8 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
         i.putExtra(getString(R.string.ve), r.getV());
         i.putExtra(getString(R.string.da), r.getTimeInMillis());
         i.putExtra(getString(R.string.telef),r.getTelefonoO());
-        i.putExtra(getString(R.string.lat), r.getLocation().getLatitude());
-        i.putExtra(getString(R.string.lon), r.getLocation().getLongitude());
+        i.putExtra(getString(R.string.lat), r.getLatitud());
+        i.putExtra(getString(R.string.lon), r.getLongitud());
         i.putExtra(getString(R.string.map), true);
         i.putExtra(getString(R.string.ac), 2);
         i.putExtra(getString(R.string.reservar), r.isReservado());
