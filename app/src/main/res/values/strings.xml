@@ -97,6 +97,7 @@
     <string name="reservacor">Se ha hecho la reserva correctamente!</string>
     <string name="telef">Introduzca un teléfono válido!</string>
     <string name="conexion">Con la conexión actual no se pudo cargar el mapa, compruebela y vuelva a intentarlo.</string>
+    <string name="keyid">keyid</string>
     <string-array name="combustible_arrays">
         <item>Gasolina</item>
         <item>Gasoil</item>

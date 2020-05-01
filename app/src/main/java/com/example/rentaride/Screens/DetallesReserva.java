@@ -8,10 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -19,6 +21,9 @@ import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.example.rentaride.R;
 import com.example.rentaride.Logica.Vehiculo;
 import com.github.nikartm.button.FitButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +34,8 @@ import static com.example.rentaride.Utils.Utils.MOTOCICLETA;
 
 public class DetallesReserva extends AppCompatActivity {
     Vehiculo v;
-    String f;
+    String f, id;
+    int ac;
     double lat, lon;
     FitButton fit, map;
     String mensaje, telefono;
@@ -39,6 +45,8 @@ public class DetallesReserva extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_reserva);
+        id = getIntent().getStringExtra(getString(R.string.keyid));
+        ac = getIntent().getIntExtra(getString(R.string.ac), 0);
         v = (Vehiculo) getIntent().getSerializableExtra(getString(R.string.ve));
         long d = getIntent().getLongExtra(getString(R.string.da),0);
         lat = getIntent().getDoubleExtra(getString(R.string.lat), 0.0);
@@ -49,7 +57,7 @@ public class DetallesReserva extends AppCompatActivity {
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         f = s.format(new Date(d));
         mensaje = getString(R.string.seguro_eliminar);
-        switch(getIntent().getIntExtra(getString(R.string.ac), 0)){
+        switch(ac){
             case 0:
                 FitButton fb = findViewById(R.id.boton);
                 FitButton fb2 = findViewById(R.id.eliminar);
@@ -197,11 +205,33 @@ public class DetallesReserva extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.si), new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        switch(ac) {
+                            case 2:
+                                updateDb(true);
+                                break;
+                            case 1:
+                                updateDb(false);
+                                break;
+                            default:
+                                break;
+                        }
                         Intent intent = getIntent();
                         setResult(RESULT_OK, intent);
                         finish();
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
+    }
+
+    private void updateDb(boolean reserva) {
+        String uid="", telf="";
+        if(reserva){
+            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            telf =  PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.preftelefono), "");
+        }
+        DocumentReference d = FirebaseFirestore.getInstance().collection("Reservas").document(id);
+        d.update("reservado", reserva);
+        d.update("telefonoC", telf);
+        d.update("idcliente", uid);
     }
 
     public void ampliar(View view) {

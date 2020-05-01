@@ -40,12 +40,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ReservaFragment extends Fragment implements AdapterEventoReservar.ReservaListener {
-    private int actual;
     private List<Reserva> list = new ArrayList<>();
+    private final Map<Reserva, String> keys = new HashMap<>();
     private AdapterEventoReservar arrayAdapter;
     private RecyclerView lv;
     private KProgressHUD k;
@@ -173,6 +175,11 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f);
         k.show();
+        if(!list.isEmpty()){
+            list.clear();
+            keys.clear();
+            arrayAdapter.clear();
+        }
         FirebaseFirestore.getInstance().collection("Reservas").whereEqualTo("reservado", false)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -182,9 +189,11 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
                             List<DocumentSnapshot> l = Objects.requireNonNull(task.getResult()).getDocuments();
                             for (DocumentSnapshot document : l) {
                                 Reserva r = document.toObject(Reserva.class);
-                                if(!r.getIDOfertor().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                                list.add(r);
-                            }
+                                if(!r.getIDOfertor().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                    keys.put(r, document.getId());
+                                    list.add(r);
+                                }
+                        }
                             arrayAdapter = new AdapterEventoReservar(list);
                             arrayAdapter.setOnFilteredItemClickListener(ReservaFragment.this);
                             lv.setHasFixedSize(true);
@@ -201,13 +210,8 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2) {
             if (resultCode == -1) {
-                list.remove(actual);
-                arrayAdapter.clear();
-                arrayAdapter.addAll(list);
                 Toast.makeText(getActivity(), getString(R.string.reservacor), Toast.LENGTH_SHORT).show();
-                lv.setHasFixedSize(true);
-                lv.setLayoutManager(new LinearLayoutManager(getContext()));
-                lv.setAdapter(arrayAdapter);
+                recuperar();
             }
         }
     }
@@ -215,7 +219,7 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
     @Override
     public void onReservaSelected(Reserva r) {
         Intent i = new Intent(getContext(), DetallesReserva.class);
-        actual = list.indexOf(r);
+        i.putExtra(getString(R.string.keyid),keys.get(r));
         i.putExtra(getString(R.string.ve), r.getV());
         i.putExtra(getString(R.string.da), r.getTimeInMillis());
         i.putExtra(getString(R.string.telef),r.getTelefonoC());
