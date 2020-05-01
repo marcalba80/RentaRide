@@ -25,6 +25,7 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.util.ContentLengthInputStream;
 import com.example.rentaride.Fragments.ReservaFragment;
@@ -65,8 +66,11 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
     GoogleMap googleMap;
     double lat, lon;
     String tit;
+    CheckBox checkCotxe, checkMoto, checkbici;
     private static boolean mostrar = true, detalle = true;
     List<Reserva> coches = new ArrayList<>();
+    private final Map<Reserva, String> keys = new HashMap<>();
+    private final Map<Marker, String> keysM = new HashMap<>();
     List<Reserva> motos = new ArrayList<>();
     List<Reserva> bicis = new ArrayList<>();
     List <Marker> cotxeMarkers = new ArrayList<>();
@@ -94,7 +98,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
             }else{
                 detalle = false;
                 obtenerReservas();
-                CheckBox checkCotxe = findViewById(R.id.cotxes);
+                checkCotxe = findViewById(R.id.cotxes);
                 checkCotxe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean bol) {
@@ -106,7 +110,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
                     }
                 });
 
-                CheckBox checkMoto = findViewById(R.id.motos);
+                checkMoto = findViewById(R.id.motos);
                 checkMoto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean bol) {
@@ -117,7 +121,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
                         }
                     }
                 });
-                CheckBox checkbici = findViewById(R.id.bicicleta);
+                checkbici = findViewById(R.id.bicicleta);
                 checkbici.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean bol) {
@@ -138,6 +142,15 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f);
         k.show();
+        if(!coches.isEmpty() || !motos.isEmpty() || !bicis.isEmpty()) {
+            coches.clear();
+            cotxeMarkers.clear();
+            motos.clear();
+            motoMarkers.clear();
+            bicis.clear();
+            biciMarkers.clear();
+            keys.clear();
+        }
         FirebaseFirestore.getInstance().collection("Reservas").whereEqualTo("reservado", false)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -148,8 +161,10 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
                             List<Reserva> list = new ArrayList<>();
                             for (DocumentSnapshot document : l) {
                                 Reserva r = document.toObject(Reserva.class);
-                                if(!r.getIDOfertor().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                                if(!r.getIDOfertor().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                    keys.put(r, document.getId());
                                     list.add(r);
+                                }
                             }
                             for (Reserva res : list) {
                                 switch(res.getV().getType()){
@@ -185,6 +200,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
 
             cotxeMarkers.add(marker);
             map.put(marker, loc);
+            keysM.put(marker,keys.get(loc));
         }
     }
 
@@ -203,6 +219,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
 
             motoMarkers.add(marker);
             map.put(marker, loc);
+            keysM.put(marker,keys.get(loc));
         }
     }
 
@@ -221,6 +238,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
 
             biciMarkers.add(marker);
             map.put(marker, loc);
+            keysM.put(marker,keys.get(loc));
         }
     }
 
@@ -262,6 +280,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
     public boolean onMarkerClick(Marker marker) {
         Reserva r = map.get(marker);
         Intent i = new Intent(Mapa.this, DetallesReserva.class);
+        i.putExtra(getString(R.string.keyid), keysM.get(marker));
         i.putExtra(getString(R.string.ve), r.getV());
         i.putExtra(getString(R.string.da), r.getTimeInMillis());
         i.putExtra(getString(R.string.telef),r.getTelefonoO());
@@ -383,6 +402,24 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
                 }
             } else {
                 mostrar = false;
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            if (resultCode == -1) {
+                hideCotxes();
+                hideMotos();
+                hideBici();
+                checkCotxe.setChecked(false);
+                checkMoto.setChecked(false);
+                checkbici.setChecked(false);
+                obtenerReservas();
+                Toast.makeText(this, getString(R.string.reservacor), Toast.LENGTH_SHORT).show();
+
             }
         }
     }

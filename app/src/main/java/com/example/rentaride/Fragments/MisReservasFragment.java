@@ -31,18 +31,20 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class MisReservasFragment extends Fragment {
     List<Event> list = new ArrayList<>();
     CompactCalendarView cv;
-    int actual;
     Date last;
     TextView tv;
     private KProgressHUD k;
     List<Reserva> le = new ArrayList<>();
+    private Map<Reserva, String> keys = new HashMap<>();
     AdapterEvento arrayAdapter;
     RecyclerView lv;
     SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
@@ -67,8 +69,8 @@ public class MisReservasFragment extends Fragment {
         cv = v.findViewById(R.id.calendar);
         lv = v.findViewById(R.id.list);
         tv = v.findViewById(R.id.tv);
+        last = new Date();
         if(list != null && list.isEmpty())recuperar();
-        mostrar(new Date());
         cv.setListener(new CompactCalendarView.CompactCalendarViewListener() {
 
             @Override
@@ -98,7 +100,7 @@ public class MisReservasFragment extends Fragment {
             @Override
             public void onItemClick(int position, View v) {
                 Intent i = new Intent(getContext(), DetallesReserva.class);
-                actual = list.indexOf(le.get(position));
+                i.putExtra(getString(R.string.keyid),keys.get(le.get(position)));
                 i.putExtra(getString(R.string.ve), le.get(position).getV());
                 i.putExtra(getString(R.string.da), le.get(position).getTimeInMillis());
                 i.putExtra(getString(R.string.telef), le.get(position).getTelefonoO());
@@ -119,11 +121,8 @@ public class MisReservasFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2) {
             if (resultCode == -1) {
-                list.remove(actual);
-                cv.removeAllEvents();
-                cv.addEvents(list);
+                recuperar();
                 Toast.makeText(getContext(), R.string.reserva_eliminada, Toast.LENGTH_SHORT).show();
-                mostrar(last);
             }
         }
     }
@@ -135,6 +134,12 @@ public class MisReservasFragment extends Fragment {
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f);
         k.show();
+        if(!list.isEmpty()){
+            list.clear();
+            cv.removeAllEvents();
+            keys.clear();
+            arrayAdapter.clear();
+        }
         FirebaseFirestore.getInstance().collection("Reservas").whereEqualTo("reservado", true)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -144,10 +149,13 @@ public class MisReservasFragment extends Fragment {
                             List<DocumentSnapshot> l = Objects.requireNonNull(task.getResult()).getDocuments();
                             for (DocumentSnapshot document : l) {
                                 Reserva r = document.toObject(Reserva.class);
-                                if(r.getIDCliente().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                                list.add(r);
+                                if(r.getIDCliente().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                    keys.put(r, document.getId());
+                                    list.add(r);
+                                }
                             }
                             cv.addEvents(list);
+                            mostrar(last);
                             k.dismiss();
                         }
                     }

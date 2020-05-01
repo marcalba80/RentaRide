@@ -4,6 +4,8 @@ import android.location.Location;
 
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
+import java.util.Objects;
+
 
 public class Reserva extends Event {
     Vehiculo v;
@@ -101,5 +103,21 @@ public class Reserva extends Event {
 
     public void setTelefonoO(String telefonoO) {
         this.telefonoO = telefonoO;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Reserva reserva = (Reserva) o;
+        return reservado == reserva.reservado &&
+                Double.compare(reserva.latitud, latitud) == 0 &&
+                Double.compare(reserva.longitud, longitud) == 0 &&
+                Objects.equals(v, reserva.v) &&
+                Objects.equals(IDCliente, reserva.IDCliente) &&
+                Objects.equals(IDOfertor, reserva.IDOfertor) &&
+                Objects.equals(telefonoC, reserva.telefonoC) &&
+                Objects.equals(telefonoO, reserva.telefonoO);
     }
 }
