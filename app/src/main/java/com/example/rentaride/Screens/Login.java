@@ -63,6 +63,7 @@ public class Login extends AppCompatActivity {
                                 botonlogin.showComplete();
                                 Toast.makeText(getApplicationContext(), R.string.correctologin, Toast.LENGTH_LONG).show();
                                 startActivity(new Intent(Login.this, Main.class));
+                                finish();
                             }
                             else {
                                 botonlogin.showError();

@@ -213,6 +213,7 @@ public class DetallesReserva extends AppCompatActivity {
                                 updateDb(false);
                                 break;
                             default:
+                                FirebaseFirestore.getInstance().collection("Reservas").document(id).delete();
                                 break;
                         }
                         Intent intent = getIntent();

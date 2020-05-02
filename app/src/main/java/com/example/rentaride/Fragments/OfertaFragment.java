@@ -73,7 +73,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class OfertaFragment extends Fragment {
@@ -83,6 +85,7 @@ public class OfertaFragment extends Fragment {
     String url = "";
     private Uri imagen;
     EditText marca, modelo, fecha, matricula, potencia, año, info, precio;
+    private final Map<Reserva, String> keys = new HashMap<>();
     Spinner t, com;
     CheckBox c;
     RecyclerView lv;
@@ -294,6 +297,11 @@ public class OfertaFragment extends Fragment {
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f);
         k.show();
+        if(!list.isEmpty()) {
+            list.clear();
+            keys.clear();
+            adapterEventoReservar.clear();
+        }
         FirebaseFirestore.getInstance().collection("Reservas").whereEqualTo("idofertor", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -303,14 +311,15 @@ public class OfertaFragment extends Fragment {
                             List<DocumentSnapshot> l = Objects.requireNonNull(task.getResult()).getDocuments();
                             for (DocumentSnapshot document : l) {
                                 Reserva r = document.toObject(Reserva.class);
-                                    list.add(r);
+                                keys.put(r, document.getId());
+                                list.add(r);
                             }
                             adapterEventoReservar = new AdapterEventoReservar(list);
                             adapterEventoReservar.setOnItemClickListener(new AdapterEventoReservar.ClickListener() {
                                 @Override
                                 public void onItemClick(int position, View v) {
                                     Intent i = new Intent(getContext(), DetallesReserva.class);
-                                    actual = list.indexOf(list.get(position));
+                                    i.putExtra(getString(R.string.keyid),keys.get(list.get(position)));
                                     i.putExtra(getString(R.string.ve), list.get(position).getV());
                                     i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());
                                     i.putExtra(getString(R.string.telef), list.get(position).getTelefonoC());
@@ -372,13 +381,8 @@ public class OfertaFragment extends Fragment {
             }
         } else if (resultCode == -1) {
             if (requestCode == 2) {
-                list.remove(actual);
-                adapterEventoReservar.clear();
                 Toast.makeText(getContext(), "Se ha eliminado la oferta correctamente!", Toast.LENGTH_SHORT).show();
-                adapterEventoReservar = new AdapterEventoReservar(list);
-                lv.setHasFixedSize(true);
-                lv.setLayoutManager(new LinearLayoutManager(getContext()));
-                lv.setAdapter(adapterEventoReservar);
+                obtener();
             } else {
                 if(data.getData() != null){
                     imagen = data.getData();
