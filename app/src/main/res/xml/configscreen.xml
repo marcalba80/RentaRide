@@ -19,6 +19,11 @@
             app:iconSpaceReserved="false"
             android:summary="Numero de contacto"
             android:title="@string/literalTelefono"/>
+        <Preference
+            android:key="@string/preferenceTarjeta"
+            android:title="@string/config_pago"
+            app:iconSpaceReserved="false"
+            android:summary="@string/inf_tarjeta"/>
         <ListPreference
             android:title="Visualización del Mapa"
             android:summary="Red con la que se permite ver el mapa"

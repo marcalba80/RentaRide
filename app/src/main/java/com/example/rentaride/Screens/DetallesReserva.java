@@ -1,11 +1,13 @@
 package com.example.rentaride.Screens;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,18 +17,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ceylonlabs.imageviewpopup.ImagePopup;
+import com.example.rentaride.Logica.Reserva;
+import com.example.rentaride.Logica.Tarjeta;
 import com.example.rentaride.R;
 import com.example.rentaride.Logica.Vehiculo;
 import com.github.nikartm.button.FitButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 import static com.example.rentaride.Utils.Utils.BICICLETA;
 import static com.example.rentaride.Utils.Utils.COCHE;
@@ -203,11 +217,16 @@ public class DetallesReserva extends AppCompatActivity {
                 .setMessage(mensaje)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(getString(R.string.si), new DialogInterface.OnClickListener() {
-
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        switch(ac) {
+                        switch (ac) {
                             case 2:
-                                updateDb(true);
+                                SharedPreferences sharedPrefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(DetallesReserva.this);
+                                if(!sharedPrefs.getString("cardNumber", "").equals("")){
+                                    updateDb(true);
+                                }else{
+                                    Toast.makeText(DetallesReserva.this, "Debe introducir una tarjeta para efectuar reservas", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
                                 break;
                             case 1:
                                 updateDb(false);

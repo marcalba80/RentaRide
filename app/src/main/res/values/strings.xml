@@ -98,6 +98,9 @@
     <string name="telef">Introduzca un teléfono válido!</string>
     <string name="conexion">Con la conexión actual no se pudo cargar el mapa, compruebela y vuelva a intentarlo.</string>
     <string name="keyid">keyid</string>
+    <string name="config_pago">Configuración de pago</string>
+    <string name="inf_tarjeta">Información de la tarjeta</string>
+    <string name="preferenceTarjeta">tarjeta</string>
     <string-array name="combustible_arrays">
         <item>Gasolina</item>
         <item>Gasoil</item>

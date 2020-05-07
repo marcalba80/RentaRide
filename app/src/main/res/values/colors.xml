@@ -11,4 +11,5 @@
     <color name="C2">#ffa726</color>
     <color name="C3">#e57373</color>
     <color name="red">#C01A1A</color>
+    <color name="transp">#00C01A1A</color>
 </resources>

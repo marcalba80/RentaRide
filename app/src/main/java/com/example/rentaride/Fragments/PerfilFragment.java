@@ -1,5 +1,6 @@
 package com.example.rentaride.Fragments;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.preference.EditTextPreference;
@@ -23,15 +25,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rentaride.Logica.AdapterEvento;
 import com.example.rentaride.Logica.Reserva;
+import com.example.rentaride.Logica.Tarjeta;
 import com.example.rentaride.R;
 import com.example.rentaride.Screens.DetallesReserva;
 import com.example.rentaride.Screens.Login;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.manojbhadane.PaymentCardView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,8 +77,8 @@ public class PerfilFragment extends Fragment {
     public static class PrefsFragment extends PreferenceFragmentCompat {
 
         SharedPreferences mPreference;
-
         androidx.preference.EditTextPreference emailEditText, usernameEditText, numberEditText;
+        Preference tarjeta;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -82,6 +87,43 @@ public class PerfilFragment extends Fragment {
             emailEditText = (androidx.preference.EditTextPreference) findPreference(getResources().getString(R.string.preferenceEmail));
             usernameEditText = (androidx.preference.EditTextPreference) findPreference(getResources().getString(R.string.preferenceUsername));
             numberEditText = (androidx.preference.EditTextPreference) findPreference(getResources().getString(R.string.preftelefono));
+            tarjeta = findPreference(getResources().getString(R.string.preferenceTarjeta));
+
+            tarjeta.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.setContentView(R.layout.popup_tarjeta);
+                    dialog.getWindow().setBackgroundDrawableResource(R.color.transp);
+                    dialog.show();
+                    PaymentCardView paymentCard = (PaymentCardView)dialog.findViewById(R.id.creditCard);
+                    paymentCard.setOnPaymentCardEventListener(new PaymentCardView.OnPaymentCardEventListener() {
+                        @Override
+                        public void onCardDetailsSubmit(String month, String year, String cardNumber, String cvv) {
+                            SharedPreferences.Editor editor = mPreference.edit();
+                            editor.putString("month", month);
+                            editor.putString("year", year);
+                            editor.putString("cardNumber", cardNumber);
+                            editor.putString("cvv", cvv);
+                            editor.apply();
+                            Toast.makeText(getContext(), "Se ha guardado la tarjeta correctamente", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                            dialog.hide();
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(getActivity(),"Datos incorrectos", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancelClick() {
+
+                        }
+                    });
+                    return false;
+                }
+            });
             checkSharedPreferences();
             usernameEditText.setOnPreferenceChangeListener(new androidx.preference.Preference.OnPreferenceChangeListener() {
                 @Override

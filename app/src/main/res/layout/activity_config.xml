@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="20dp"
     android:gravity="center"
     android:orientation="vertical">
     <TextView
         android:paddingStart="10dp"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:textSize="20dp"
         android:textColor="@color/Black"
         android:layout_width="match_parent"
@@ -18,43 +17,50 @@
     <FrameLayout
         android:id="@+id/pref_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"/>
-    <com.github.nikartm.button.FitButton
-        android:id="@+id/contraseña"
-        android:padding="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:enabled="true"
+        android:layout_height="0dp"
+        android:layout_weight="4.5"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
         android:gravity="center"
-        app:fb_backgroundColor="@color/button"
-        app:fb_cornerRadius="50dp"
-        app:fb_divColor="@color/button"
-        android:paddingEnd="30dp"
-        android:paddingStart="30dp"
-        android:onClick="recuperar"
-        android:layout_marginBottom="10dp"
-        app:fb_shape="rectangle"
-        app:fb_text="Cambiar Contraseña"
-        app:fb_textSize="15dp"
-        app:fb_textColor="@color/White" />
-    <com.github.nikartm.button.FitButton
-        android:id="@+id/cerrar"
-        android:padding="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:enabled="true"
-        android:onClick="cerrar"
-        android:gravity="center"
-        app:fb_backgroundColor="@color/red"
-        app:fb_cornerRadius="50dp"
-        app:fb_divColor="@color/red"
-        android:paddingEnd="30dp"
-        android:paddingStart="30dp"
-        android:layout_marginBottom="10dp"
-        app:fb_shape="rectangle"
-        app:fb_text="Cerrar Sesión"
-        app:fb_textSize="15dp"
-        app:fb_textColor="@color/White" />
+        android:layout_weight="1.5"
+        android:layout_height="0dp" >
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/contraseña"
+            android:padding="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:enabled="true"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/button"
+            app:fb_cornerRadius="50dp"
+            app:fb_divColor="@color/button"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            android:onClick="recuperar"
+            android:layout_marginBottom="10dp"
+            app:fb_shape="rectangle"
+            app:fb_text="Cambiar Contraseña"
+            app:fb_textSize="15dp"
+            app:fb_textColor="@color/White" />
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/cerrar"
+            android:padding="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:enabled="true"
+            android:onClick="cerrar"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/red"
+            app:fb_cornerRadius="50dp"
+            app:fb_divColor="@color/red"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            android:layout_marginBottom="10dp"
+            app:fb_shape="rectangle"
+            app:fb_text="Cerrar Sesión"
+            app:fb_textSize="15dp"
+            app:fb_textColor="@color/White" />
+    </LinearLayout>
 
 </LinearLayout>
