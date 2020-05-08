@@ -101,6 +101,8 @@
     <string name="config_pago">Configuración de pago</string>
     <string name="inf_tarjeta">Información de la tarjeta</string>
     <string name="preferenceTarjeta">tarjeta</string>
+    <string name="otheruid">otherUID</string>
+    <string name="ownuid">ownUID</string>
     <string-array name="combustible_arrays">
         <item>Gasolina</item>
         <item>Gasoil</item>

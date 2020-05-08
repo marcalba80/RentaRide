@@ -1,47 +1,49 @@
 package com.example.rentaride.Logica;
 
 public class Message {
-    String message;
-    String name;
-    long createdAt;
-    int type;
 
-    public Message(String message, String name, long createdAt, int type) {
+    private String message;
+    private String senderUid;
+    private String senderName;
+    private String date;
+
+    public Message(){
+
+    }
+
+    public Message setMessage(String message){
         this.message = message;
-        this.name = name;
-        this.createdAt = createdAt;
-        this.type = type;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public String getSenderUid() {
+        return senderUid;
     }
 
-    public String getName() {
-        return name;
+    public Message setSenderUid(String senderUid) {
+        this.senderUid = senderUid;
+        return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getSenderName() {
+        return senderName;
     }
 
-    public long getCreatedAt() {
-        return createdAt;
+    public Message setSenderName(String senderName) {
+        this.senderName = senderName;
+        return this;
     }
 
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
+    public String getDate() {
+        return date;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
+    public Message setDate(String date) {
+        this.date = date;
+        return this;
     }
 }

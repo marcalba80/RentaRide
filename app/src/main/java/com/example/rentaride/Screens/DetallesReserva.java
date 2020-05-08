@@ -48,7 +48,7 @@ import static com.example.rentaride.Utils.Utils.MOTOCICLETA;
 
 public class DetallesReserva extends AppCompatActivity {
     Vehiculo v;
-    String f, id;
+    String f, id, ownuid, otheruid;
     int ac;
     double lat, lon;
     FitButton fit, map;
@@ -60,6 +60,8 @@ public class DetallesReserva extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_reserva);
         id = getIntent().getStringExtra(getString(R.string.keyid));
+        otheruid = getIntent().getStringExtra(getString(R.string.otheruid));
+        ownuid = getIntent().getStringExtra(getString(R.string.ownuid));
         ac = getIntent().getIntExtra(getString(R.string.ac), 0);
         v = (Vehiculo) getIntent().getSerializableExtra(getString(R.string.ve));
         long d = getIntent().getLongExtra(getString(R.string.da),0);
@@ -204,7 +206,10 @@ public class DetallesReserva extends AppCompatActivity {
 
 
     public void chat(View view) {
-        startActivity(new Intent(DetallesReserva.this, Chat.class));
+        Intent i = new Intent(DetallesReserva.this, Chat.class);
+        i.putExtra(getString(R.string.ownuid), ownuid);
+        i.putExtra(getString(R.string.otheruid), otheruid);
+        startActivity(i);
     }
 
     public void mapa(View view){

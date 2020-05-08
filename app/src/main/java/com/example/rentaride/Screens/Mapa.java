@@ -280,6 +280,8 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
     public boolean onMarkerClick(Marker marker) {
         Reserva r = map.get(marker);
         Intent i = new Intent(Mapa.this, DetallesReserva.class);
+        i.putExtra(getString(R.string.otheruid), r.getIDOfertor());
+        i.putExtra(getString(R.string.ownuid), r.getIDCliente());
         i.putExtra(getString(R.string.keyid), keysM.get(marker));
         i.putExtra(getString(R.string.ve), r.getV());
         i.putExtra(getString(R.string.da), r.getTimeInMillis());

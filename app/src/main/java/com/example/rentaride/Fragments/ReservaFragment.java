@@ -219,6 +219,8 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
     @Override
     public void onReservaSelected(Reserva r) {
         Intent i = new Intent(getContext(), DetallesReserva.class);
+        i.putExtra(getString(R.string.otheruid), r.getIDOfertor());
+        i.putExtra(getString(R.string.ownuid), r.getIDCliente());
         i.putExtra(getString(R.string.keyid),keys.get(r));
         i.putExtra(getString(R.string.ve), r.getV());
         i.putExtra(getString(R.string.da), r.getTimeInMillis());

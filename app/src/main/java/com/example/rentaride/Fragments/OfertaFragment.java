@@ -319,6 +319,8 @@ public class OfertaFragment extends Fragment {
                                 @Override
                                 public void onItemClick(int position, View v) {
                                     Intent i = new Intent(getContext(), DetallesReserva.class);
+                                    i.putExtra(getString(R.string.otheruid), list.get(position).getIDOfertor());
+                                    i.putExtra(getString(R.string.ownuid), list.get(position).getIDCliente());
                                     i.putExtra(getString(R.string.keyid),keys.get(list.get(position)));
                                     i.putExtra(getString(R.string.ve), list.get(position).getV());
                                     i.putExtra(getString(R.string.da), list.get(position).getTimeInMillis());

@@ -100,6 +100,8 @@ public class MisReservasFragment extends Fragment {
             @Override
             public void onItemClick(int position, View v) {
                 Intent i = new Intent(getContext(), DetallesReserva.class);
+                i.putExtra(getString(R.string.otheruid), le.get(position).getIDOfertor());
+                i.putExtra(getString(R.string.ownuid), le.get(position).getIDCliente());
                 i.putExtra(getString(R.string.keyid),keys.get(le.get(position)));
                 i.putExtra(getString(R.string.ve), le.get(position).getV());
                 i.putExtra(getString(R.string.da), le.get(position).getTimeInMillis());
