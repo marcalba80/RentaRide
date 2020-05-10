@@ -73,11 +73,13 @@ public class DetallesReserva extends AppCompatActivity {
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         f = s.format(new Date(d));
         mensaje = getString(R.string.seguro_eliminar);
+        if(!reservado){
+            FitButton fb = findViewById(R.id.boton);
+            fb.setVisibility(View.GONE);
+        }
         switch(ac){
             case 0:
-                FitButton fb = findViewById(R.id.boton);
                 FitButton fb2 = findViewById(R.id.eliminar);
-                fb.setVisibility(View.GONE);
                 propia = true;
                 fb2.setText(getString(R.string.cancelar_oferta));
                 break;
