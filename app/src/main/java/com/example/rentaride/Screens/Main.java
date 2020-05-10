@@ -1,10 +1,13 @@
 package com.example.rentaride.Screens;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.rentaride.Fragments.MisReservasFragment;
@@ -12,8 +15,12 @@ import com.example.rentaride.Fragments.OfertaFragment;
 import com.example.rentaride.Fragments.PerfilFragment;
 import com.example.rentaride.Fragments.ReservaFragment;
 import com.example.rentaride.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 
 import androidx.annotation.NonNull;
@@ -30,6 +37,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Main extends AppCompatActivity {
@@ -44,7 +52,20 @@ public class Main extends AppCompatActivity {
         rr = new Mapa.RedReceiver();
         registerReceiver(rr, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         mPreference = PreferenceManager.getDefaultSharedPreferences(Main.this);
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                HashMap<String, String> hm = new HashMap<>();
+                hm.put("tok", instanceIdResult.getToken());
+                FirebaseFirestore
+                        .getInstance()
+                        .collection("Tokens")
+                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .set(hm);
+                createNotificationChannel();
 
+            }
+        });
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -133,5 +154,17 @@ public class Main extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(rr);
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.notificacionesn);
+            String description = getString(R.string.notificacionesd);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(getString(R.string.notificacionesn), name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

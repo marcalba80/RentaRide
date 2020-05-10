@@ -103,6 +103,8 @@
     <string name="preferenceTarjeta">tarjeta</string>
     <string name="otheruid">otherUID</string>
     <string name="ownuid">ownUID</string>
+    <string name="notificacionesn">notificaciones</string>
+    <string name="notificacionesd">descripcion</string>
     <string-array name="combustible_arrays">
         <item>Gasolina</item>
         <item>Gasoil</item>
