@@ -12,7 +12,6 @@ exports.modificarReserva = functions.firestore
           var titulo = document.v.marca;
           var fecha = new Date(parseInt(document.timeInMillis));
           var sfecha = fecha.toLocaleDateString('default');
-
           console.log(sfecha)
           var payload = null;
           if(document.reservado){
