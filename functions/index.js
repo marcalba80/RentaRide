@@ -8,7 +8,10 @@ exports.modificarReserva = functions.firestore
     .document('Reservas/{reservaID}')
     .onUpdate((change, context) => {
       const document = change.after.exists ? change.after.data() : null;
-      if(document !== null){
+      const document2 = change.before.exists ? change.before.data() : null;
+      console.log("original" + document.idcliente)
+      console.log("nuevo" + document2.idcliente)
+      if(document !== null && !(document.idcliente === document2.idcliente)){
           var titulo = document.v.marca;
           var fecha = new Date(parseInt(document.timeInMillis));
           var sfecha = fecha.toLocaleDateString('default');
@@ -36,6 +39,7 @@ exports.modificarReserva = functions.firestore
                 if (!doc.exists) {
                   throw new Error('No such User document!');
                 } else {
+                  console.log("enviado")
                   admin.messaging().sendToDevice(doc.data().tok, payload)
                   return true
                 }
