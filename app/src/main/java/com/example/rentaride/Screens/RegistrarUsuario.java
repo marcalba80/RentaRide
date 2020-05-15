@@ -11,11 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.example.rentaride.R;
 import com.github.nikartm.button.FitButton;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +22,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 
 public class RegistrarUsuario extends AppCompatActivity {

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -14,7 +13,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,7 +24,6 @@ import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.R;
 import com.example.rentaride.Screens.DetallesReserva;
 import com.example.rentaride.Screens.Mapa;
-import com.example.rentaride.Utils.Utils;
 import com.github.nikartm.button.FitButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

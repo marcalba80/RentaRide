@@ -1,19 +1,14 @@
 package com.example.rentaride.Screens;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rentaride.R;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Objects;
 
 
 public class RecuperarContrasena extends AppCompatActivity {

@@ -1,7 +1,5 @@
 package com.example.rentaride.Logica;
 
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 public class Vehiculo implements Serializable {

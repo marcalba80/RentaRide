@@ -31,13 +31,6 @@
                 android:textColor="@color/White"
                 android:textSize="15dp"
                 android:id="@+id/tipo"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/White"
-                android:textSize="15dp"
-                android:id="@+id/hora"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"

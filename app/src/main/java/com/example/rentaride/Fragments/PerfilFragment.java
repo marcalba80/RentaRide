@@ -1,55 +1,28 @@
 package com.example.rentaride.Fragments;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreference;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rentaride.Logica.AdapterEvento;
-import com.example.rentaride.Logica.Reserva;
-import com.example.rentaride.Logica.Tarjeta;
 import com.example.rentaride.R;
-import com.example.rentaride.Screens.DetallesReserva;
-import com.example.rentaride.Screens.Login;
-import com.github.sundeepk.compactcalendarview.CompactCalendarView;
-import com.github.sundeepk.compactcalendarview.domain.Event;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.manojbhadane.PaymentCardView;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
-import static com.example.rentaride.Utils.Utils.biciprueba;
-import static com.example.rentaride.Utils.Utils.cocheprueba;
-import static com.example.rentaride.Utils.Utils.motoprueba;
 
 public class PerfilFragment extends Fragment {
 

@@ -59,8 +59,6 @@ public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder
             holder.tipo.setText(R.string.bici);
             holder.cv.getBackground().setTint(evento.getColor());
         }
-        SimpleDateFormat s = new SimpleDateFormat("HH:MM");
-        holder.hora.setText(s.format(evento.getTimeInMillis()));
     }
 
     @Override
@@ -69,12 +67,11 @@ public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView hora, tipo, desc;
+        TextView tipo, desc;
         CardView cv;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            hora =  itemLayoutView.findViewById(R.id.hora);
             tipo =  itemLayoutView.findViewById(R.id.tipo);
             desc =  itemLayoutView.findViewById(R.id.desc);
             cv = itemLayoutView.findViewById(R.id.card);

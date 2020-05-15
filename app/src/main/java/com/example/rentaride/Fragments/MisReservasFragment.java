@@ -17,7 +17,6 @@ import com.example.rentaride.Logica.AdapterEvento;
 import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.R;
 import com.example.rentaride.Screens.DetallesReserva;
-import com.example.rentaride.Utils.Utils;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
