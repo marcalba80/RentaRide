@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceFragmentCompat;
@@ -77,16 +78,18 @@ public class PerfilFragment extends Fragment {
     public static class PrefsFragment extends PreferenceFragmentCompat {
 
         SharedPreferences mPreference;
-        androidx.preference.EditTextPreference emailEditText, usernameEditText, numberEditText;
+        EditTextPreference emailEditText, usernameEditText, numberEditText;
+        ListPreference listPreference;
         Preference tarjeta;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.configscreen);
             mPreference = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-            emailEditText = (androidx.preference.EditTextPreference) findPreference(getResources().getString(R.string.preferenceEmail));
-            usernameEditText = (androidx.preference.EditTextPreference) findPreference(getResources().getString(R.string.preferenceUsername));
-            numberEditText = (androidx.preference.EditTextPreference) findPreference(getResources().getString(R.string.preftelefono));
+            emailEditText = findPreference(getResources().getString(R.string.preferenceEmail));
+            usernameEditText = findPreference(getResources().getString(R.string.preferenceUsername));
+            numberEditText = findPreference(getResources().getString(R.string.preftelefono)); 
+            listPreference = findPreference(getString(R.string.preferenciared));
             tarjeta = findPreference(getResources().getString(R.string.preferenceTarjeta));
 
             tarjeta.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -149,6 +152,13 @@ public class PerfilFragment extends Fragment {
                     SharedPreferences.Editor mEdit = mPreference.edit();
                     mEdit.putString(getString(R.string.preftelefono), (String) newValue);
                     mEdit.apply();
+                    return false;
+                }
+            });
+            listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPreference.edit().putString(getString(R.string.preferenciared), (String) newValue).apply();
                     return false;
                 }
             });

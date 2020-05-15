@@ -25,9 +25,9 @@
             app:iconSpaceReserved="false"
             android:summary="@string/inf_tarjeta"/>
         <ListPreference
-            android:title="Visualización del Mapa"
-            android:summary="Red con la que se permite ver el mapa"
-            android:key="PreferenciaRed"
+            android:title="@string/visualizarmapa"
+            android:summary="@string/redmapa"
+            android:key="@string/preferenciared"
             android:defaultValue="Wi-Fi"
             android:entries="@array/nombres"
             android:entryValues="@array/valores"

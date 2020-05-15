@@ -67,7 +67,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
     double lat, lon;
     String tit;
     CheckBox checkCotxe, checkMoto, checkbici;
-    private static boolean mostrar = true, detalle = true;
+    private static boolean mobil = false, detalle = true, mostrar = true;
     List<Reserva> coches = new ArrayList<>();
     private final Map<Reserva, String> keys = new HashMap<>();
     private final Map<Marker, String> keysM = new HashMap<>();
@@ -84,7 +84,9 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
         TextView error = findViewById(R.id.mensajeerror);
-        if(!mostrar)
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String sPref = sharedPrefs.getString("PreferenciaRed", "Todas");
+        if((sPref.equals("Wi-Fi") && mobil) || !mostrar)
             error.setVisibility(View.VISIBLE);
         else
             if(getIntent().hasExtra(getString(R.string.lat))) {
@@ -387,20 +389,15 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-            String sPref = sharedPrefs.getString("PreferenciaRed", "Todas");
             ConnectivityManager connMgr =
                     (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isConnected()) {
-                if(sPref.equals("Todas")){
-                    mostrar = true;
-                }else {
-                    if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                        mostrar = true;
-                    } else {
-                        mostrar = false;
-                    }
+                mostrar = true;
+                if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                    mobil = true;
+                } else {
+                    mobil = false;
                 }
             } else {
                 mostrar = false;

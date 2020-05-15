@@ -105,6 +105,9 @@
     <string name="ownuid">ownUID</string>
     <string name="notificacionesn">notificaciones</string>
     <string name="notificacionesd">descripcion</string>
+    <string name="preferenciared">PreferenciaRed</string>
+    <string name="visualizarmapa">Visualización del Mapa</string>
+    <string name="redmapa">Red con la que se permite ver el mapa</string>
     <string-array name="combustible_arrays">
         <item>Gasolina</item>
         <item>Gasoil</item>
