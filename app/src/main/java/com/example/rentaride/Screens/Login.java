@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.nihaskalam.progressbuttonlibrary.CircularProgressButton;
 
 
@@ -58,10 +60,7 @@ public class Login extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                botonlogin.showComplete();
-                                Toast.makeText(getApplicationContext(), R.string.correctologin, Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(Login.this, Main.class));
-                                finish();
+                                setData();
                             }
                             else {
                                 botonlogin.showError();
@@ -77,6 +76,36 @@ public class Login extends AppCompatActivity {
                     });
         }else
             Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();
+    }
+
+    private void setData() {
+        SharedPreferences mPreference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final SharedPreferences.Editor mEdit = mPreference.edit();
+        mEdit.putString(getString(R.string.preferenceEmail), FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        mEdit.putString(getString(R.string.preferenceUsername), FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        FirebaseFirestore.getInstance().collection("Datos").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot d = task.getResult();
+                    mEdit.putString(getString(R.string.preftelefono), d.getString("Telefono"));
+                    mEdit.apply();
+                    botonlogin.showComplete();
+                    Toast.makeText(getApplicationContext(), R.string.correctologin, Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(Login.this, Main.class));
+                    finish();
+                }else{
+                    botonlogin.showError();
+                    Toast.makeText(getApplicationContext(), R.string.errorlogin, Toast.LENGTH_LONG).show();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    botonlogin.showIdle();
+                }
+            }
+        });
     }
 
     public boolean validate() {

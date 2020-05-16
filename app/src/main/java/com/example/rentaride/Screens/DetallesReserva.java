@@ -236,7 +236,7 @@ public class DetallesReserva extends AppCompatActivity {
         String uid="", telf="";
         if(reserva){
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            telf =  PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.preftelefono), "");
+            telf =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(R.string.preftelefono), "");
         }
         DocumentReference d = FirebaseFirestore.getInstance().collection("Reservas").document(id);
         d.update("reservado", reserva);
