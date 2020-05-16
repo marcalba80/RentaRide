@@ -134,7 +134,7 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), Mapa.class));
+                startActivityForResult(new Intent(getContext(), Mapa.class), 3);
             }
         });
         buscar.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +210,8 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
                 Toast.makeText(getActivity(), getString(R.string.reservacor), Toast.LENGTH_SHORT).show();
                 recuperar();
             }
-        }
+        }else if(requestCode == 3)
+                recuperar();
     }
 
     @Override

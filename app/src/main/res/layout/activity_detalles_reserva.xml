@@ -329,7 +329,7 @@
       <com.github.nikartm.button.FitButton
           android:id="@+id/eliminar"
           android:padding="15dp"
-          android:layout_width="match_parent"
+          android:layout_width="280dp"
           android:onClick="eliminar"
           android:layout_height="50dp"
           android:enabled="true"

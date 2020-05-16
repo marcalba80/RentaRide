@@ -1,7 +1,6 @@
 package com.example.rentaride.Fragments;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,13 +38,6 @@ import com.example.rentaride.Logica.Vehiculo;
 import com.example.rentaride.R;
 import com.example.rentaride.Screens.DetallesReserva;
 import com.github.nikartm.button.FitButton;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -59,43 +51,29 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class OfertaFragment extends Fragment {
-    long f = 0;
+    private long f = 0;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-    int color = 0, actual;
-    String url = "";
+    private int color = 0;
+    private String url = "";
     private Uri imagen;
-    EditText marca, modelo, fecha, matricula, potencia, año, info, precio;
+    private EditText marca, modelo, fecha, matricula, potencia, año, info, precio;
     private final Map<Reserva, String> keys = new HashMap<>();
-    Spinner t, com;
-    CheckBox c;
-    RecyclerView lv;
-    List<Reserva> list = new ArrayList<>();
-    AdapterEventoReservar adapterEventoReservar;
+    private Spinner t, com;
+    private CheckBox c;
+    private RecyclerView lv;
+    private List<Reserva> list = new ArrayList<>();
+    private AdapterEventoReservar adapterEventoReservar;
     private static final int REQUEST_CHECK_SETTINGS = 3;
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
-    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
-            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
-    private Boolean mRequestingLocationUpdates;
-    private boolean isRequestRequired;
-    private String mLastUpdateTime;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private SettingsClient mSettingsClient;
-    private LocationRequest mLocationRequest;
-    private LocationSettingsRequest mLocationSettingsRequest;
-    private LocationCallback mLocationCallback;
-    private Location mCurrentLocation;
     private KProgressHUD k;
     private View rootView;
 
@@ -106,21 +84,6 @@ public class OfertaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mRequestingLocationUpdates = false;
-        isRequestRequired = true;
-        mLastUpdateTime = "";
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(rootView.getContext());
-        mSettingsClient = LocationServices.getSettingsClient(rootView.getContext());
-
-        createLocationCallback();
-        createLocationRequest();
-        buildLocationSettingsRequest();
     }
 
     @Override
@@ -365,15 +328,7 @@ public class OfertaFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CHECK_SETTINGS) {
-            switch (resultCode) {
-                case Activity.RESULT_OK:
-                    break;
-                case Activity.RESULT_CANCELED:
-                    mRequestingLocationUpdates = false;
-                    break;
-            }
-        } else if (resultCode == -1) {
+        if (resultCode == -1) {
             if (requestCode == 2) {
                 Toast.makeText(getContext(), "Se ha eliminado la oferta correctamente!", Toast.LENGTH_SHORT).show();
                 obtener();
@@ -386,30 +341,6 @@ public class OfertaFragment extends Fragment {
         }
     }
 
-    private void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    private void buildLocationSettingsRequest() {
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        mLocationSettingsRequest = builder.build();
-    }
-
-    private void createLocationCallback() {
-        mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-
-                mCurrentLocation = locationResult.getLastLocation();
-                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-            }
-        };
-    }
 
     @Override
     public void onResume() {
@@ -475,8 +406,6 @@ public class OfertaFragment extends Fragment {
                                     startActivityForResult(intent, REQUEST_CHECK_SETTINGS);
                                 }
                             });
-
-                    isRequestRequired = false;
                 }
             }
         }

@@ -62,9 +62,8 @@ public class DetallesReserva extends AppCompatActivity {
         }
         switch(ac){
             case 0:
-                FitButton fb2 = findViewById(R.id.eliminar);
                 propia = true;
-                fb2.setText(getString(R.string.cancelar_oferta));
+                fit.setText(getString(R.string.cancelar_oferta));
                 break;
             case 1:
                 break;
@@ -77,6 +76,7 @@ public class DetallesReserva extends AppCompatActivity {
                 break;
         }
         addInfo(v);
+        int a = 0;
     }
 
     public void addInfo(final Vehiculo ve){
