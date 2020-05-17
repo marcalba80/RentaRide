@@ -76,7 +76,6 @@ public class DetallesReserva extends AppCompatActivity {
                 break;
         }
         addInfo(v);
-        int a = 0;
     }
 
     public void addInfo(final Vehiculo ve){
