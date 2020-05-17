@@ -90,3 +90,40 @@ exports.cancelarEvento = functions.firestore
       }
       return false;
     });
+
+
+exports.mensajeChat = functions.database.ref('/Chat/{cID}/{msgID}').onWrite( async (change, context)  => {
+           var t = 'Nuevo mensaje de '+ change.after.val().senderName + '!'
+           var b = change.after.val().message
+           console.log(t);
+           console.log(b);
+           var payload = {
+               notification: {
+                  title: t,
+                  body: b
+               }
+             };
+           var ids = context.params.cID.split("_");
+           console.log(ids);
+           var userRef;
+           if (change.after.val().senderUid === ids[0]) {
+                userRef = db.collection('Tokens').doc(ids[1]);
+           }else{
+                userRef = db.collection('Tokens').doc(ids[0]);
+           }
+           return userRef
+               .get()
+               .then(doc => {
+                 if (!doc.exists) {
+                   throw new Error('No such User document!');
+                 } else {
+                   console.log("enviado")
+                   admin.messaging().sendToDevice(doc.data().tok, payload)
+                   return true
+                 }
+               })
+               .catch(err => {
+                 console.log(err)
+                 return false;
+               });
+});
