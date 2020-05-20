@@ -66,6 +66,8 @@ public class OfertaFragment extends Fragment {
     private int color = 0;
     private String url = "";
     private Uri imagen;
+    private FitButton imagenb, oferta;
+    private LinearLayout extra;
     private EditText marca, modelo, fecha, matricula, potencia, año, info, precio;
     private final Map<Reserva, String> keys = new HashMap<>();
     private Spinner t, com;
@@ -94,8 +96,6 @@ public class OfertaFragment extends Fragment {
     }
 
     private void inicializar(View v) {
-        final FitButton imagen, oferta;
-        final LinearLayout extra;
         extra = v.findViewById(R.id.extra);
         t = v.findViewById(R.id.tip);
         marca = v.findViewById(R.id.reservaMarca);
@@ -104,7 +104,7 @@ public class OfertaFragment extends Fragment {
         c = v.findViewById(R.id.adaptado);
         com = v.findViewById(R.id.spin);
         lv = v.findViewById(R.id.list);
-        imagen = v.findViewById(R.id.imagen);
+        imagenb = v.findViewById(R.id.imagen);
         oferta = v.findViewById(R.id.ofertar);
         matricula = v.findViewById(R.id.matricula);
         año = v.findViewById(R.id.año);
@@ -116,62 +116,14 @@ public class OfertaFragment extends Fragment {
                 .setLabel("Subiendo foto...")
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f);
+        inicializarSpinner();
+        inicializarCalendario();
+        inicializarBotones();
+        obtener();
+    }
 
-        t.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i) {
-                    case 0:
-                        extra.setVisibility(View.VISIBLE);
-                        color = ContextCompat.getColor(getContext(),R.color.C1);
-                        break;
-                    case 1:
-                        extra.setVisibility(View.VISIBLE);
-                        color = ContextCompat.getColor(getContext(),R.color.C2);
-                        break;
-                    case 2:
-                        extra.setVisibility(View.GONE);
-                        color = ContextCompat.getColor(getContext(),R.color.C3);
-                        break;
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        final Calendar myCalendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                fecha.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                try {
-                    f = s.parse(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year+ " 00:00").getTime();
-                } catch (ParseException e) {
-                    f = myCalendar.getTimeInMillis();
-                }
-            }
-
-        };
-        fecha.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(getContext(), date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-
-        imagen.setOnClickListener(new View.OnClickListener() {
+    private void inicializarBotones() {
+        imagenb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 editarImagen(view);
@@ -228,7 +180,65 @@ public class OfertaFragment extends Fragment {
                 }
             }
         });
-        obtener();
+    }
+
+    private void inicializarCalendario() {
+        final Calendar myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                fecha.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                try {
+                    f = s.parse(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year+ " 00:00").getTime();
+                } catch (ParseException e) {
+                    f = myCalendar.getTimeInMillis();
+                }
+            }
+
+        };
+        fecha.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(getContext(), date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+    }
+
+    private void inicializarSpinner() {
+        t.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i) {
+                    case 0:
+                        extra.setVisibility(View.VISIBLE);
+                        color = ContextCompat.getColor(getContext(),R.color.C1);
+                        break;
+                    case 1:
+                        extra.setVisibility(View.VISIBLE);
+                        color = ContextCompat.getColor(getContext(),R.color.C2);
+                        break;
+                    case 2:
+                        extra.setVisibility(View.GONE);
+                        color = ContextCompat.getColor(getContext(),R.color.C3);
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     public void subir(){

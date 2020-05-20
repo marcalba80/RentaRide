@@ -49,6 +49,11 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
     private RecyclerView lv;
     private KProgressHUD k;
     private long f;
+    private EditText marca, modelo,fecha;
+    private Spinner t, com;
+    private CheckBox ch;
+    private LinearLayout extra;
+    private FitButton button, buscar;
 
 
     public ReservaFragment(){
@@ -67,28 +72,30 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_reserva, container, false);
         inicializar(v);
         return v;
     }
 
     private void inicializar(View v) {
-        final EditText marca, modelo,fecha;
-        final Spinner t, com;
-        final CheckBox ch;
         lv = v.findViewById(R.id.list);
         t = v.findViewById(R.id.tip);
-        final LinearLayout extra = v.findViewById(R.id.extra);
+        extra = v.findViewById(R.id.extra);
         com = v.findViewById(R.id.spin);
         marca = v.findViewById(R.id.reservaMarca);
         modelo = v.findViewById(R.id.reservaModelo);
         fecha = v.findViewById(R.id.fecha);
         ch = v.findViewById(R.id.adaptado);
         recuperar();
-        FitButton button = v.findViewById(R.id.mapa);
-        FitButton buscar = v.findViewById(R.id.buscar);
+        button = v.findViewById(R.id.mapa);
+        buscar = v.findViewById(R.id.buscar);
 
+        inicializarCalendario();
+        inicializarSpinner();
+        inicializarBotones();
+    }
+
+    private void inicializarCalendario() {
         final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -118,7 +125,9 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+    }
 
+    private void inicializarSpinner() {
         t.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -131,6 +140,9 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) { }
         });
+    }
+
+    private void inicializarBotones() {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +174,6 @@ public class ReservaFragment extends Fragment implements AdapterEventoReservar.R
                 if(t.getSelectedItem() !=null ) arrayAdapter.filtrarTipo(t.getSelectedItemPosition());
             }
         });
-
     }
 
     public void recuperar() {

@@ -5,15 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.rentaride.R;
-
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder> {

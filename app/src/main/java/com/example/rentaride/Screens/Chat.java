@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.rentaride.Logica.Message;
-import com.example.rentaride.Logica.Reserva;
 import com.example.rentaride.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,7 +40,6 @@ public class Chat extends AppCompatActivity {
     private FloatingActionButton botonEnviar;
     private FloatingActionButton botonNoEnviar;
     private EditText mensaje;
-    private Reserva reserva;
     private ProgressBar progressBar;
     private TextView progressText;
     private TextView noMensaje;
@@ -78,11 +76,98 @@ public class Chat extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Chat").child(ownuid + "_" + otheruid);
 
+        inicializarTextWatcher();
+        inicializarAdapter();
+        inicializarBoton();
+        inicializarEventListener();
+        inicializarHandler();
+    }
+
+    private void inicializarHandler() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                if (linearLayoutManager.getItemCount()==0){
+                    showNoMessages();
+                    disableProgress();
+                }
+            }
+        }, 4000);
+    }
+
+    private void inicializarEventListener() {
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                updateChatList();
+                disableNoMessages();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                showNoMessages();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(Chat.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        databaseReference.addChildEventListener(childEventListener);
+        recyclerView.setAdapter(firebaseRecyclerAdapter);
+        firebaseRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    private void inicializarBoton() {
+        botonEnviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String message = mensaje.getText().toString();
+
+                databaseReference.push().setValue(new Message()
+                        .setMessage(message)
+                        .setSenderName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())
+                        .setDate(new SimpleDateFormat("HH:mm - dd/MM/yyyy").format(Calendar.getInstance().getTime()))
+                        .setSenderUid(FirebaseAuth.getInstance().getCurrentUser().getUid()));
+
+                mensaje.setText("");
+            }
+        });
+    }
+
+    private void inicializarAdapter() {
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Message, ViewHolderChat>(Message.class, R.layout.chat_item_list, ViewHolderChat.class, databaseReference) {
+            @Override
+            protected void populateViewHolder(ViewHolderChat viewHolder, Message model, int position) {
+
+                disableProgress();
+
+                if (model.getSenderUid().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())){
+                    viewHolder.msgOtroLayout.setVisibility(View.INVISIBLE);
+                    viewHolder.msgPropio.setText(model.getMessage());
+                    viewHolder.fechaPropia.setText(model.getDate());
+                }else {
+                    viewHolder.layoutChat.setVisibility(View.INVISIBLE);
+                    viewHolder.msgOtro.setText(model.getMessage());
+                    viewHolder.nombreOtro.setText(model.getSenderName());
+                    viewHolder.fechaOtro.setText(model.getDate());
+                }
+            }
+        };
+    }
+
+    private void inicializarTextWatcher() {
         TextWatcher textWatcher = new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -103,85 +188,6 @@ public class Chat extends AppCompatActivity {
         };
 
         mensaje.addTextChangedListener(textWatcher);
-
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Message, ViewHolderChat>(Message.class, R.layout.chat_item_list, ViewHolderChat.class, databaseReference) {
-            @Override
-            protected void populateViewHolder(ViewHolderChat viewHolder, Message model, int position) {
-
-                disableProgress();
-
-                if (model.getSenderUid().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())){
-                    viewHolder.msgOtroLayout.setVisibility(View.INVISIBLE);
-                    viewHolder.msgPropio.setText(model.getMessage());
-                    viewHolder.fechaPropia.setText(model.getDate());
-                }else {
-                    viewHolder.layoutChat.setVisibility(View.INVISIBLE);
-                    viewHolder.msgOtro.setText(model.getMessage());
-                    viewHolder.nombreOtro.setText(model.getSenderName());
-                    viewHolder.fechaOtro.setText(model.getDate());
-                }
-            }
-        };
-
-        botonEnviar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String message = mensaje.getText().toString();
-
-                databaseReference.push().setValue(new Message()
-                        .setMessage(message)
-                        .setSenderName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())
-                        .setDate(new SimpleDateFormat("HH:mm - dd/MM/yyyy").format(Calendar.getInstance().getTime()))
-                        .setSenderUid(FirebaseAuth.getInstance().getCurrentUser().getUid()));
-
-                mensaje.setText("");
-            }
-        });
-
-        childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                updateChatList();
-                disableNoMessages();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                showNoMessages();
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(Chat.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        };
-
-        databaseReference.addChildEventListener(childEventListener);
-        recyclerView.setAdapter(firebaseRecyclerAdapter);
-        firebaseRecyclerAdapter.notifyDataSetChanged();
-
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                if (linearLayoutManager.getItemCount()==0){
-                    showNoMessages();
-                    disableProgress();
-                }
-            }
-        }, 4000);
     }
 
     private void showNoMessages() {

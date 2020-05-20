@@ -110,22 +110,21 @@ public class Main extends AppCompatActivity {
     }
 
     public void recuperar(View view) {
-
-            new AlertDialog.Builder(Objects.requireNonNull(this))
-                    .setTitle("Cambiar Contraseña")
-                    .setMessage("¿Seguro que desea cambiar la contraseña?")
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            FirebaseAuth.getInstance().sendPasswordResetEmail(Objects.requireNonNull(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail()));
-                            Toast.makeText(getApplicationContext(), "Se ha enviado el correo de recuperación! Revise su buzón.", Toast.LENGTH_LONG).show();
-                            FirebaseAuth.getInstance().signOut();
-                            Intent intent = new Intent(Main.this, Login.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.putExtra("EXIT", true);
-                            startActivity(intent);
-                        }})
-                    .setNegativeButton(android.R.string.no, null).show();
+        new AlertDialog.Builder(Objects.requireNonNull(this))
+                .setTitle("Cambiar Contraseña")
+                .setMessage("¿Seguro que desea cambiar la contraseña?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        FirebaseAuth.getInstance().sendPasswordResetEmail(Objects.requireNonNull(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail()));
+                        Toast.makeText(getApplicationContext(), "Se ha enviado el correo de recuperación! Revise su buzón.", Toast.LENGTH_LONG).show();
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(Main.this, Login.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("EXIT", true);
+                        startActivity(intent);
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
     }
 
     @Override
