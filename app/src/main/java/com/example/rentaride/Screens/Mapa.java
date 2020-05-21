@@ -57,10 +57,10 @@ import static com.google.android.gms.maps.CameraUpdateFactory.zoomIn;
 public class Mapa extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     GoogleMap googleMap;
-    double lat, lon;
+    double lat = 0.0, lon = 0.0;
     String tit;
     CheckBox checkCotxe, checkMoto, checkbici;
-    private static boolean mobil = false, detalle = true, mostrar = true;
+    private static boolean mobil = false, mostrar = true;
     List<Reserva> coches = new ArrayList<>();
     private final Map<Reserva, String> keys = new HashMap<>();
     private final Map<Marker, String> keysM = new HashMap<>();
@@ -91,7 +91,6 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
                 lon = getIntent().getDoubleExtra(getString(R.string.lon), 0.0);
                 tit = getIntent().getStringExtra(getString(R.string.tit));
             }else{
-                detalle = false;
                 obtenerReservas();
                 checkCotxe = findViewById(R.id.cotxes);
                 checkCotxe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -356,7 +355,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback, Googl
         }else{
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setZoomControlsEnabled(true);
-            if(detalle){
+            if(lat != 0.0){
                 googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(lat,lon))
                         .title(tit)
