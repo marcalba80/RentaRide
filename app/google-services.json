@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "827647815495",
+    "firebase_url": "https://rentaride-8aad9.firebaseio.com",
+    "project_id": "rentaride-8aad9",
+    "storage_bucket": "rentaride-8aad9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827647815495:android:a6592c09e701f867e76662",
+        "android_client_info": {
+          "package_name": "com.example.rentaride"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827647815495-ec8vek5d7d15q88ksdccdb36pvvkpi7p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rentaride",
+            "certificate_hash": "10d047b9a8c1df1d23948658f016fba6b48a7e03"
+          }
+        },
+        {
+          "client_id": "827647815495-om74b69la8hgr2eqp0phshdoj1hi8ofa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF2acAFakMjx8Au88PdDvSnWQkDFblGP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "827647815495-om74b69la8hgr2eqp0phshdoj1hi8ofa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
